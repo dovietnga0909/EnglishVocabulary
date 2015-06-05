@@ -14,4 +14,7 @@
     <string name="title_activity_vocabulary">VocabularyActivity</string>
 
     <string name="hello_world">Hello world!</string>
+    <!-- NgaDV-->
+    <string name="txt_tab_test_listen">Kỹ năng nghe</string>
+    <string name="txt_tab_test_remember">Kỹ năng nhớ</string>
 </resources>
