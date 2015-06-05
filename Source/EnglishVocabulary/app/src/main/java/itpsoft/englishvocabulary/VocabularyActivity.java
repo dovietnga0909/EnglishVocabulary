@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import itpsoft.englishvocabulary.databases.DbController;
+
 
 public class VocabularyActivity extends ActionBarActivity {
 
@@ -12,6 +14,8 @@ public class VocabularyActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vocabulary);
+
+        DbController dbController = DbController.getInstance(this);
     }
 
     @Override
