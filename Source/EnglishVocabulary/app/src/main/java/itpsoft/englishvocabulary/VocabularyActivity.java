@@ -1,5 +1,6 @@
 package itpsoft.englishvocabulary;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -34,7 +35,9 @@ public class VocabularyActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent();
+            intent.setClass(getApplicationContext(), TestActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
