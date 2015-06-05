@@ -6,7 +6,6 @@
 tbl_vocabulary:
 	id	:	int
 	cate_id	:	int
-	user_id	:	int
 	english	:	varchar(50)
      vietnamese	:	varchar(50)
     status_sync	:	boolean
