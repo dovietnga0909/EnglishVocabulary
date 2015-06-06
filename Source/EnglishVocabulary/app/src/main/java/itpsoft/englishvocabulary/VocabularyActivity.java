@@ -1,8 +1,9 @@
 package itpsoft.englishvocabulary;
 
-import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -11,12 +12,26 @@ import itpsoft.englishvocabulary.databases.DbController;
 
 public class VocabularyActivity extends ActionBarActivity {
 
+    ActionBar actionBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vocabulary);
 
+        actionBar = getSupportActionBar();
+//        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.actionBar)));
+        actionBar.setTitle("LuanDT");
+
         DbController dbController = DbController.getInstance(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
     }
 
     @Override
@@ -34,10 +49,13 @@ public class VocabularyActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent();
-            intent.setClass(getApplicationContext(), TestActivity.class);
-            startActivity(intent);
+        switch (id){
+            case android.R.id.home:
+                finish();
+                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
+                break;
+            default:
+                break;
         }
 
         return super.onOptionsItemSelected(item);

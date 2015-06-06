@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="actionBar">#ff6f00</color>
     <color name="white">#ffffff</color>
     <color name="light_gray">#c2c7cc</color>
     <color name="dark_gray">#3d454c</color>
