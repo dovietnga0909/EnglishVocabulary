@@ -30,6 +30,7 @@ public class HomeActivity extends Activity {
         final ImageView imageView = (ImageView) findViewById(R.id.drawer_indicator);
         final Resources resources = getResources();
         TextView content = (TextView) findViewById(R.id.view_content);
+        TextView dr_content = (TextView) findViewById(R.id.drawer_content);
 
         drawerArrowDrawable = new DrawerArrowDrawable(resources);
         drawerArrowDrawable.setStrokeColor(resources.getColor(R.color.white));
@@ -68,8 +69,19 @@ public class HomeActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
+                intent.setClass(getApplicationContext(), VocabularyActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+            }
+        });
+
+        dr_content.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
                 intent.setClass(getApplicationContext(), TestActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
             }
         });
     }
