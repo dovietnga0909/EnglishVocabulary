@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -58,6 +59,8 @@ public class TestActivity extends FragmentActivity implements ActionBar.TabListe
             title.setText(labelId);
         ImageView icon = (ImageView) tabIndicator.findViewById(R.id.iconTabIndicator);
             icon.setImageResource(drawableId);
+//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(20,20);
+//            icon.setLayoutParams(params);
 
         tabSpec.setIndicator(tabIndicator);
         tabSpec.setContent(testActivity.new TabFactory(testActivity));

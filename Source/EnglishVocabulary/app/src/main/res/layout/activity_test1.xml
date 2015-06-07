@@ -31,9 +31,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_weight="0"
-                android:background="@drawable/ic_drawer"
+                android:background="@color/cl_actionbar"
                 android:showDividers="none"
-                android:orientation="horizontal" />
+                android:orientation="horizontal"/>
         </LinearLayout>
     </TabHost>
 

@@ -15,6 +15,9 @@
 
     <string name="hello_world">Hello world!</string>
     <!-- NgaDV-->
+    <color name="cl_actionbar">#ff6f00</color>
+    <color name="cl_pressed">#11aa4e</color>
+
     <string name="txt_tab_test_listen">Kỹ năng nghe</string>
     <string name="txt_tab_test_remember">Kỹ năng nhớ</string>
 </resources>
