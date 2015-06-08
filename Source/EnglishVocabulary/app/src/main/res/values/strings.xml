@@ -16,8 +16,23 @@
     <string name="hello_world">Hello world!</string>
     <!-- NgaDV-->
     <color name="cl_actionbar">#ff6f00</color>
+    <color name="cl_actionbar_alpha">#60ff6f00</color>
     <color name="cl_pressed">#11aa4e</color>
+    <color name="cl_pressed_alpha">#6011aa4e</color>
+    <color name="cl_background">#d9d9d9</color>
+    <color name="cl_black">#000000</color>
+
 
     <string name="txt_tab_test_listen">Kỹ năng nghe</string>
     <string name="txt_tab_test_remember">Kỹ năng nhớ</string>
+
+    <string name="txt_true">ĐÚNG</string>
+    <string name="txt_skip">BỎ QUA</string>
+    <string name="txt_num_ques">Số câu:</string>
+    <string name="txt_answers">Nhập đáp án...</string>
+    <string name="txt_suggest">Gợi ý Tiếng Việt</string>
+
+    <string name="txt_btn_answers">Trả lời</string>
+    <string name="txt_btn_repeat">Nghe lại</string>
+    <string name="txt_btn_skip">Bỏ qua</string>
 </resources>

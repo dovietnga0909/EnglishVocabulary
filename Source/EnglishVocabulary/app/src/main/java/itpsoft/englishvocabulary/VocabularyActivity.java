@@ -1,5 +1,6 @@
 package itpsoft.englishvocabulary;
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -54,6 +55,13 @@ public class VocabularyActivity extends ActionBarActivity {
                 finish();
                 overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
                 break;
+            case R.id.action_settings:
+                finish();
+
+                Intent intent = new Intent();
+                intent.setClass(this,TestActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
             default:
                 break;
         }
