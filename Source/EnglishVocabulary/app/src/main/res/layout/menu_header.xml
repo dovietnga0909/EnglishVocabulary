@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:background="@drawable/header_menu"
+        android:orientation="horizontal">
+
+        <itpsoft.englishvocabulary.view.CircularImageView
+            android:id="@+id/avatar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="8dp"
+            android:clickable="true"
+            android:src="@drawable/welcome1"
+            app:civ_border="true"
+            app:civ_borderColor="#FFFFFFFF"
+            app:civ_borderWidth="2dp"
+            app:civ_selector="true"
+            app:civ_selectorColor="#4403a9f4"
+            app:civ_selectorStrokeColor="#aa5677fc"
+            app:civ_selectorStrokeWidth="4dp"
+            app:civ_shadow="false" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Nguyen Thanh Tu"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="16dp" />
+</LinearLayout>
