@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
+import android.widget.TabWidget;
 import android.widget.TextView;
 
 import java.util.List;
@@ -66,6 +67,15 @@ public class TestActivity extends FragmentActivity implements ActionBar.TabListe
         tabSpec.setContent(testActivity.new TabFactory(testActivity));
         tabHost.addTab(tabSpec);
         tabHost.setOnTabChangedListener(this);
+
+
+        TabWidget tabWidget = tabHost.getTabWidget();
+        for (int i = 0;i < tabWidget.getChildCount();i++){
+            View view = tabWidget.getChildAt(i);
+            view.setBackgroundResource(R.drawable.bg_tab_host);
+
+        }
+//        tabHost.getTabWidget().setDividerDrawable(R.drawable.ic_sound);
 
         fragments.add(Fragment.instantiate(this,c.getName()));
 

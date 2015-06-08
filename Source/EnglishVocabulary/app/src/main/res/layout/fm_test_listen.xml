@@ -147,12 +147,12 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:id="@+id/imgIcDeleteTxt"
-                    android:layout_alignParentTop="true"
+                    android:src="@drawable/delete"
+                    android:visibility="invisible"
+                    android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/delete"
-                    android:layout_margin="10dp"
-                    android:visibility="invisible"/>
+                    android:paddingRight="10dp" />
             </RelativeLayout>
 
             <LinearLayout

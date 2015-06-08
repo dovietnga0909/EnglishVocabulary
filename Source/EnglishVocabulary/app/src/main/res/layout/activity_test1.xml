@@ -32,7 +32,7 @@
                 android:layout_height="56dp"
                 android:layout_weight="0"
                 android:background="@color/cl_actionbar"
-                android:showDividers="none"
+                android:showDividers="middle"
                 android:orientation="horizontal"/>
         </LinearLayout>
     </TabHost>

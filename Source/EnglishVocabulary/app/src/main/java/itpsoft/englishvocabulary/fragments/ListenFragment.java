@@ -3,6 +3,8 @@ package itpsoft.englishvocabulary.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,13 +76,36 @@ public class ListenFragment extends Fragment {
         });
         //set imgIcDeleteTxt Gone When edtAnswers = ""
 //        imgIcDeleteTxt.setVisibility(View.GONE);
-//        if(edtAnswers.getText().toString().trim() != ""){
-//            imgIcDeleteTxt.setVisibility(View.VISIBLE);
-//        }
+
+        edtAnswers.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+                if(!edtAnswers.getText().toString().trim().equals("")){
+                    imgIcDeleteTxt.setVisibility(View.VISIBLE);
+                }else {
+                    imgIcDeleteTxt.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+            }
+        });
+
 
         imgIcDeleteTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 edtAnswers.setText("");
             }
         });
