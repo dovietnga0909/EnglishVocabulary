@@ -40,7 +40,6 @@ public class HomeActivity extends Activity {
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         final ImageView back = (ImageView) findViewById(R.id.drawer_indicator);
         resources = getResources();
-        TextView content = (TextView) findViewById(R.id.view_content);
 
         drawerArrowDrawable = new DrawerArrowDrawable(resources);
         drawerArrowDrawable.setStrokeColor(resources.getColor(R.color.white));
@@ -75,29 +74,21 @@ public class HomeActivity extends Activity {
             }
         });
 
-        content.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setClass(getApplicationContext(), VocabularyActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
-            }
-        });
         initView();
     }
-    private void initView(){
+
+    private void initView() {
         ArrayList<Object> items = new ArrayList<Object>();
-        items.add(new MenuItem("#00FFFF", R.drawable.ic_logout, "Tu vung tieng Anh", ""));
-        items.add(new MenuItem("#FF0000", R.drawable.ic_logout, "Dong bo", "Off"));
-        items.add(new MenuItem("#FF00FF", R.drawable.ic_logout, "Nhac nho t.g hoc", "Off"));
+        items.add(new MenuItem("#00FFFF", R.drawable.ic_logout, resources.getString(R.string.ev), ""));
+        items.add(new MenuItem("#FF0000", R.drawable.ic_logout, resources.getString(R.string.sync), resources.getString(R.string.off)));
+        items.add(new MenuItem("#FF00FF", R.drawable.ic_logout, resources.getString(R.string.reminds_study_time), resources.getString(R.string.off)));
         items.add("");
-        items.add(new MenuItem("#00FF00", R.drawable.ic_logout, "Dang xuat", ""));
+        items.add(new MenuItem("#00FF00", R.drawable.ic_logout, resources.getString(R.string.logout), ""));
         listMenu = (ListView) findViewById(R.id.menu_list);
         MenuAdapter menuAdapter = new MenuAdapter(HomeActivity.this, items);
-        listMenu.setAdapter(menuAdapter);
         View menuHeader = LayoutInflater.from(HomeActivity.this).inflate(R.layout.menu_header, null);
         listMenu.addHeaderView(menuHeader);
+        listMenu.setAdapter(menuAdapter);
         listMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -106,9 +97,14 @@ public class HomeActivity extends Activity {
                     if (drawer.isDrawerVisible(START)) {
                         drawer.closeDrawer(START);
                     }
-                }else if(i==2){
+                } else if (i == 2) {
                     Intent intent = new Intent();
                     intent.setClass(getApplicationContext(), TestActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+                } else if (i == 3) {
+                    Intent intent = new Intent();
+                    intent.setClass(getApplicationContext(), VocabularyActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                 }

@@ -35,4 +35,14 @@
     <string name="txt_btn_answers">Trả lời</string>
     <string name="txt_btn_repeat">Nghe lại</string>
     <string name="txt_btn_skip">Bỏ qua</string>
+    <!-- TuNT-->
+    <string name="ev">Từ vựng tiếng Anh</string>
+    <string name="sync">Đồng bộ</string>
+    <string name="reminds_study_time">Nhắc nhở t.g học</string>
+    <string name="register">Đăng ký</string>
+    <string name="login">Đăng nhập</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="off">Off</string>
+    <string name="on">On</string>
+    <!-- End - TuNT -->
 </resources>
