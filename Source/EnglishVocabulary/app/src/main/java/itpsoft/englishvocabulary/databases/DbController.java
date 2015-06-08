@@ -23,7 +23,7 @@ public class DbController extends SQLiteOpenHelper {
     public static final String CREATE_TABLE_CATEGORIES = "create table "
             + TABLE_CATEGORIES + " (" + ID_CATEGORIES + " integer primary key autoincrement, "
             + CATEGORIES_NAME + " text not null, "
-            + CATEGORIES_STATUS + " boolean);";
+            + CATEGORIES_STATUS + " text);";
 
     //Table tbl_vocabulary
     public static final String TABLE_VOCABULARY = "tbl_vocabulary";
@@ -37,7 +37,7 @@ public class DbController extends SQLiteOpenHelper {
             + CATEGORIES_ID + " integer not null, "
             + ENGLISH + " text not null, "
             + VIETNAMESE + " text not null, "
-            + VOCABULARY_STATUS + " boolean);";
+            + VOCABULARY_STATUS + " text);";
 
     private static String DB_NAME = "english_vocabulary";
     private static String DB_PATH = "/data/data/itpsoft.englishvocabulary/databases/";
@@ -86,8 +86,8 @@ public class DbController extends SQLiteOpenHelper {
     private void insertDefaultCategories(SQLiteDatabase db) {
         if (db != null) {
             ContentValues values = new ContentValues();
-            values.put(CATEGORIES_NAME, "Dinh the Luan 11");
-            values.put(CATEGORIES_STATUS, "false");
+            values.put(CATEGORIES_NAME, "Animals");
+            values.put(CATEGORIES_STATUS, "1");
 
             db.insert(TABLE_CATEGORIES, null, values);
         }
@@ -99,8 +99,91 @@ public class DbController extends SQLiteOpenHelper {
             values.put(CATEGORIES_ID, "1");
             values.put(ENGLISH, "Dog");
             values.put(VIETNAMESE, "con chó");
-            values.put(VOCABULARY_STATUS, "false");
+            values.put(VOCABULARY_STATUS, "1");
+            db.insert(TABLE_VOCABULARY, null, values);
 
+            values.put(CATEGORIES_ID, "1");
+            values.put(ENGLISH, "hourse");
+            values.put(VIETNAMESE, "con ngựa");
+            values.put(VOCABULARY_STATUS, "1");
+            db.insert(TABLE_VOCABULARY, null, values);
+
+            values.put(CATEGORIES_ID, "1");
+            values.put(ENGLISH, "bird");
+            values.put(VIETNAMESE, "con chim");
+            values.put(VOCABULARY_STATUS, "1");
+            db.insert(TABLE_VOCABULARY, null, values);
+
+            values.put(CATEGORIES_ID, "1");
+            values.put(ENGLISH, "cat");
+            values.put(VIETNAMESE, "con mèo");
+            values.put(VOCABULARY_STATUS, "1");
+            db.insert(TABLE_VOCABULARY, null, values);
+
+            values.put(CATEGORIES_ID, "1");
+            values.put(ENGLISH, "duck");
+            values.put(VIETNAMESE, "con vịt");
+            values.put(VOCABULARY_STATUS, "1");
+            db.insert(TABLE_VOCABULARY, null, values);
+
+            values.put(CATEGORIES_ID, "1");
+            values.put(ENGLISH, "Dog");
+            values.put(VIETNAMESE, "con chó");
+            values.put(VOCABULARY_STATUS, "1");
+            db.insert(TABLE_VOCABULARY, null, values);
+
+            values.put(CATEGORIES_ID, "1");
+            values.put(ENGLISH, "hourse");
+            values.put(VIETNAMESE, "con ngựa");
+            values.put(VOCABULARY_STATUS, "1");
+            db.insert(TABLE_VOCABULARY, null, values);
+
+            values.put(CATEGORIES_ID, "1");
+            values.put(ENGLISH, "bird");
+            values.put(VIETNAMESE, "con chim");
+            values.put(VOCABULARY_STATUS, "1");
+            db.insert(TABLE_VOCABULARY, null, values);
+
+            values.put(CATEGORIES_ID, "1");
+            values.put(ENGLISH, "cat");
+            values.put(VIETNAMESE, "con mèo");
+            values.put(VOCABULARY_STATUS, "1");
+            db.insert(TABLE_VOCABULARY, null, values);
+
+            values.put(CATEGORIES_ID, "1");
+            values.put(ENGLISH, "duck");
+            values.put(VIETNAMESE, "con vịt");
+            values.put(VOCABULARY_STATUS, "1");
+            db.insert(TABLE_VOCABULARY, null, values);
+
+            values.put(CATEGORIES_ID, "1");
+            values.put(ENGLISH, "Dog");
+            values.put(VIETNAMESE, "con chó");
+            values.put(VOCABULARY_STATUS, "1");
+            db.insert(TABLE_VOCABULARY, null, values);
+
+            values.put(CATEGORIES_ID, "1");
+            values.put(ENGLISH, "hourse");
+            values.put(VIETNAMESE, "con ngựa");
+            values.put(VOCABULARY_STATUS, "1");
+            db.insert(TABLE_VOCABULARY, null, values);
+
+            values.put(CATEGORIES_ID, "1");
+            values.put(ENGLISH, "bird");
+            values.put(VIETNAMESE, "con chim");
+            values.put(VOCABULARY_STATUS, "1");
+            db.insert(TABLE_VOCABULARY, null, values);
+
+            values.put(CATEGORIES_ID, "1");
+            values.put(ENGLISH, "cat");
+            values.put(VIETNAMESE, "con mèo");
+            values.put(VOCABULARY_STATUS, "1");
+            db.insert(TABLE_VOCABULARY, null, values);
+
+            values.put(CATEGORIES_ID, "1");
+            values.put(ENGLISH, "duck");
+            values.put(VIETNAMESE, "con vịt");
+            values.put(VOCABULARY_STATUS, "1");
             db.insert(TABLE_VOCABULARY, null, values);
         }
     }

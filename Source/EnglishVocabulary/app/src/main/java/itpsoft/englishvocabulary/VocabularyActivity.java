@@ -7,13 +7,21 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
-import itpsoft.englishvocabulary.databases.DbController;
+import java.util.ArrayList;
+
+import itpsoft.englishvocabulary.adapter.VocabularyAdapter;
+import itpsoft.englishvocabulary.models.Vocabulary;
 
 
 public class VocabularyActivity extends ActionBarActivity {
 
-    ActionBar actionBar;
+    private ActionBar actionBar;
+    private VocabularyAdapter adapter;
+    private ArrayList<Vocabulary> listVocabulary;
+    private ListView listView;
+    private Vocabulary vocabulary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +34,12 @@ public class VocabularyActivity extends ActionBarActivity {
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.actionBar)));
         actionBar.setTitle("LuanDT");
 
-        DbController dbController = DbController.getInstance(this);
+        listView = (ListView) findViewById(R.id.listVocabulary);
+        vocabulary = new Vocabulary();
+        listVocabulary = vocabulary.initListVocabulary(1);
+        adapter = new VocabularyAdapter(VocabularyActivity.this, listVocabulary);
+        listView.setAdapter(adapter);
+
     }
 
     @Override

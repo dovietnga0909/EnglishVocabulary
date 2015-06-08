@@ -5,7 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -45,14 +47,29 @@ public class VocabularyAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         if(convertView == null){
             viewHolder = new ViewHolder();
-            convertView = LayoutInflater.from(context).inflate(R.layout.activity_vocabulary, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_vocabulary, parent, false);
+
+            viewHolder.txtEnglish = (TextView) convertView.findViewById(R.id.txtEnglish);
+            viewHolder.txtVietnamese = (TextView) convertView.findViewById(R.id.txtVietnamese);
+            viewHolder.imgSound = (ImageView) convertView.findViewById(R.id.imgSound);
 
             convertView.setTag(viewHolder);
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        Vocabulary vocabulary = listVocabulary.get(position);
+        final Vocabulary vocabulary = listVocabulary.get(position);
+        viewHolder.txtEnglish.setText(vocabulary.getEnglish());
+        viewHolder.txtVietnamese.setText(vocabulary.getVietnamese());
+
+        //click sound
+        viewHolder.imgSound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, vocabulary.getEnglish(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
         return convertView;
     }
@@ -60,5 +77,6 @@ public class VocabularyAdapter extends BaseAdapter {
     class ViewHolder {
         TextView txtEnglish;
         TextView txtVietnamese;
+        ImageView imgSound;
     }
 }
