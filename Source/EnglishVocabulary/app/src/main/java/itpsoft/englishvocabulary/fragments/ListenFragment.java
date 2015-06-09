@@ -1,6 +1,8 @@
 package itpsoft.englishvocabulary.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,21 +21,24 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Locale;
+
 import itpsoft.englishvocabulary.R;
 
-import static android.view.Gravity.START;
 
 
 /**
  * Created by Do on 05/06/2015.
  */
-public class ListenFragment extends Fragment {
+public class ListenFragment extends Fragment implements TextToSpeech.OnInitListener {
 
     private TextView txtVietnamese,txtTrue,txtTotal,txtNumTrue,txtNumSkip;
     private EditText edtAnswers;
     private ImageView imgIcDeleteTxt, imgIcBack;
     private CheckBox ckSuggest;
     private Button btnAnswers,btnRepeat,btnSkip;
+    private TextToSpeech textToSpeech;
+    Context mContext;
 
     View rootView;
     @Override
@@ -76,6 +81,8 @@ public class ListenFragment extends Fragment {
         btnAnswers      = (Button)rootView.findViewById(R.id.btnAnswer);
         btnRepeat       = (Button)rootView.findViewById(R.id.btnRepeat);
         btnSkip         = (Button)rootView.findViewById(R.id.btnSkip);
+        //TextToSpeech
+        textToSpeech = new TextToSpeech(getActivity(), this);
 
         //set Visible txtVietnamese khi duoc check
         ckSuggest.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -115,7 +122,7 @@ public class ListenFragment extends Fragment {
             }
         });
 
-
+        // Delete edtAnswers
         imgIcDeleteTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,6 +131,55 @@ public class ListenFragment extends Fragment {
             }
         });
 
+        //click btnRepeat for listen text
+        btnRepeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                speakOut();
+            }
+        });
+
         return rootView;
+    }
+
+    @Override
+    public void onDestroy() {
+
+
+        if(textToSpeech != null){
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        super.onDestroy();
+    }
+
+    /**
+     * Called to signal the completion of the TextToSpeech engine initialization.
+     *
+     * @param status {@link TextToSpeech#SUCCESS} or {@link TextToSpeech#ERROR}.
+     */
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS){
+            //US Anh my
+            //UK Anh Anh
+            int result = textToSpeech.setLanguage(Locale.UK);
+
+            if(result == textToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED){
+                Log.d("NgaDV","Language is not supported");
+                Toast.makeText(getActivity(),"Ngon ngu nay khong dc ho tro",Toast.LENGTH_LONG).show();
+            }else {
+                btnRepeat.setEnabled(true);
+                speakOut();
+            }
+        }else {
+            Log.d("NgaDV","Khoi tao Language fail");
+        }
+
+    }
+
+    private void speakOut(){
+        String txtVocabulary = edtAnswers.getText().toString();
+        textToSpeech.speak(txtVocabulary,TextToSpeech.QUEUE_FLUSH,null);
     }
 }
