@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import itpsoft.englishvocabulary.R;
 
+import static android.view.Gravity.START;
+
 
 /**
  * Created by Do on 05/06/2015.
@@ -29,7 +31,7 @@ public class ListenFragment extends Fragment {
 
     private TextView txtVietnamese,txtTrue,txtTotal,txtNumTrue,txtNumSkip;
     private EditText edtAnswers;
-    private ImageView imgIcDeleteTxt;
+    private ImageView imgIcDeleteTxt, imgIcBack;
     private CheckBox ckSuggest;
     private Button btnAnswers,btnRepeat,btnSkip;
 
@@ -37,6 +39,18 @@ public class ListenFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fm_test_listen, container, false);
+
+        imgIcBack = (ImageView) rootView.findViewById(R.id.drawer_indicator);
+
+
+
+        imgIcBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+                getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
+            }
+        });
 
         //hide keyboard firstTime
         getActivity().getWindow().setSoftInputMode(

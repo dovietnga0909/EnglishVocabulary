@@ -15,7 +15,8 @@
             android:layout_height="@dimen/actionbar_dimen"
             android:layout_gravity="start"
             android:background="@drawable/drawer_selector"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside"
+            android:src="@drawable/abc_ic_ab_back_mtrl_am_alpha"/>
 
         <TextView
             android:id="@+id/indicator_style"
@@ -53,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/lnContent"
-            android:padding="20dp">
+            android:padding="10dp">
 
 
             <LinearLayout
@@ -71,7 +72,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Cat"
+                        android:text="Con meo"
                         android:id="@+id/txtEnglish"
                         android:textSize="15dp"
                         android:textColor="@color/cl_black"
@@ -146,12 +147,13 @@
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:id="@+id/imageView"
-                        android:layout_alignParentTop="true"
+                        android:id="@+id/imgIcDeleteTxt"
+                        android:src="@drawable/delete"
+                        android:visibility="invisible"
+                        android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
-                        android:src="@drawable/delete"
-                        android:layout_margin="10dp" />
+                        android:paddingRight="10dp" />
                 </RelativeLayout>
 
                 <LinearLayout
@@ -167,7 +169,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:text="@string/txt_btn_answers"
-                        android:id="@+id/button"
+                        android:id="@+id/btnAnswer"
                         android:background="@drawable/bg_btn_ansers_selector"
                         android:textColor="@color/white" />
                 </LinearLayout>
@@ -182,7 +184,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/txt_btn_skip"
-                        android:id="@+id/button3"
+                        android:id="@+id/btnSkip"
 
                         android:layout_weight="1"
                         android:background="@drawable/bg_btn_skip_selector"
@@ -231,8 +233,9 @@
 
                 <!-- view sep-->
                 <TextView
-                    android:layout_width="50dp"
-                    android:layout_height="1dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:id="@+id/Sep">
 
                 </TextView>

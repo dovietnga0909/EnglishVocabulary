@@ -15,7 +15,8 @@
             android:layout_height="@dimen/actionbar_dimen"
             android:layout_gravity="start"
             android:background="@drawable/drawer_selector"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside"
+            android:src="@drawable/abc_ic_ab_back_mtrl_am_alpha"/>
 
         <TextView
             android:id="@+id/indicator_style"
@@ -236,7 +237,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:id="@+id/lnTrue"
-                android:background="@drawable/shadow">
+                android:background="@drawable/bg_item_out_come">
 
                 <TextView
                     android:layout_width="match_parent"

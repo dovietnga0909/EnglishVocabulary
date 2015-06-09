@@ -2,5 +2,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
     <solid android:color="@color/cl_actionbar"/>
     <corners android:radius="4dp"/>
-    <size android:height="40dp"></size>
+    <size android:height="40dp"/>
 </shape>
