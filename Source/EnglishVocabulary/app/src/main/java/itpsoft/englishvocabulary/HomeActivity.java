@@ -10,14 +10,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import itpsoft.englishvocabulary.adapter.MenuAdapter;
+import itpsoft.englishvocabulary.adapter.TopicAdapter;
 import itpsoft.englishvocabulary.databases.DbController;
 import itpsoft.englishvocabulary.models.MenuItem;
+import itpsoft.englishvocabulary.models.Topic;
 import itpsoft.englishvocabulary.view.DrawerArrowDrawable;
 
 import static android.view.Gravity.START;
@@ -29,7 +30,11 @@ public class HomeActivity extends Activity {
     private Resources resources;
     private float offset;
     private boolean flipped;
-    private ListView listMenu;
+    private ListView listMenu, listTopic;
+    private ArrayList<Object> arrMenu;
+    private MenuAdapter menuAdapter;
+    private ArrayList<Topic> arrTopic;
+    private TopicAdapter topicAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,16 +83,12 @@ public class HomeActivity extends Activity {
     }
 
     private void initView() {
-        ArrayList<Object> items = new ArrayList<Object>();
-        items.add(new MenuItem("#00FFFF", R.drawable.ic_logout, resources.getString(R.string.ev), ""));
-        items.add(new MenuItem("#FF0000", R.drawable.ic_logout, resources.getString(R.string.sync), resources.getString(R.string.off)));
-        items.add(new MenuItem("#FF00FF", R.drawable.ic_logout, resources.getString(R.string.reminds_study_time), resources.getString(R.string.off)));
-        items.add("");
-        items.add(new MenuItem("#00FF00", R.drawable.ic_logout, resources.getString(R.string.logout), ""));
+        //Menu
         listMenu = (ListView) findViewById(R.id.menu_list);
-        MenuAdapter menuAdapter = new MenuAdapter(HomeActivity.this, items);
+        createDataMenu();
         View menuHeader = LayoutInflater.from(HomeActivity.this).inflate(R.layout.menu_header, null);
         listMenu.addHeaderView(menuHeader);
+        menuAdapter = new MenuAdapter(HomeActivity.this, arrMenu);
         listMenu.setAdapter(menuAdapter);
         listMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -110,5 +111,35 @@ public class HomeActivity extends Activity {
                 }
             }
         });
+        //End menu
+        //Topic
+        createDataTopic();
+        listTopic = (ListView) findViewById(R.id.listTopic);
+        topicAdapter = new TopicAdapter(HomeActivity.this, arrTopic);
+        View headerEmpty = LayoutInflater.from(HomeActivity.this).inflate(R.layout.empty_list, listTopic, false);
+        View footerEmpty = LayoutInflater.from(HomeActivity.this).inflate(R.layout.empty_list, listTopic, false);
+        listTopic.addHeaderView(headerEmpty);
+        listTopic.addFooterView(footerEmpty);
+        listTopic.setAdapter(topicAdapter);
+        //End topic
+    }
+    private void createDataMenu(){
+        arrMenu = new ArrayList<Object>();
+        arrMenu.add(new MenuItem("#00FFFF", R.drawable.ic_logout, resources.getString(R.string.ev), ""));
+        arrMenu.add(new MenuItem("#FF0000", R.drawable.ic_logout, resources.getString(R.string.sync), resources.getString(R.string.off)));
+        arrMenu.add(new MenuItem("#FF00FF", R.drawable.ic_logout, resources.getString(R.string.reminds_study_time), resources.getString(R.string.off)));
+        arrMenu.add("");
+        arrMenu.add(new MenuItem("#00FF00", R.drawable.ic_logout, resources.getString(R.string.logout), ""));
+    }
+    private void createDataTopic(){
+        arrTopic = new ArrayList<Topic>();
+        arrTopic.add(new Topic("#F60000", 1, "Test topic", 22));
+        arrTopic.add(new Topic("#ff9000", 1, "Test topic 1", 30));
+        arrTopic.add(new Topic("#F60000", 1, "Test topic 2", 50));
+        arrTopic.add(new Topic("#ff9000", 1, "Test topic 3", 99));
+        arrTopic.add(new Topic("#F60000", 1, "Test topic 4", 100));
+        arrTopic.add(new Topic("#ff9000", 1, "Test topic 5", 96));
+        arrTopic.add(new Topic("#F60000", 1, "Test topic 6", 69));
+        arrTopic.add(new Topic("#F60000", 1, "Test topic 7", 831));
     }
 }
