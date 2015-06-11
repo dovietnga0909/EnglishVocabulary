@@ -1,6 +1,8 @@
 package itpsoft.englishvocabulary.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import itpsoft.englishvocabulary.R;
+import itpsoft.englishvocabulary.TestActivity;
 import itpsoft.englishvocabulary.models.Topic;
 
 /**
@@ -69,6 +72,10 @@ public class TopicAdapter extends BaseAdapter {
         viewHolder.check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setClass(context, TestActivity.class);
+                context.startActivity(intent);
+                ((Activity)context).overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                 Toast.makeText(context, ""+i, Toast.LENGTH_SHORT).show();
             }
         });

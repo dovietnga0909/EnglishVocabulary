@@ -40,9 +40,12 @@
             android:textStyle="bold" />
 
         <ImageView
+            android:id="@+id/add"
             android:layout_width="@dimen/actionbar_dimen"
             android:layout_height="@dimen/actionbar_dimen"
             android:layout_gravity="right"
+            android:padding="18dp"
+            android:src="@drawable/ic_add"
             android:background="@drawable/drawer_selector"
             android:scaleType="centerInside" />
     </LinearLayout>

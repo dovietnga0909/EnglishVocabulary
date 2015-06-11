@@ -35,6 +35,7 @@ public class HomeActivity extends Activity {
     private MenuAdapter menuAdapter;
     private ArrayList<Topic> arrTopic;
     private TopicAdapter topicAdapter;
+    private ImageView add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,15 +100,11 @@ public class HomeActivity extends Activity {
                         drawer.closeDrawer(START);
                     }
                 } else if (i == 2) {
-                    Intent intent = new Intent();
-                    intent.setClass(getApplicationContext(), TestActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+
                 } else if (i == 3) {
-                    Intent intent = new Intent();
-                    intent.setClass(getApplicationContext(), VocabularyActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+
+                } else if (i == 5) {
+
                 }
             }
         });
@@ -121,7 +118,25 @@ public class HomeActivity extends Activity {
         listTopic.addHeaderView(headerEmpty);
         listTopic.addFooterView(footerEmpty);
         listTopic.setAdapter(topicAdapter);
+        listTopic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent();
+                intent.setClass(getApplicationContext(), VocabularyActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+                Toast.makeText(HomeActivity.this, ""+i, Toast.LENGTH_SHORT).show();
+            }
+        });
         //End topic
+        //Button Add
+        add = (ImageView) findViewById(R.id.add);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(HomeActivity.this, "add", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     private void createDataMenu(){
         arrMenu = new ArrayList<Object>();
