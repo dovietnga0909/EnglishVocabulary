@@ -14,7 +14,9 @@
     <string name="title_activity_vocabulary">VocabularyActivity</string>
 
     <string name="hello_world">Hello world!</string>
+
     <!-- NgaDV-->
+
     <color name="cl_actionbar">#ff6f00</color>
     <color name="cl_actionbar_alpha">#60ff6f00</color>
     <color name="cl_pressed">#11aa4e</color>
@@ -22,7 +24,6 @@
     <color name="cl_selected_tabhost">#f0ff00</color>
     <color name="cl_background">#d9d9d9</color>
     <color name="cl_black">#000000</color>
-
 
     <string name="txt_tab_test_listen">Kỹ năng nghe</string>
     <string name="txt_tab_test_remember">Kỹ năng nhớ</string>
@@ -46,4 +47,7 @@
     <string name="off">Off</string>
     <string name="on">On</string>
     <!-- End - TuNT -->
+
+    <!--LuanDT-->
+    <string name="add_vocabulary">Thêm</string>
 </resources>

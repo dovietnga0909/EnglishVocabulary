@@ -1,11 +1,87 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
+    android:orientation="vertical"
     android:paddingLeft="@dimen/vocabulary_activity_margin"
     android:paddingRight="@dimen/vocabulary_activity_margin"
     tools:context="itpsoft.englishvocabulary.VocabularyActivity">
+
+    <!--add vocabulary-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="70dp"
+        android:layout_marginTop="@dimen/vocabulary_activity_margin"
+        android:orientation="horizontal">
+
+        <!--english-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/boder_layout_add_vocabulary"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/actionBar"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:padding="5dp"
+                android:minHeight="50dp" />
+
+        </LinearLayout>
+
+        <!--sep-->
+
+        <TextView
+            android:layout_width="@dimen/vocabulary_activity_margin"
+            android:layout_height="wrap_content" />
+
+        <!--vietnamese-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/boder_layout_add_vocabulary"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/actionBar"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:padding="5dp"
+                android:minHeight="50dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnAddVoca"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="@dimen/vocabulary_activity_margin"
+        android:layout_marginTop="@dimen/vocabulary_activity_margin"
+        android:background="@drawable/bg_btn_ansers_selector"
+        android:text="@string/add_vocabulary"
+        android:textColor="@color/white" />
 
     <ListView
         android:id="@+id/listVocabulary"
@@ -16,4 +92,4 @@
 
     </ListView>
 
-</RelativeLayout>
+</LinearLayout>
