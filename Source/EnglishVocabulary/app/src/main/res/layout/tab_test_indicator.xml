@@ -16,6 +16,6 @@
         android:layout_height="wrap_content"
         android:text="Medium Text"
         android:textColor="@drawable/txt_tab_selector"
-        android:textSize="20dp"
+        android:textSize="15dp"
         android:id="@+id/txtTabIndicator" />
 </LinearLayout>

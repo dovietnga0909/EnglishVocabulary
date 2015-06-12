@@ -1,6 +1,7 @@
 package itpsoft.englishvocabulary.fragments;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -21,10 +23,14 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 
 import itpsoft.englishvocabulary.R;
-
+import itpsoft.englishvocabulary.TestActivity;
+import itpsoft.englishvocabulary.models.Vocabulary;
+import itpsoft.englishvocabulary.ultils.SpeakEnglish;
 
 
 /**
@@ -38,7 +44,10 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
     private CheckBox ckSuggest;
     private Button btnAnswers,btnRepeat,btnSkip;
     private TextToSpeech textToSpeech;
-    Context mContext;
+//    private Context mContext;
+    private ArrayList<Vocabulary> listVocabularys;
+    private Vocabulary vocabulary;
+    private SpeakEnglish speakEnglish;
 
     View rootView;
     @Override
@@ -72,9 +81,9 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
         txtNumTrue      = (TextView)rootView.findViewById(R.id.txt_num_true);
         txtNumSkip      = (TextView)rootView.findViewById(R.id.txt_num_skip);
         //EditText
-        edtAnswers      = (EditText) rootView.findViewById(R.id.edtAnswers);
+        edtAnswers      = (EditText)rootView.findViewById(R.id.edtAnswers);
         //ImageView
-        imgIcDeleteTxt  =(ImageView)rootView.findViewById(R.id.imgIcDeleteTxt);
+        imgIcDeleteTxt  = (ImageView)rootView.findViewById(R.id.imgIcDeleteTxt);
         //Checkbox
         ckSuggest       = (CheckBox)rootView.findViewById(R.id.ckSuggest);
         //Button
@@ -83,6 +92,13 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
         btnSkip         = (Button)rootView.findViewById(R.id.btnSkip);
         //TextToSpeech
         textToSpeech = new TextToSpeech(getActivity(), this);
+//        textToSpeech = new TextToSpeech(getActivity(),getActivity().);
+        //speakEnglish
+        speakEnglish    = new SpeakEnglish(getActivity(), textToSpeech);
+        //Vocabulary
+        vocabulary      = new Vocabulary();
+        listVocabularys = vocabulary.initListVocabulary(1);
+
 
         //set Visible txtVietnamese khi duoc check
         ckSuggest.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -131,11 +147,22 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
             }
         });
 
+        Log.d("NgaDV", "size List=" + vocabulary.initListVocabulary(1).size());
+
+        Log.d("NgaDV","size List="+vocabulary.initListVocabulary(2).size());
+
+
         //click btnRepeat for listen text
         btnRepeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                speakOut();
+                for(int i = 0;i < listVocabularys.size();i++){
+
+                    Collections.shuffle(listVocabularys);
+                    Log.d("NgaDV",listVocabularys.get(i).getEnglish());
+                    speakEnglish.speakOut(listVocabularys.get(i).getEnglish());
+
+                }
             }
         });
 
@@ -160,26 +187,6 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
      */
     @Override
     public void onInit(int status) {
-        if (status == TextToSpeech.SUCCESS){
-            //US Anh my
-            //UK Anh Anh
-            int result = textToSpeech.setLanguage(Locale.UK);
 
-            if(result == textToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED){
-                Log.d("NgaDV","Language is not supported");
-                Toast.makeText(getActivity(),"Ngon ngu nay khong dc ho tro",Toast.LENGTH_LONG).show();
-            }else {
-                btnRepeat.setEnabled(true);
-                speakOut();
-            }
-        }else {
-            Log.d("NgaDV","Khoi tao Language fail");
-        }
-
-    }
-
-    private void speakOut(){
-        String txtVocabulary = edtAnswers.getText().toString();
-        textToSpeech.speak(txtVocabulary,TextToSpeech.QUEUE_FLUSH,null);
     }
 }

@@ -237,7 +237,8 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:id="@+id/lnTrue"
-                android:background="@drawable/bg_item_out_come">
+                android:background="@drawable/bg_item_out_come"
+                android:layout_weight="1">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -264,9 +265,8 @@
 
             <!-- view sep-->
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:id="@+id/Sep">
 
             </TextView>
@@ -276,7 +276,8 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:id="@+id/lnSkip"
-                android:background="@drawable/bg_item_out_come">
+                android:background="@drawable/bg_item_out_come"
+                android:layout_weight="1">
 
                 <TextView
                     android:layout_width="match_parent"

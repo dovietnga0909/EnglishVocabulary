@@ -1,6 +1,7 @@
 package itpsoft.englishvocabulary;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -9,11 +10,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Vector;
@@ -21,6 +24,7 @@ import java.util.Vector;
 import itpsoft.englishvocabulary.adapter.TestPagerAdapter;
 import itpsoft.englishvocabulary.fragments.ListenFragment;
 import itpsoft.englishvocabulary.fragments.RememberFragment;
+import itpsoft.englishvocabulary.ultils.Log;
 
 /**
  * Created by Do on 05/06/2015.
@@ -49,6 +53,18 @@ public class TestActivity extends FragmentActivity implements ActionBar.TabListe
         this.testViewPager = (ViewPager) super.findViewById(R.id.testViewPager);
         this.testViewPager.setAdapter(this.testPagerAdapter);
         this.testViewPager.setOnPageChangeListener(this);
+
+//        getWindow().getDecorView().findViewById(android.R.id.content).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+//                if (getResources().getConfiguration().keyboardHidden == Configuration.KEYBOARDHIDDEN_UNDEFINED) { // Check if keyboard is not hidden
+//                    Log.d("NgaDV","true");
+//                }
+//                Log.d("NgaDV", "false");
+//            }
+//        });
+
+//        tabHost.getTabWidget().getChildAt(0).setVisibility(View.GONE);
     }
 
     private void addTab(TestActivity testActivity,String labelId,
@@ -157,4 +173,8 @@ public class TestActivity extends FragmentActivity implements ActionBar.TabListe
                 R.anim.anim_slide_out_right);
         // super.onBackPressed();
     }
+
+
+
+
 }

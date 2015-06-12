@@ -19,6 +19,7 @@
     <color name="cl_actionbar_alpha">#60ff6f00</color>
     <color name="cl_pressed">#11aa4e</color>
     <color name="cl_pressed_alpha">#6011aa4e</color>
+    <color name="cl_selected_tabhost">#f0ff00</color>
     <color name="cl_background">#d9d9d9</color>
     <color name="cl_black">#000000</color>
 

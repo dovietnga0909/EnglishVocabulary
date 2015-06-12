@@ -2,20 +2,26 @@ package itpsoft.englishvocabulary.models;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import itpsoft.englishvocabulary.databases.DbController;
 
 /**
  * Created by luand_000 on 05/06/2015.
  */
-public class Vocabulary {
+public class Vocabulary{
     private long id;
     private int cate_id;
     private String english, vietnamese;
     private String status_sync;
     private Context context;
+    private TextToSpeech textToSpeech;
+
 
     public Vocabulary() {
     }
@@ -77,6 +83,8 @@ public class Vocabulary {
         this.status_sync = status_sync;
     }
 
+
+
     //get all vocabulary
     public ArrayList<Vocabulary> initListVocabulary(int cate_id){
         ArrayList<Vocabulary> listVocabulary = new ArrayList<Vocabulary>();
@@ -102,4 +110,5 @@ public class Vocabulary {
 
         return listVocabulary;
     }
+
 }
