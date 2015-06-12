@@ -1,16 +1,23 @@
 package itpsoft.englishvocabulary;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
@@ -36,11 +43,16 @@ public class HomeActivity extends Activity {
     private ArrayList<Topic> arrTopic;
     private TopicAdapter topicAdapter;
     private ImageView add;
-
+    private AlertDialog alertDialog;
+    private Rect displayRectangle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        ///start up
+        displayRectangle = new Rect();
+        Window window = getWindow();
+        window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
         DbController dbController = DbController.getInstance(this);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -94,7 +106,6 @@ public class HomeActivity extends Activity {
         listMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(HomeActivity.this, "" + i, Toast.LENGTH_SHORT).show();
                 if (i == 1) {
                     if (drawer.isDrawerVisible(START)) {
                         drawer.closeDrawer(START);
@@ -102,7 +113,38 @@ public class HomeActivity extends Activity {
                 } else if (i == 2) {
 
                 } else if (i == 3) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+                    builder.setCancelable(true);
+                    View dialogView = LayoutInflater.from(HomeActivity.this).inflate(R.layout.dialog_remind, null, false);
+                    dialogView.setMinimumWidth((int) (displayRectangle.width() * 0.9f));
+//                    dialogView.setMinimumHeight((int) (displayRectangle.height() * 0.9f));
+                    builder.setView(dialogView);
+                    alertDialog = builder.create();
+                    alertDialog.setCancelable(true);
+                    alertDialog.setCanceledOnTouchOutside(true);
 
+                    ImageView dBack = (ImageView) dialogView.findViewById(R.id.back);
+                    ToggleButton dStatus = (ToggleButton) dialogView.findViewById(R.id.status);
+                    TimePicker dTime = (TimePicker) dialogView.findViewById(R.id.time_picker);
+                    final TextView dDisable = (TextView) dialogView.findViewById(R.id.disable);
+                    dBack.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (alertDialog.isShowing())
+                                alertDialog.dismiss();
+                        }
+                    });
+                    dStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                            if(b){
+                                dDisable.setVisibility(View.GONE);
+                            }else{
+                                dDisable.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    });
+                    alertDialog.show();
                 } else if (i == 5) {
 
                 }
@@ -125,7 +167,7 @@ public class HomeActivity extends Activity {
                 intent.setClass(getApplicationContext(), VocabularyActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
-                Toast.makeText(HomeActivity.this, ""+i, Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeActivity.this, "" + i, Toast.LENGTH_SHORT).show();
             }
         });
         //End topic
@@ -134,11 +176,24 @@ public class HomeActivity extends Activity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(HomeActivity.this, "add", Toast.LENGTH_SHORT).show();
+                if(drawer.isDrawerOpen(START)){
+                    drawer.closeDrawer(START);
+                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+                builder.setCancelable(true);
+                View dialogView = LayoutInflater.from(HomeActivity.this).inflate(R.layout.dialog_add_topic, null, false);
+                dialogView.setMinimumWidth((int) (displayRectangle.width() * 0.9f));
+//                    dialogView.setMinimumHeight((int) (displayRectangle.height() * 0.9f));
+                builder.setView(dialogView);
+                alertDialog = builder.create();
+                alertDialog.setCancelable(true);
+                alertDialog.setCanceledOnTouchOutside(true);
+                alertDialog.show();
             }
         });
     }
-    private void createDataMenu(){
+
+    private void createDataMenu() {
         arrMenu = new ArrayList<Object>();
         arrMenu.add(new MenuItem("#00FFFF", R.drawable.ic_logout, resources.getString(R.string.ev), ""));
         arrMenu.add(new MenuItem("#FF0000", R.drawable.ic_logout, resources.getString(R.string.sync), resources.getString(R.string.off)));
@@ -146,7 +201,8 @@ public class HomeActivity extends Activity {
         arrMenu.add("");
         arrMenu.add(new MenuItem("#00FF00", R.drawable.ic_logout, resources.getString(R.string.logout), ""));
     }
-    private void createDataTopic(){
+
+    private void createDataTopic() {
         arrTopic = new ArrayList<Topic>();
         arrTopic.add(new Topic("#F60000", 1, "Test topic", 22));
         arrTopic.add(new Topic("#ff9000", 1, "Test topic 1", 30));
