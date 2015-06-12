@@ -113,10 +113,10 @@ public class HomeActivity extends Activity {
         createDataTopic();
         listTopic = (ListView) findViewById(R.id.listTopic);
         topicAdapter = new TopicAdapter(HomeActivity.this, arrTopic);
-        View headerEmpty = LayoutInflater.from(HomeActivity.this).inflate(R.layout.empty_list, listTopic, false);
-        View footerEmpty = LayoutInflater.from(HomeActivity.this).inflate(R.layout.empty_list, listTopic, false);
-        listTopic.addHeaderView(headerEmpty);
-        listTopic.addFooterView(footerEmpty);
+//        View headerEmpty = LayoutInflater.from(HomeActivity.this).inflate(R.layout.empty_list, listTopic, false);
+//        View footerEmpty = LayoutInflater.from(HomeActivity.this).inflate(R.layout.empty_list, listTopic, false);
+//        listTopic.addHeaderView(headerEmpty);
+//        listTopic.addFooterView(footerEmpty);
         listTopic.setAdapter(topicAdapter);
         listTopic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
