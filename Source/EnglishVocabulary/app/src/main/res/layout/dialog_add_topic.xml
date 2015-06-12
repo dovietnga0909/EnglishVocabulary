@@ -31,7 +31,7 @@
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:singleLine="true"
-            android:text="@string/reminds_study_time"
+            android:text="@string/add_topic"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -40,25 +40,50 @@
             android:layout_width="@dimen/actionbar_dimen"
             android:layout_height="@dimen/actionbar_dimen" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="20dp">
-        <EditText
+        android:layout_margin="20dp"
+        android:orientation="vertical">
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="45dp"
-            android:maxHeight="200dp"
-            android:padding="5dp"
-            android:background="@drawable/bg_edt_ansers"/>
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_edt_ansers"
+                android:maxHeight="200dp"
+                android:minHeight="45dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="12dp"
+                android:lines="1"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:paddingRight="45dp"/>
+
+            <ImageView
+                android:id="@+id/delete"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_gravity="bottom|right"
+                android:padding="12dp"
+                android:src="@drawable/delete_selector"
+                android:visibility="invisible"/>
+        </FrameLayout>
+
         <Button
+            android:id="@+id/add"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
+            android:background="@drawable/bg_btn_ansers_selector"
             android:text="@string/add"
-            android:textColor="@color/white"
-            android:background="@drawable/bg_btn_ansers"/>
+            android:textColor="@color/white" />
     </LinearLayout>
 </LinearLayout>

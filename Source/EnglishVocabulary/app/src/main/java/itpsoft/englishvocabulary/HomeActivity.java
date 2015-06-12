@@ -7,11 +7,15 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,6 +30,7 @@ import itpsoft.englishvocabulary.adapter.TopicAdapter;
 import itpsoft.englishvocabulary.databases.DbController;
 import itpsoft.englishvocabulary.models.MenuItem;
 import itpsoft.englishvocabulary.models.Topic;
+import itpsoft.englishvocabulary.ultils.Log;
 import itpsoft.englishvocabulary.view.DrawerArrowDrawable;
 
 import static android.view.Gravity.START;
@@ -45,6 +50,7 @@ public class HomeActivity extends Activity {
     private ImageView add;
     private AlertDialog alertDialog;
     private Rect displayRectangle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,9 +143,9 @@ public class HomeActivity extends Activity {
                     dStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                            if(b){
+                            if (b) {
                                 dDisable.setVisibility(View.GONE);
-                            }else{
+                            } else {
                                 dDisable.setVisibility(View.VISIBLE);
                             }
                         }
@@ -176,7 +182,7 @@ public class HomeActivity extends Activity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(drawer.isDrawerOpen(START)){
+                if (drawer.isDrawerOpen(START)) {
                     drawer.closeDrawer(START);
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
@@ -187,7 +193,53 @@ public class HomeActivity extends Activity {
                 builder.setView(dialogView);
                 alertDialog = builder.create();
                 alertDialog.setCancelable(true);
-                alertDialog.setCanceledOnTouchOutside(true);
+                alertDialog.setCanceledOnTouchOutside(false);
+                ImageView dBack = (ImageView) dialogView.findViewById(R.id.back);
+                final EditText dText = (EditText) dialogView.findViewById(R.id.text);
+                final ImageView dDelete = (ImageView) dialogView.findViewById(R.id.delete);
+                Button dAdd = (Button) dialogView.findViewById(R.id.add);
+
+                View.OnClickListener dOnClickListener = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int id = view.getId();
+                        switch (id) {
+                            case R.id.delete:
+                                dText.setText("");
+                                break;
+                            case R.id.back:
+                                if (alertDialog.isShowing())
+                                    alertDialog.dismiss();
+                                break;
+                            case R.id.add:
+                                Toast.makeText(HomeActivity.this, dText.getText().toString(), Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
+                };
+                dDelete.setOnClickListener(dOnClickListener);
+                dBack.setOnClickListener(dOnClickListener);
+                dAdd.setOnClickListener(dOnClickListener);
+                dText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        if (i2 > 0) {
+                            dDelete.setVisibility(View.VISIBLE);
+                        } else {
+                            dDelete.setVisibility(View.INVISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
                 alertDialog.show();
             }
         });
