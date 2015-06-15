@@ -38,9 +38,9 @@ import itpsoft.englishvocabulary.ultils.SpeakEnglish;
  */
 public class ListenFragment extends Fragment implements TextToSpeech.OnInitListener {
 
-    private TextView txtVietnamese,txtTrue,txtTotal,txtNumTrue,txtNumSkip;
+    private TextView txtVietnamese,txtQuestion,txtTotal,txtNumTrue,txtNumSkip;
     private EditText edtAnswers;
-    private ImageView imgIcDeleteTxt, imgIcBack;
+    private ImageView imgIcDeleteTxt;
     private CheckBox ckSuggest;
     private Button btnAnswers,btnRepeat,btnSkip;
     private TextToSpeech textToSpeech;
@@ -49,22 +49,19 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
     private Vocabulary vocabulary;
     private SpeakEnglish speakEnglish;
 
+    private static int LISTEN_POS_VOCABULARY = 0;
+    private static int LISTEN_NUM_QUESTION = 0;
+    private static int LISTEN_NUM_TOTAL = 0;
+    private static int LISTEN_NUM_SKIP = 0;
+    private static int LISTEN_NUM_TRUE = 0;
+
+    private String strEnglish,strVietnamese,strAnswers;
+
     View rootView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fm_test_listen, container, false);
 
-        imgIcBack = (ImageView) rootView.findViewById(R.id.drawer_indicator);
-
-
-
-        imgIcBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().finish();
-                getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
-            }
-        });
 
         //hide keyboard firstTime
         getActivity().getWindow().setSoftInputMode(
@@ -76,7 +73,7 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
         txtVietnamese   = (TextView)rootView.findViewById(R.id.txtVietnamese);
             //hide txtVietnamese
             txtVietnamese.setVisibility(View.INVISIBLE);
-        txtTrue         = (TextView)rootView.findViewById(R.id.txtTrue);
+        txtQuestion         = (TextView)rootView.findViewById(R.id.txtQuestions);
         txtTotal        = (TextView)rootView.findViewById(R.id.txtTotal);
         txtNumTrue      = (TextView)rootView.findViewById(R.id.txt_num_true);
         txtNumSkip      = (TextView)rootView.findViewById(R.id.txt_num_skip);
@@ -104,9 +101,9 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
         ckSuggest.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(ckSuggest.isChecked()){
+                if (ckSuggest.isChecked()) {
                     txtVietnamese.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     txtVietnamese.setVisibility(View.INVISIBLE);
                 }
             }
@@ -119,9 +116,9 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
             @Override
             public void onTextChanged(CharSequence s, int start, int before,
                                       int count) {
-                if(!edtAnswers.getText().toString().trim().equals("")){
+                if (!edtAnswers.getText().toString().trim().equals("")) {
                     imgIcDeleteTxt.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     imgIcDeleteTxt.setVisibility(View.INVISIBLE);
                 }
             }
@@ -149,30 +146,68 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
 
         Log.d("NgaDV", "size List=" + vocabulary.initListVocabulary(1).size());
 
-        Log.d("NgaDV","size List="+vocabulary.initListVocabulary(2).size());
+        Log.d("NgaDV", "size List=" + vocabulary.initListVocabulary(2).size());
 
 
-        //click btnRepeat for listen text
         btnRepeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(int i = 0;i < listVocabularys.size();i++){
 
-                    Collections.shuffle(listVocabularys);
-                    Log.d("NgaDV",listVocabularys.get(i).getEnglish());
-                    speakEnglish.speakOut(listVocabularys.get(i).getEnglish());
+                btnRepeat.setText(getResources().getString(R.string.txt_btn_repeat));
 
-                }
+
+                strEnglish      = listVocabularys.get(LISTEN_POS_VOCABULARY).getEnglish();
+                strVietnamese   = listVocabularys.get(LISTEN_POS_VOCABULARY).getVietnamese();
+            strAnswers          = edtAnswers.getText().toString();
+
+                txtVietnamese.setText(strVietnamese);
+                speakEnglish.speakOut(strEnglish);
+                btnRepeat.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        speakEnglish.speakOut(strEnglish);
+                    }
+                });
+                btnAnswers.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(strAnswers.equals(strEnglish)){
+                            LISTEN_POS_VOCABULARY++;
+                            txtQuestion.setText(LISTEN_NUM_QUESTION);
+                            speakEnglish.speakOut(strEnglish);
+                        }
+                    }
+                });
+
+
+
             }
         });
+
+//        //demo
+//        while (posVocabulary<listVocabularys.size()){
+//
+//            btnRepeat.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//
+//                        Collections.shuffle(listVocabularys);
+////                        Log.d("NgaDV",listVocabularys.get(posVocabulary).getEnglish());
+//                        speakEnglish.speakOut(listVocabularys.get(posVocabulary).getEnglish());
+//                    posVocabulary++;
+//
+//                }
+//            });
+//        }
+        //end demo
+        //click btnRepeat for listen text
+
 
         return rootView;
     }
 
     @Override
     public void onDestroy() {
-
-
         if(textToSpeech != null){
             textToSpeech.stop();
             textToSpeech.shutdown();

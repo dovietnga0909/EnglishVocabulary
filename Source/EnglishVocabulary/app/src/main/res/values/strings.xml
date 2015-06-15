@@ -34,6 +34,7 @@
     <string name="txt_answers">Nhập đáp án...</string>
     <string name="txt_suggest">Gợi ý Tiếng Việt</string>
 
+    <string name="txt_btn_start">Bắt đầu</string>
     <string name="txt_btn_answers">Trả lời</string>
     <string name="txt_btn_repeat">Nghe lại</string>
     <string name="txt_btn_skip">Bỏ qua</string>

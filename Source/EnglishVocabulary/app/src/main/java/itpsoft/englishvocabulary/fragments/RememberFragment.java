@@ -31,14 +31,14 @@ public class RememberFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fm_test_remember,container,false);
 
-        imgIcBack = (ImageView) rootView.findViewById(R.id.drawer_indicator);
-        imgIcBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().finish();
-                getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
-            }
-        });
+//        imgIcBack = (ImageView) rootView.findViewById(R.id.drawer_indicator);
+//        imgIcBack.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                getActivity().finish();
+//                getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
+//            }
+//        });
         //TextView
         txtEnglish   = (TextView)rootView.findViewById(R.id.txtEnglish);
             //hide txtVietnamese

@@ -36,11 +36,24 @@ public class TestActivity extends FragmentActivity implements ActionBar.TabListe
     ViewPager testViewPager;
     public static TabHost tabHost;
     List<Fragment> fragments;
+    ImageView imgIcBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test1);
+
+        imgIcBack = (ImageView)findViewById(R.id.drawer_indicator);
+
+
+
+        imgIcBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
+            }
+        });
 
         fragments = new Vector<Fragment>();
         tabHost = (TabHost) findViewById(R.id.tabhost);

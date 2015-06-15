@@ -3,46 +3,7 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- Action-bar looking view -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/actionbar_dimen"
-        android:background="@color/actionBar">
 
-        <ImageView
-            android:id="@+id/drawer_indicator"
-            android:layout_width="@dimen/actionbar_dimen"
-            android:layout_height="@dimen/actionbar_dimen"
-            android:layout_gravity="start"
-            android:background="@drawable/drawer_selector"
-            android:scaleType="centerInside"
-            android:src="@drawable/abc_ic_ab_back_mtrl_am_alpha"/>
-
-        <TextView
-            android:id="@+id/indicator_style"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/actionbar_dimen"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:background="@drawable/drawer_selector"
-            android:gravity="center"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:textSize="16sp"
-            android:text="Animal(example)"
-            android:singleLine="true"
-            android:maxLines="1"
-            android:lines="1"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
-        <ImageView
-            android:layout_width="@dimen/actionbar_dimen"
-            android:layout_height="@dimen/actionbar_dimen"
-            android:layout_gravity="right"
-            android:background="@drawable/drawer_selector"
-            android:scaleType="centerInside" />
-    </LinearLayout>
-    <!-- End Actionbar-->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
