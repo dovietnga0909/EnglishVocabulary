@@ -50,6 +50,7 @@ public class HomeActivity extends Activity {
     private ImageView add;
     private AlertDialog alertDialog;
     private Rect displayRectangle;
+    private Topic topic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +103,7 @@ public class HomeActivity extends Activity {
     }
 
     private void initView() {
+        topic = new Topic(HomeActivity.this);
         //Menu
         listMenu = (ListView) findViewById(R.id.menu_list);
         createDataMenu();
@@ -158,13 +160,9 @@ public class HomeActivity extends Activity {
         });
         //End menu
         //Topic
-        createDataTopic();
+//        arrTopic = topic.getAll();
         listTopic = (ListView) findViewById(R.id.listTopic);
-        topicAdapter = new TopicAdapter(HomeActivity.this, arrTopic);
-//        View headerEmpty = LayoutInflater.from(HomeActivity.this).inflate(R.layout.empty_list, listTopic, false);
-//        View footerEmpty = LayoutInflater.from(HomeActivity.this).inflate(R.layout.empty_list, listTopic, false);
-//        listTopic.addHeaderView(headerEmpty);
-//        listTopic.addFooterView(footerEmpty);
+        topicAdapter = new TopicAdapter(HomeActivity.this, topic);
         listTopic.setAdapter(topicAdapter);
         listTopic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -212,7 +210,20 @@ public class HomeActivity extends Activity {
                                     alertDialog.dismiss();
                                 break;
                             case R.id.add:
-                                Toast.makeText(HomeActivity.this, dText.getText().toString(), Toast.LENGTH_SHORT).show();
+                                if(dText.getText().toString().trim().length()>0) {
+                                    boolean result = topic.insert(dText.getText().toString());
+                                    if (result) {
+                                        if (alertDialog.isShowing())
+                                            alertDialog.dismiss();
+                                        topicAdapter.notifyDataSetChanged();
+                                        listTopic.setSelection(topicAdapter.getCount() - 1);
+                                        Toast.makeText(HomeActivity.this, resources.getString(R.string.added), Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(HomeActivity.this, resources.getString(R.string.error), Toast.LENGTH_SHORT).show();
+                                    }
+                                }else{
+                                    Toast.makeText(HomeActivity.this, resources.getString(R.string.name_empty), Toast.LENGTH_SHORT).show();
+                                }
                                 break;
                         }
                     }
@@ -252,17 +263,5 @@ public class HomeActivity extends Activity {
         arrMenu.add(new MenuItem("#FF00FF", R.drawable.ic_logout, resources.getString(R.string.reminds_study_time), resources.getString(R.string.off)));
         arrMenu.add("");
         arrMenu.add(new MenuItem("#00FF00", R.drawable.ic_logout, resources.getString(R.string.logout), ""));
-    }
-
-    private void createDataTopic() {
-        arrTopic = new ArrayList<Topic>();
-        arrTopic.add(new Topic("#F60000", 1, "Test topic", 22));
-        arrTopic.add(new Topic("#ff9000", 1, "Test topic 1", 30));
-        arrTopic.add(new Topic("#F60000", 1, "Test topic 2", 50));
-        arrTopic.add(new Topic("#ff9000", 1, "Test topic 3", 99));
-        arrTopic.add(new Topic("#F60000", 1, "Test topic 4", 100));
-        arrTopic.add(new Topic("#ff9000", 1, "Test topic 5", 96));
-        arrTopic.add(new Topic("#F60000", 1, "Test topic 6", 69));
-        arrTopic.add(new Topic("#F60000", 1, "Test topic 7", 831));
     }
 }

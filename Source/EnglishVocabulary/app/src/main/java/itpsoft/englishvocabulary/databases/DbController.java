@@ -88,7 +88,26 @@ public class DbController extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(CATEGORIES_NAME, "Animals");
             values.put(CATEGORIES_STATUS, "1");
+            db.insert(TABLE_CATEGORIES, null, values);
 
+            values.put(CATEGORIES_NAME, "Mnimals 2");
+            values.put(CATEGORIES_STATUS, "1");
+            db.insert(TABLE_CATEGORIES, null, values);
+
+            values.put(CATEGORIES_NAME, "Knimals 3");
+            values.put(CATEGORIES_STATUS, "1");
+            db.insert(TABLE_CATEGORIES, null, values);
+
+            values.put(CATEGORIES_NAME, "Hnimals 4");
+            values.put(CATEGORIES_STATUS, "1");
+            db.insert(TABLE_CATEGORIES, null, values);
+
+            values.put(CATEGORIES_NAME, "Enimals 5");
+            values.put(CATEGORIES_STATUS, "1");
+            db.insert(TABLE_CATEGORIES, null, values);
+
+            values.put(CATEGORIES_NAME, "Pnimals 5");
+            values.put(CATEGORIES_STATUS, "1");
             db.insert(TABLE_CATEGORIES, null, values);
         }
     }

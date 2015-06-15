@@ -48,6 +48,10 @@
     <string name="off">Off</string>
     <string name="on">On</string>
     <string name="add_topic">Thêm chủ đề</string>
+    <string name="error">Lỗi</string>
+    <string name="added">Thêm thành công</string>
+    <string name="name_empty">Chưa nhập tên</string>
+    <string name="hint_name">Nhập tên</string>
     <!-- End - TuNT -->
 
     <!--LuanDT-->

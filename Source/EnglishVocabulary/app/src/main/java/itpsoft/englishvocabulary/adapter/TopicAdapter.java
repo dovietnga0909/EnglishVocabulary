@@ -24,12 +24,20 @@ import itpsoft.englishvocabulary.models.Topic;
  * Created by Thanh Tu on 6/8/2015.
  */
 public class TopicAdapter extends BaseAdapter {
-    Context context;
-    ArrayList<Topic> data;
+    private Context context;
+    private ArrayList<Topic> data;
+    private Topic topic;
 
-    public TopicAdapter(Context context, ArrayList<Topic> data) {
+    public TopicAdapter(Context context, Topic topic) {
         this.context = context;
-        this.data = data;
+        this.topic = topic;
+        data = topic.getAll();
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+        data = topic.getAll();
     }
 
     @Override
