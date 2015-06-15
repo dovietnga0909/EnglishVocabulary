@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -55,7 +56,7 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
     private static int LISTEN_NUM_SKIP = 0;
     private static int LISTEN_NUM_TRUE = 0;
 
-    private String strEnglish,strVietnamese,strAnswers;
+    private String strEnglish,strVietnamese;
 
     View rootView;
     @Override
@@ -96,7 +97,9 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
         vocabulary      = new Vocabulary();
         listVocabularys = vocabulary.initListVocabulary(1);
 
+        txtTotal.setText(Integer.toString(listVocabularys.size()));
 
+        ckSuggest.setEnabled(false);
         //set Visible txtVietnamese khi duoc check
         ckSuggest.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -153,32 +156,97 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
             @Override
             public void onClick(View v) {
 
+                Collections.shuffle(listVocabularys);
+                ckSuggest.setEnabled(true);
                 btnRepeat.setText(getResources().getString(R.string.txt_btn_repeat));
 
 
                 strEnglish      = listVocabularys.get(LISTEN_POS_VOCABULARY).getEnglish();
                 strVietnamese   = listVocabularys.get(LISTEN_POS_VOCABULARY).getVietnamese();
-            strAnswers          = edtAnswers.getText().toString();
+
 
                 txtVietnamese.setText(strVietnamese);
                 speakEnglish.speakOut(strEnglish);
                 btnRepeat.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        speakEnglish.speakOut(strEnglish);
+                        speakEnglish.speakOut(listVocabularys.get(LISTEN_POS_VOCABULARY).getEnglish());
+
                     }
                 });
                 btnAnswers.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(strAnswers.equals(strEnglish)){
+
+
+
+                        Log.d("NgaDV",edtAnswers.getText().toString().toLowerCase());
+                        Log.d("NgaDV", listVocabularys.get(LISTEN_POS_VOCABULARY).getVietnamese().toString().toLowerCase());
+                        if(edtAnswers.getText().toString().toLowerCase().trim().equals(listVocabularys.get(LISTEN_POS_VOCABULARY).getEnglish().toString().toLowerCase())){
                             LISTEN_POS_VOCABULARY++;
-                            txtQuestion.setText(LISTEN_NUM_QUESTION);
-                            speakEnglish.speakOut(strEnglish);
+                            LISTEN_NUM_QUESTION++;
+                            LISTEN_NUM_TRUE++;
+
+                            txtQuestion.setText(Integer.toString(LISTEN_NUM_QUESTION));
+                            txtNumTrue.setText(Integer.toString(LISTEN_NUM_TRUE));
+                            txtVietnamese.setText(listVocabularys.get(LISTEN_POS_VOCABULARY).getVietnamese());
+                            edtAnswers.setText("");
+                            speakEnglish.speakOut(listVocabularys.get(LISTEN_POS_VOCABULARY).getEnglish());
+
+                            if(LISTEN_POS_VOCABULARY == listVocabularys.size()-1){
+                                Toast.makeText(getActivity(),"Ban da hoan thanh",Toast.LENGTH_SHORT).show();
+                                LISTEN_POS_VOCABULARY   = 0;
+                                LISTEN_NUM_QUESTION     = 0;
+                                LISTEN_NUM_TRUE         = 0;
+                                LISTEN_NUM_SKIP         = 0;
+
+                                txtQuestion.setText(Integer.toString(LISTEN_NUM_QUESTION));
+                                txtNumTrue.setText(Integer.toString(LISTEN_NUM_TRUE));
+                                txtVietnamese.setText(listVocabularys.get(LISTEN_POS_VOCABULARY).getVietnamese());
+                                txtNumSkip.setText(Integer.toString(LISTEN_NUM_SKIP));
+
+                            }
+                            Log.d("NgaDV", "LISTEN_POS_VOCABULARY = " + LISTEN_POS_VOCABULARY);
+                        }
+                        else {
+                           //
+                            Toast.makeText(getActivity(),"sai",Toast.LENGTH_SHORT).show();
+                            edtAnswers.startAnimation(
+                                    AnimationUtils.loadAnimation(getActivity(), R.anim.shake));
+                            speakEnglish.speakOut(listVocabularys.get(LISTEN_POS_VOCABULARY).getEnglish());
                         }
                     }
                 });
 
+                btnSkip.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        LISTEN_POS_VOCABULARY++;
+                        LISTEN_NUM_QUESTION++;
+                        LISTEN_NUM_SKIP++;
+
+                        txtQuestion.setText(Integer.toString(LISTEN_NUM_QUESTION));
+                        txtNumTrue.setText(Integer.toString(LISTEN_NUM_TRUE));
+                        txtNumSkip.setText(Integer.toString(LISTEN_NUM_SKIP));
+                        txtVietnamese.setText(listVocabularys.get(LISTEN_POS_VOCABULARY).getVietnamese());
+                        speakEnglish.speakOut(listVocabularys.get(LISTEN_POS_VOCABULARY).getEnglish());
+
+                        if(LISTEN_POS_VOCABULARY == listVocabularys.size()-1){
+                            Toast.makeText(getActivity(),"Ban da hoan thanh",Toast.LENGTH_SHORT).show();
+                            LISTEN_POS_VOCABULARY   = 0;
+                            LISTEN_NUM_QUESTION     = 0;
+                            LISTEN_NUM_TRUE         = 0;
+                            LISTEN_NUM_SKIP         = 0;
+
+                            txtQuestion.setText(Integer.toString(LISTEN_NUM_QUESTION));
+                            txtNumTrue.setText(Integer.toString(LISTEN_NUM_TRUE));
+                            txtVietnamese.setText(listVocabularys.get(LISTEN_POS_VOCABULARY).getVietnamese());
+                            txtNumSkip.setText(Integer.toString(LISTEN_NUM_SKIP));
+
+
+                        }
+                    }
+                });
 
 
             }
@@ -212,6 +280,12 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
             textToSpeech.stop();
             textToSpeech.shutdown();
         }
+        Log.d("NgaDV","onDestroy");
+        LISTEN_NUM_TRUE = 0;
+        LISTEN_NUM_QUESTION = 0;
+        LISTEN_POS_VOCABULARY = 0;
+        LISTEN_NUM_SKIP = 0;
+        LISTEN_NUM_TOTAL = 0;
         super.onDestroy();
     }
 

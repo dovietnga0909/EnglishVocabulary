@@ -57,7 +57,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
-                        android:id="@+id/txtTrue"
+                        android:id="@+id/txtQuestions"
                         android:textSize="25dp"
                         android:textColor="@color/cl_actionbar"
                         android:textStyle="bold" />
@@ -129,7 +129,7 @@
                     <Button
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="@string/txt_btn_answers"
+                        android:text="@string/txt_btn_start"
                         android:id="@+id/btnAnswer"
                         android:background="@drawable/bg_btn_ansers_selector"
                         android:textColor="@color/white" />
