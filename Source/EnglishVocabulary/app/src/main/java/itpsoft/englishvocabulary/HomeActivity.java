@@ -167,11 +167,13 @@ public class HomeActivity extends Activity {
         listTopic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Topic itemSelect = (Topic) adapterView.getAdapter().getItem(i);
                 Intent intent = new Intent();
                 intent.setClass(getApplicationContext(), VocabularyActivity.class);
+                intent.putExtra("topic_id", itemSelect.getId());
+                intent.putExtra("topic_name", itemSelect.getName());
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
-                Toast.makeText(HomeActivity.this, "" + i, Toast.LENGTH_SHORT).show();
             }
         });
         //End topic
@@ -239,7 +241,7 @@ public class HomeActivity extends Activity {
 
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                        if (i2 > 0) {
+                        if (i > 0) {
                             dDelete.setVisibility(View.VISIBLE);
                         } else {
                             dDelete.setVisibility(View.INVISIBLE);
@@ -258,10 +260,10 @@ public class HomeActivity extends Activity {
 
     private void createDataMenu() {
         arrMenu = new ArrayList<Object>();
-        arrMenu.add(new MenuItem("#00FFFF", R.drawable.ic_logout, resources.getString(R.string.ev), ""));
-        arrMenu.add(new MenuItem("#FF0000", R.drawable.ic_logout, resources.getString(R.string.sync), resources.getString(R.string.off)));
-        arrMenu.add(new MenuItem("#FF00FF", R.drawable.ic_logout, resources.getString(R.string.reminds_study_time), resources.getString(R.string.off)));
+        arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_home, resources.getString(R.string.ev), ""));
+        arrMenu.add(new MenuItem("#53dd00", R.drawable.ic_refesh, resources.getString(R.string.sync), resources.getString(R.string.off)));
+        arrMenu.add(new MenuItem("#ff6f00", R.drawable.ic_clock, resources.getString(R.string.reminds_study_time), resources.getString(R.string.off)));
         arrMenu.add("");
-        arrMenu.add(new MenuItem("#00FF00", R.drawable.ic_logout, resources.getString(R.string.logout), ""));
+        arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_logout, resources.getString(R.string.logout), ""));
     }
 }
