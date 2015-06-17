@@ -36,12 +36,11 @@ public class VocabularyActivity extends ActionBarActivity {
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.actionBar)));
-//        actionBar.setTitle(topicName);
-        actionBar.setTitle("LuanDT");
+        actionBar.setTitle(topicName);
 
         listView = (ListView) findViewById(R.id.listVocabulary);
         vocabulary = new Vocabulary();
-        listVocabulary = vocabulary.initListVocabulary(1);
+        listVocabulary = vocabulary.initListVocabulary(idTopic);
         adapter = new VocabularyAdapter(VocabularyActivity.this, listVocabulary);
         listView.setAdapter(adapter);
 
