@@ -8,7 +8,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-
 import java.util.ArrayList;
 
 import itpsoft.englishvocabulary.adapter.VocabularyAdapter;
@@ -22,16 +21,22 @@ public class VocabularyActivity extends ActionBarActivity {
     private ArrayList<Vocabulary> listVocabulary;
     private ListView listView;
     private Vocabulary vocabulary;
+    private int idTopic;
+    private String topicName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vocabulary);
 
+        Intent intent = getIntent();
+        idTopic = intent.getIntExtra("topic_id", 0);
+        topicName = intent.getStringExtra("topic_name");
+
         actionBar = getSupportActionBar();
-//        actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.actionBar)));
+//        actionBar.setTitle(topicName);
         actionBar.setTitle("LuanDT");
 
         listView = (ListView) findViewById(R.id.listVocabulary);
@@ -51,7 +56,7 @@ public class VocabularyActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_vocabulary, menu);
+//        getMenuInflater().inflate(R.menu.menu_vocabulary, menu);
         return true;
     }
 
@@ -68,13 +73,6 @@ public class VocabularyActivity extends ActionBarActivity {
                 finish();
                 overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
                 break;
-            case R.id.action_settings:
-                finish();
-
-                Intent intent = new Intent();
-                intent.setClass(this,TestActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
             default:
                 break;
         }

@@ -1,6 +1,7 @@
 package itpsoft.englishvocabulary.adapter;
 
 import android.content.Context;
+import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +14,17 @@ import java.util.ArrayList;
 
 import itpsoft.englishvocabulary.R;
 import itpsoft.englishvocabulary.models.Vocabulary;
+import itpsoft.englishvocabulary.ultils.SpeakEnglish;
 
 /**
  * Created by luand_000 on 05/06/2015.
  */
-public class VocabularyAdapter extends BaseAdapter {
+public class VocabularyAdapter extends BaseAdapter implements TextToSpeech.OnInitListener {
 
     private Context context;
     private ArrayList<Vocabulary> listVocabulary;
+    private TextToSpeech textToSpeech;
+    private SpeakEnglish speakEnglish;
 
     public VocabularyAdapter(Context context, ArrayList<Vocabulary> listVocabulary) {
         this.context = context;
@@ -62,16 +66,24 @@ public class VocabularyAdapter extends BaseAdapter {
         viewHolder.txtEnglish.setText(vocabulary.getEnglish());
         viewHolder.txtVietnamese.setText(vocabulary.getVietnamese());
 
+        textToSpeech = new TextToSpeech(context, this);
+        speakEnglish = new SpeakEnglish(context, textToSpeech);
+
         //click sound
-        viewHolder.imgSound.setOnClickListener(new View.OnClickListener() {
+        convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, vocabulary.getEnglish(), Toast.LENGTH_SHORT).show();
+                speakEnglish.speakOut(vocabulary.getEnglish());
 
             }
         });
 
         return convertView;
+    }
+
+    @Override
+    public void onInit(int i) {
+
     }
 
     class ViewHolder {
