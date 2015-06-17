@@ -18,12 +18,14 @@ import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
 import itpsoft.englishvocabulary.adapter.TestPagerAdapter;
 import itpsoft.englishvocabulary.fragments.ListenFragment;
 import itpsoft.englishvocabulary.fragments.RememberFragment;
+import itpsoft.englishvocabulary.models.Vocabulary;
 import itpsoft.englishvocabulary.ultils.Log;
 
 /**
@@ -37,11 +39,23 @@ public class TestActivity extends FragmentActivity implements ActionBar.TabListe
     public static TabHost tabHost;
     List<Fragment> fragments;
     ImageView imgIcBack;
+    Vocabulary vocabulary;
 
+    ArrayList<Vocabulary> listVocabularies = new ArrayList<Vocabulary>();
+
+//    public ArrayList<Vocabulary> getListVocabularies() {
+//        return listVocabularies;
+//    }
+//
+//    public void setListVocabularies(ArrayList<Vocabulary> listVocabularies) {
+//        this.listVocabularies = listVocabularies;
+//    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test1);
+
+        vocabulary = new Vocabulary();
 
         imgIcBack = (ImageView)findViewById(R.id.drawer_indicator);
 
@@ -67,17 +81,12 @@ public class TestActivity extends FragmentActivity implements ActionBar.TabListe
         this.testViewPager.setAdapter(this.testPagerAdapter);
         this.testViewPager.setOnPageChangeListener(this);
 
-//        getWindow().getDecorView().findViewById(android.R.id.content).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//            @Override
-//            public void onGlobalLayout() {
-//                if (getResources().getConfiguration().keyboardHidden == Configuration.KEYBOARDHIDDEN_UNDEFINED) { // Check if keyboard is not hidden
-//                    Log.d("NgaDV","true");
-//                }
-//                Log.d("NgaDV", "false");
-//            }
-//        });
+    }
 
-//        tabHost.getTabWidget().getChildAt(0).setVisibility(View.GONE);
+    public ArrayList<Vocabulary> getListVocabularies(){
+
+        listVocabularies = new Vocabulary().initListVocabulary(1);
+        return listVocabularies;
     }
 
     private void addTab(TestActivity testActivity,String labelId,

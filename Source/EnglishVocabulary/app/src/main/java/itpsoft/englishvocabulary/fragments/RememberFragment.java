@@ -22,6 +22,7 @@ import java.text.Annotation;
 import java.util.ArrayList;
 
 import itpsoft.englishvocabulary.R;
+import itpsoft.englishvocabulary.TestActivity;
 import itpsoft.englishvocabulary.models.Vocabulary;
 import itpsoft.englishvocabulary.ultils.SpeakEnglish;
 
@@ -74,8 +75,10 @@ public class RememberFragment extends Fragment {
         btnSkip         = (Button)rootView.findViewById(R.id.btnSkip);
 
         //Vocabulary
-        vocabulary      = new Vocabulary();
-        listVocabularys = vocabulary.initListVocabulary(1);
+        listVocabularys = new TestActivity().getListVocabularies();
+        Log.d("NgaDV", "list vocabulary size() RememberFragment : " + listVocabularys.size());
+
+
 
         txtTotal.setText(Integer.toString(listVocabularys.size()));
         //set imgIcDeleteTxt Gone When edtAnswers = ""
