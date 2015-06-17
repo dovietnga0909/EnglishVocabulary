@@ -30,7 +30,7 @@
 
     <string name="txt_true">ĐÚNG</string>
     <string name="txt_skip">BỎ QUA</string>
-    <string name="txt_num_ques">Số câu:</string>
+    <string name="txt_num_ques">Câu số:</string>
     <string name="txt_answers">Nhập đáp án...</string>
     <string name="txt_suggest">Gợi ý Tiếng Việt</string>
 

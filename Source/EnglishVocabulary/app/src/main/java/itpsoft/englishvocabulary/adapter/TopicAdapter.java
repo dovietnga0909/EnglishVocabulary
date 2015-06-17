@@ -52,13 +52,13 @@ public class TopicAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return data.get(i).getId();
     }
 
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
         ViewHolder viewHolder;
-        Topic item = getItem(i);
+        final Topic item = getItem(i);
         if (view != null) {
             viewHolder = (ViewHolder) view.getTag();
         } else {
@@ -82,9 +82,10 @@ public class TopicAdapter extends BaseAdapter {
             public void onClick(View view) {
                 Intent intent = new Intent();
                 intent.setClass(context, TestActivity.class);
+                intent.putExtra("topic_id", item.getId());
+                intent.putExtra("topic_name", item.getName());
                 context.startActivity(intent);
                 ((Activity)context).overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
-                Toast.makeText(context, ""+i, Toast.LENGTH_SHORT).show();
             }
         });
         if(i==data.size()-1){
