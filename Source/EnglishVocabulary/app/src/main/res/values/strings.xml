@@ -60,6 +60,9 @@
     <string name="insert_new_name">Nhập tên mới</string>
     <string name="delete">Xóa</string>
     <string name="save">Lưu lại</string>
+    <string name="confirmed_deleted">Xác nhận xóa</string>
+    <string name="deleted">Đã xóa</string>
+    <string name="really_delete">Bạn có thật sự muốn xóa:</string>
     <!-- End - TuNT -->
 
     <!--LuanDT-->

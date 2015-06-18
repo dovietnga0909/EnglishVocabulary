@@ -248,15 +248,15 @@ public class HomeActivity extends Activity {
                     case R.id.add:
                         if (dText.getText().toString().trim().length() > 0) {
                             int result = topic.insert(dText.getText().toString());
-                            if (result==Topic.INSERT_SUCCESS) {
+                            if (result == Topic.INSERT_SUCCESS) {
                                 if (alertDialog.isShowing())
                                     alertDialog.dismiss();
                                 topicAdapter.notifyDataSetChanged();
                                 listTopic.setSelection(topicAdapter.getCount() - 1);
                                 Toast.makeText(HomeActivity.this, resources.getString(R.string.added), Toast.LENGTH_SHORT).show();
-                            } else if(result==Topic.INSERT_EXITS){
+                            } else if (result == Topic.INSERT_EXITS) {
                                 Toast.makeText(HomeActivity.this, resources.getString(R.string.exits), Toast.LENGTH_SHORT).show();
-                            } else if(result==Topic.INSERT_FALSE){
+                            } else if (result == Topic.INSERT_FALSE) {
                                 Toast.makeText(HomeActivity.this, resources.getString(R.string.error), Toast.LENGTH_SHORT).show();
                             }
                         } else {
@@ -327,10 +327,9 @@ public class HomeActivity extends Activity {
                 switch (i) {
                     case 0:
                         createDialogRenameTopic(t);
-                        Toast.makeText(HomeActivity.this, "0", Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
-                        Toast.makeText(HomeActivity.this, "1", Toast.LENGTH_SHORT).show();
+                        createDialogDeleteTopic(t);
                         break;
                 }
             }
@@ -375,14 +374,14 @@ public class HomeActivity extends Activity {
                     case R.id.add:
                         if (dText.getText().toString().trim().length() > 0) {
                             int result = topic.rename(t, dText.getText().toString());
-                            if (result==Topic.EDIT_SUCCESS) {
+                            if (result == Topic.EDIT_SUCCESS) {
                                 if (alertDialog.isShowing())
                                     alertDialog.dismiss();
                                 topicAdapter.notifyDataSetChanged();
                                 Toast.makeText(HomeActivity.this, resources.getString(R.string.edited), Toast.LENGTH_SHORT).show();
-                            } else if(result==Topic.EDIT_SAME){
+                            } else if (result == Topic.EDIT_SAME) {
                                 Toast.makeText(HomeActivity.this, resources.getString(R.string.same), Toast.LENGTH_SHORT).show();
-                            } else if(result==Topic.EDIT_FALSE){
+                            } else if (result == Topic.EDIT_FALSE) {
                                 Toast.makeText(HomeActivity.this, resources.getString(R.string.error), Toast.LENGTH_SHORT).show();
                             }
                         } else {
@@ -418,7 +417,46 @@ public class HomeActivity extends Activity {
         });
     }
 
-    private void createDialogDeleteTopic() {
+    private void createDialogDeleteTopic(final Topic t) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+        builder.setCancelable(true);
+        View dialogView = LayoutInflater.from(HomeActivity.this).inflate(R.layout.dialog_confirm_delete, null, false);
+        dialogView.setMinimumWidth((int) (displayRectangle.width() * 0.9f));
+        builder.setView(dialogView);
+        alertDialog = builder.create();
+        alertDialog.setCancelable(true);
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
 
+        ImageView dBack = (ImageView) dialogView.findViewById(R.id.back);
+        TextView dContent = (TextView) dialogView.findViewById(R.id.content);
+        Button dDelete = (Button) dialogView.findViewById(R.id.delete);
+
+        View.OnClickListener dOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id = view.getId();
+                switch (id) {
+                    case R.id.back:
+                        if (alertDialog.isShowing())
+                            alertDialog.dismiss();
+                        break;
+                    case R.id.delete:
+                        if (alertDialog.isShowing())
+                            alertDialog.dismiss();
+                        int result = topic.delete(t);
+                        if(result == Topic.INSERT_SUCCESS){
+                            topicAdapter.notifyDataSetChanged();
+                            Toast.makeText(HomeActivity.this, resources.getString(R.string.deleted), Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(HomeActivity.this, resources.getString(R.string.error), Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                }
+            }
+        };
+        dDelete.setOnClickListener(dOnClickListener);
+        dBack.setOnClickListener(dOnClickListener);
+        dContent.setText(resources.getString(R.string.really_delete) + " " + t.getName());
     }
 }
