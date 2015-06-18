@@ -49,9 +49,17 @@
     <string name="on">On</string>
     <string name="add_topic">Thêm chủ đề</string>
     <string name="error">Lỗi</string>
+    <string name="exits">Đã tồn tại</string>
     <string name="added">Thêm thành công</string>
+    <string name="edited">Sửa thành công</string>
+    <string name="same">Giống tên cũ</string>
     <string name="name_empty">Chưa nhập tên</string>
     <string name="hint_name">Nhập tên</string>
+    <string name="edit">Sửa</string>
+    <string name="rename">Đổi tên</string>
+    <string name="insert_new_name">Nhập tên mới</string>
+    <string name="delete">Xóa</string>
+    <string name="save">Lưu lại</string>
     <!-- End - TuNT -->
 
     <!--LuanDT-->

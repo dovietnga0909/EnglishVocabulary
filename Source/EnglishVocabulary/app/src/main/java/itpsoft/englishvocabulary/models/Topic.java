@@ -13,9 +13,18 @@ import itpsoft.englishvocabulary.ultils.Color;
  * Created by Thanh Tu on 6/8/2015.
  */
 public class Topic {
+    public static int INSERT_FALSE = 0;
+    public static int INSERT_SUCCESS = 1;
+    public static int INSERT_EXITS = 2;
+    public static int EDIT_FALSE = 0;
+    public static int EDIT_SUCCESS = 1;
+    public static int EDIT_SAME = 2;
+    public static int DELETE_FALSE = 0;
+    public static int DELETE_SUCCESS = 1;
     private int id, number;
     private String color, name;
     private DbController dbController;
+
     public Topic(Context context) {
         dbController = DbController.getInstance(context);
     }
@@ -62,7 +71,7 @@ public class Topic {
     }
 
     //get all topic
-    public ArrayList<Topic> getAll(){
+    public ArrayList<Topic> getAll() {
         ArrayList<Topic> data = new ArrayList<Topic>();
         Color color = Color.instance();
         try {
@@ -85,21 +94,66 @@ public class Topic {
                     data.add(new Topic(color.getColor(name), id, name, number));
                 } while (cursor.moveToNext());
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return data;
     }
+
     //insert Topic
-    public boolean insert(String name){
-        boolean result = false;
+    public int insert(String name) {
+        int result = INSERT_FALSE;
         try {
-            ContentValues values = new ContentValues();
-            values.put(DbController.CATEGORIES_NAME, name.trim());
-            values.put(DbController.CATEGORIES_STATUS, "1");
-            dbController.insert(DbController.TABLE_CATEGORIES, null, values);
-            result = true;
-        }catch (Exception e){
+            String sql = "SELECT count(*) as 'count' FROM " + DbController.TABLE_CATEGORIES + " WHERE " + DbController.CATEGORIES_NAME + " = '" + name.trim() + "';";
+            Cursor cursor = dbController.rawQuery(sql, null);
+            int number = 0;
+            if (cursor.moveToFirst()) {
+                do {
+                    number = cursor.getInt(cursor.getColumnIndex("count"));
+                } while (cursor.moveToNext());
+            }
+            if (number > 0) {
+                result = INSERT_EXITS;
+            } else {
+                ContentValues values = new ContentValues();
+                values.put(DbController.CATEGORIES_NAME, name.trim());
+                values.put(DbController.CATEGORIES_STATUS, "1");
+                dbController.insert(DbController.TABLE_CATEGORIES, null, values);
+                result = INSERT_SUCCESS;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    //rename topic
+    public int rename(Topic topic, String name) {
+        int result = EDIT_FALSE;
+        if (topic.getName().equals(name)) {
+            result = EDIT_SAME;
+        } else {
+            try {
+                ContentValues values = new ContentValues();
+                values.put(DbController.CATEGORIES_NAME, name.trim());
+                dbController.updateCategories(DbController.TABLE_CATEGORIES, values, DbController.CATEGORIES_NAME, new String[]{Integer.toString(topic.getId())});
+                result = EDIT_SUCCESS;
+            } catch (Exception e) {
+                result = EDIT_FALSE;
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    //delete topic
+    public int delete(Topic topic) {
+        int result = DELETE_FALSE;
+        try {
+            dbController.deleteCategoriesById(new String[] {Integer.toString(topic.getId())});
+            result = DELETE_SUCCESS;
+        } catch (Exception e) {
+            result = DELETE_FALSE;
             e.printStackTrace();
         }
         return result;
