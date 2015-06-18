@@ -1,6 +1,7 @@
 package itpsoft.englishvocabulary;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,8 @@ import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,22 +43,31 @@ public class TestActivity extends FragmentActivity implements ActionBar.TabListe
     List<Fragment> fragments;
     ImageView imgIcBack;
     Vocabulary vocabulary;
+    int idTopic;
+    String nameTopic;
+    TextView txtNameTopic;
+
+    public static int ID_TOPIC;
 
     ArrayList<Vocabulary> listVocabularies = new ArrayList<Vocabulary>();
 
-//    public ArrayList<Vocabulary> getListVocabularies() {
-//        return listVocabularies;
-//    }
-//
-//    public void setListVocabularies(ArrayList<Vocabulary> listVocabularies) {
-//        this.listVocabularies = listVocabularies;
-//    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test1);
 
         vocabulary = new Vocabulary();
+
+        Intent intent = getIntent();
+        idTopic = intent.getIntExtra("topic_id", 0);
+        nameTopic = intent.getStringExtra("topic_name");
+
+        ID_TOPIC = idTopic;
+
+        txtNameTopic = (TextView)findViewById(R.id.indicator_style);
+
+        txtNameTopic.setText(nameTopic);
 
         imgIcBack = (ImageView)findViewById(R.id.drawer_indicator);
 
@@ -84,8 +96,7 @@ public class TestActivity extends FragmentActivity implements ActionBar.TabListe
     }
 
     public ArrayList<Vocabulary> getListVocabularies(){
-
-        listVocabularies = new Vocabulary().initListVocabulary(1);
+        listVocabularies = new Vocabulary().initListVocabulary(ID_TOPIC);
         return listVocabularies;
     }
 

@@ -38,6 +38,16 @@
     <string name="txt_btn_answers">Trả lời</string>
     <string name="txt_btn_repeat">Nghe lại</string>
     <string name="txt_btn_skip">Bỏ qua</string>
+
+    <string name="txt_completet">Hoàn thành</string>
+    <string name="txt_msg_part1">Bạn trả lời được </string>
+    <string name="txt_msg_part2"> trên tổng số </string>
+    <string name="txt_msg_part3"> Câu. </string>
+    <string name="txt_msg_part4">Bạn có muốn chơi tiếp? </string>
+
+    <string name="txt_ok">Có</string>
+    <string name="txt_no">Không</string>
+
     <!-- TuNT-->
     <string name="ev">Từ vựng tiếng Anh</string>
     <string name="sync">Đồng bộ</string>
