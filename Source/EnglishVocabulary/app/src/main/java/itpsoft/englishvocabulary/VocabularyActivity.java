@@ -236,11 +236,13 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
             layout_en.startAnimation(
                     AnimationUtils.loadAnimation(VocabularyActivity.this, R.anim.shake));
             Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.empty), Toast.LENGTH_SHORT).show();
+            edtEnglish.requestFocus();
             return false;
         } else if(edtVietnamese.getText().toString().trim().equals("")){
             layout_vi.startAnimation(
                     AnimationUtils.loadAnimation(VocabularyActivity.this, R.anim.shake));
             Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.empty), Toast.LENGTH_SHORT).show();
+            edtVietnamese.requestFocus();
             return false;
         } else {
             check = true;
