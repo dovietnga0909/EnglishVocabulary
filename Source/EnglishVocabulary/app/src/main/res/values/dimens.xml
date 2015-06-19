@@ -11,4 +11,5 @@
     <dimen name="test_outcome_height">130dp</dimen>
 
     <dimen name="item_topic">60dp</dimen>
+    <dimen name="item_vocabulary">50dp</dimen>
 </resources>

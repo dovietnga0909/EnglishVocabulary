@@ -76,4 +76,6 @@
     <string name="add">Thêm</string>
     <string name="update">Cập nhật</string>
     <string name="cancel">Hủy bỏ</string>
+    <string name="vietnamese">Tiếng việt</string>
+    <string name="empty">Bạn chưa nhập trường này</string>
 </resources>

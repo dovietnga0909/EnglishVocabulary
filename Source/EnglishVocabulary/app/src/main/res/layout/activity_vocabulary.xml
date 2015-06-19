@@ -18,6 +18,7 @@
 
         <!--english-->
         <LinearLayout
+            android:id="@+id/layout_en"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -28,8 +29,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:background="@color/actionBar"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="English"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/white"/>
+
+                <ImageView
+                    android:id="@+id/imgEdtSound"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:padding="7dp"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_sound_white"
+                    android:background="@drawable/test_selector"/>
+
+                <ImageView
+                    android:id="@+id/clearEdtEnglish"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center_vertical"
+                    android:padding="7dp"
+                    android:src="@drawable/ic_delete_add"
+                    android:background="@drawable/test_selector"/>
             </LinearLayout>
 
             <EditText
@@ -51,6 +80,7 @@
 
         <!--vietnamese-->
         <LinearLayout
+            android:id="@+id/layout_vi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -61,8 +91,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:background="@color/actionBar"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/vietnamese"
+                    android:layout_marginLeft="7dp"
+                    android:textColor="@color/white"/>
+
+
+                <ImageView
+                    android:id="@+id/clearEdtVn"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:padding="7dp"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_delete_add"
+                    android:background="@drawable/test_selector"/>
             </LinearLayout>
 
             <EditText
