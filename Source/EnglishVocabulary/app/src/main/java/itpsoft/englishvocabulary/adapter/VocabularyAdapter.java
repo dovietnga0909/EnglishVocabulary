@@ -1,7 +1,6 @@
 package itpsoft.englishvocabulary.adapter;
 
 import android.content.Context;
-import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import itpsoft.englishvocabulary.R;
-import itpsoft.englishvocabulary.VocabularyActivity;
 import itpsoft.englishvocabulary.models.Vocabulary;
-import itpsoft.englishvocabulary.ultils.SpeakEnglish;
 
 /**
  * Created by luand_000 on 05/06/2015.
@@ -47,7 +44,7 @@ public class VocabularyAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
-        if(convertView == null){
+        if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_vocabulary, parent, false);
 
@@ -56,7 +53,7 @@ public class VocabularyAdapter extends BaseAdapter {
             viewHolder.imgSound = (ImageView) convertView.findViewById(R.id.imgSound);
 
             convertView.setTag(viewHolder);
-        }else {
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
@@ -72,9 +69,4 @@ public class VocabularyAdapter extends BaseAdapter {
         TextView txtVietnamese;
         ImageView imgSound;
     }
-
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> f0c95c7857e99fe0ab8376c92821b51448e5a209
