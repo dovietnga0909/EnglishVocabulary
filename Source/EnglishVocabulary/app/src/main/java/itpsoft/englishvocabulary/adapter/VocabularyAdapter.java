@@ -104,4 +104,5 @@ public class VocabularyAdapter extends BaseAdapter implements TextToSpeech.OnIni
         TextView txtVietnamese;
         ImageView imgSound;
     }
+
 }
