@@ -80,17 +80,21 @@ public class TopicAdapter extends BaseAdapter {
         viewHolder.check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setClass(context, TestActivity.class);
-                intent.putExtra("topic_id", item.getId());
-                intent.putExtra("topic_name", item.getName());
-                context.startActivity(intent);
-                ((Activity)context).overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+                if (item.getNumber() > 0) {
+                    Intent intent = new Intent();
+                    intent.setClass(context, TestActivity.class);
+                    intent.putExtra("topic_id", item.getId());
+                    intent.putExtra("topic_name", item.getName());
+                    context.startActivity(intent);
+                    ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+                } else {
+                    Toast.makeText(context, context.getResources().getString(R.string.topic_empty), Toast.LENGTH_SHORT).show();
+                }
             }
         });
-        if(i==data.size()-1){
+        if (i == data.size() - 1) {
             viewHolder.divider.setVisibility(View.GONE);
-        }else{
+        } else {
             viewHolder.divider.setVisibility(View.VISIBLE);
         }
         return view;

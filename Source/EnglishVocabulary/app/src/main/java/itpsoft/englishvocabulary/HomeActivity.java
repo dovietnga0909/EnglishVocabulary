@@ -148,6 +148,7 @@ public class HomeActivity extends Activity {
                 intent.putExtra("topic_name", itemSelect.getName());
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+
             }
         });
         listTopic.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -445,10 +446,10 @@ public class HomeActivity extends Activity {
                         if (alertDialog.isShowing())
                             alertDialog.dismiss();
                         int result = topic.delete(t);
-                        if(result == Topic.INSERT_SUCCESS){
+                        if (result == Topic.INSERT_SUCCESS) {
                             topicAdapter.notifyDataSetChanged();
                             Toast.makeText(HomeActivity.this, resources.getString(R.string.deleted), Toast.LENGTH_SHORT).show();
-                        }else{
+                        } else {
                             Toast.makeText(HomeActivity.this, resources.getString(R.string.error), Toast.LENGTH_SHORT).show();
                         }
                         break;
