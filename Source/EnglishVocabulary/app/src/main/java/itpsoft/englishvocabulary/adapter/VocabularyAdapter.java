@@ -73,4 +73,8 @@ public class VocabularyAdapter extends BaseAdapter {
         ImageView imgSound;
     }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> f0c95c7857e99fe0ab8376c92821b51448e5a209
