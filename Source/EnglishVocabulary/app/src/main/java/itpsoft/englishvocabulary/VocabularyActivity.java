@@ -3,10 +3,13 @@ package itpsoft.englishvocabulary;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -16,9 +19,10 @@ import java.util.ArrayList;
 
 import itpsoft.englishvocabulary.adapter.VocabularyAdapter;
 import itpsoft.englishvocabulary.models.Vocabulary;
+import itpsoft.englishvocabulary.ultils.SpeakEnglish;
 
 
-public class VocabularyActivity extends ActionBarActivity {
+public class VocabularyActivity extends ActionBarActivity implements TextToSpeech.OnInitListener {
 
     private ActionBar actionBar;
     private VocabularyAdapter adapter;
@@ -30,11 +34,16 @@ public class VocabularyActivity extends ActionBarActivity {
     private EditText edtEnglish, edtVietnamese;
     private Button btnAddVoca;
     private LinearLayout control_btn_update;
+    private TextToSpeech textToSpeech;
+    private SpeakEnglish speakEnglish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vocabulary);
+
+        textToSpeech = new TextToSpeech(VocabularyActivity.this, this);
+        speakEnglish = new SpeakEnglish(VocabularyActivity.this, textToSpeech);
 
         Intent intent = getIntent();
         idTopic = intent.getIntExtra("topic_id", 0);
@@ -53,9 +62,38 @@ public class VocabularyActivity extends ActionBarActivity {
         listView = (ListView) findViewById(R.id.listVocabulary);
         vocabulary = new Vocabulary();
         listVocabulary = vocabulary.initListVocabulary(idTopic);
-        adapter = new VocabularyAdapter(VocabularyActivity.this, listVocabulary, this);
+        adapter = new VocabularyAdapter(VocabularyActivity.this, listVocabulary);
         listView.setAdapter(adapter);
 
+        //click
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                speakEnglish.speakOut(((Vocabulary) adapterView.getAdapter().getItem(i)).getEnglish());
+            }
+        });
+
+        //long click
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                edtEnglish.setText(((Vocabulary) adapterView.getAdapter().getItem(i)).getEnglish());
+                edtVietnamese.setText(((Vocabulary) adapterView.getAdapter().getItem(i)).getVietnamese());
+                control_btn_update.setVisibility(View.VISIBLE);
+                btnAddVoca.setVisibility(View.GONE);
+                return true;
+            }
+        });
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(textToSpeech != null){
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        super.onDestroy();
     }
 
     @Override
@@ -91,27 +129,8 @@ public class VocabularyActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public EditText getEdtEnglish() {
-        return edtEnglish;
-    }
+    @Override
+    public void onInit(int i) {
 
-    public void setEdtEnglish(EditText edtEnglish) {
-        this.edtEnglish = edtEnglish;
-    }
-
-    public EditText getEdtVietnamese() {
-        return edtVietnamese;
-    }
-
-    public void setEdtVietnamese(EditText edtVietnamese) {
-        this.edtVietnamese = edtVietnamese;
-    }
-
-    public LinearLayout getControl_btn_update() {
-        return control_btn_update;
-    }
-
-    public void setControl_btn_update(LinearLayout control_btn_update) {
-        this.control_btn_update = control_btn_update;
     }
 }

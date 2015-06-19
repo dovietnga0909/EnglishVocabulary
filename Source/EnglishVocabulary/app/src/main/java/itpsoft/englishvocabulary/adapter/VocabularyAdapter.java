@@ -19,18 +19,14 @@ import itpsoft.englishvocabulary.ultils.SpeakEnglish;
 /**
  * Created by luand_000 on 05/06/2015.
  */
-public class VocabularyAdapter extends BaseAdapter implements TextToSpeech.OnInitListener {
+public class VocabularyAdapter extends BaseAdapter {
 
     private Context context;
     private ArrayList<Vocabulary> listVocabulary;
-    private TextToSpeech textToSpeech;
-    private SpeakEnglish speakEnglish;
-    private VocabularyActivity vocabularyActivity;
 
-    public VocabularyAdapter(Context context, ArrayList<Vocabulary> listVocabulary, VocabularyActivity vocabularyActivity) {
+    public VocabularyAdapter(Context context, ArrayList<Vocabulary> listVocabulary) {
         this.context = context;
         this.listVocabulary = listVocabulary;
-        this.vocabularyActivity = vocabularyActivity;
     }
 
     @Override
@@ -39,7 +35,7 @@ public class VocabularyAdapter extends BaseAdapter implements TextToSpeech.OnIni
     }
 
     @Override
-    public Object getItem(int position) {
+    public Vocabulary getItem(int position) {
         return listVocabulary.get(position);
     }
 
@@ -68,35 +64,7 @@ public class VocabularyAdapter extends BaseAdapter implements TextToSpeech.OnIni
         viewHolder.txtEnglish.setText(vocabulary.getEnglish());
         viewHolder.txtVietnamese.setText(vocabulary.getVietnamese());
 
-        textToSpeech = new TextToSpeech(context, this);
-        speakEnglish = new SpeakEnglish(context, textToSpeech);
-
-        //click sound
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                speakEnglish.speakOut(vocabulary.getEnglish());
-
-            }
-        });
-
-        convertView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-
-                vocabularyActivity.getEdtEnglish().setText(vocabulary.getEnglish());
-                vocabularyActivity.getEdtVietnamese().setText(vocabulary.getVietnamese());
-                vocabularyActivity.getControl_btn_update().setVisibility(View.VISIBLE);
-                return true;
-            }
-        });
-
         return convertView;
-    }
-
-    @Override
-    public void onInit(int i) {
-
     }
 
     class ViewHolder {
@@ -104,4 +72,5 @@ public class VocabularyAdapter extends BaseAdapter implements TextToSpeech.OnIni
         TextView txtVietnamese;
         ImageView imgSound;
     }
+
 }
