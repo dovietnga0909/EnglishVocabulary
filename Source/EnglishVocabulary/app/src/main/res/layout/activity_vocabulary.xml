@@ -33,6 +33,8 @@
             </LinearLayout>
 
             <EditText
+                android:id="@+id/edtEnglish"
+                android:maxLines="3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
@@ -64,6 +66,8 @@
             </LinearLayout>
 
             <EditText
+                android:id="@+id/edtVietnamese"
+                android:maxLines="3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
@@ -83,11 +87,45 @@
         android:text="@string/add_vocabulary"
         android:textColor="@color/white" />
 
+    <LinearLayout
+        android:id="@+id/control_btn_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:layout_marginBottom="@dimen/vocabulary_activity_margin"
+            android:layout_marginTop="@dimen/vocabulary_activity_margin"
+            android:background="@drawable/bg_btn_ansers_selector"
+            android:text="@string/cancel"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="@dimen/vocabulary_activity_margin"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnUpdate"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:layout_marginBottom="@dimen/vocabulary_activity_margin"
+            android:layout_marginTop="@dimen/vocabulary_activity_margin"
+            android:background="@drawable/bg_btn_ansers_selector"
+            android:text="@string/update"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
     <ListView
         android:id="@+id/listVocabulary"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@color/actionBar"
         android:dividerHeight="1dp">
 
     </ListView>

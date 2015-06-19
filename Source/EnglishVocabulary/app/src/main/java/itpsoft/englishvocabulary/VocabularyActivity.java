@@ -7,7 +7,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+
 import java.util.ArrayList;
 
 import itpsoft.englishvocabulary.adapter.VocabularyAdapter;
@@ -23,6 +27,9 @@ public class VocabularyActivity extends ActionBarActivity {
     private Vocabulary vocabulary;
     private int idTopic;
     private String topicName;
+    private EditText edtEnglish, edtVietnamese;
+    private Button btnAddVoca;
+    private LinearLayout control_btn_update;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +40,11 @@ public class VocabularyActivity extends ActionBarActivity {
         idTopic = intent.getIntExtra("topic_id", 0);
         topicName = intent.getStringExtra("topic_name");
 
+        edtEnglish = (EditText) findViewById(R.id.edtEnglish);
+        edtVietnamese = (EditText) findViewById(R.id.edtVietnamese);
+        btnAddVoca = (Button) findViewById(R.id.btnAddVoca);
+        control_btn_update = (LinearLayout) findViewById(R.id.control_btn_update);
+
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.actionBar)));
@@ -41,7 +53,7 @@ public class VocabularyActivity extends ActionBarActivity {
         listView = (ListView) findViewById(R.id.listVocabulary);
         vocabulary = new Vocabulary();
         listVocabulary = vocabulary.initListVocabulary(idTopic);
-        adapter = new VocabularyAdapter(VocabularyActivity.this, listVocabulary);
+        adapter = new VocabularyAdapter(VocabularyActivity.this, listVocabulary, this);
         listView.setAdapter(adapter);
 
     }
@@ -77,5 +89,29 @@ public class VocabularyActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public EditText getEdtEnglish() {
+        return edtEnglish;
+    }
+
+    public void setEdtEnglish(EditText edtEnglish) {
+        this.edtEnglish = edtEnglish;
+    }
+
+    public EditText getEdtVietnamese() {
+        return edtVietnamese;
+    }
+
+    public void setEdtVietnamese(EditText edtVietnamese) {
+        this.edtVietnamese = edtVietnamese;
+    }
+
+    public LinearLayout getControl_btn_update() {
+        return control_btn_update;
+    }
+
+    public void setControl_btn_update(LinearLayout control_btn_update) {
+        this.control_btn_update = control_btn_update;
     }
 }

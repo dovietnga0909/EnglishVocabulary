@@ -8,11 +8,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import itpsoft.englishvocabulary.R;
+import itpsoft.englishvocabulary.VocabularyActivity;
 import itpsoft.englishvocabulary.models.Vocabulary;
 import itpsoft.englishvocabulary.ultils.SpeakEnglish;
 
@@ -25,10 +25,12 @@ public class VocabularyAdapter extends BaseAdapter implements TextToSpeech.OnIni
     private ArrayList<Vocabulary> listVocabulary;
     private TextToSpeech textToSpeech;
     private SpeakEnglish speakEnglish;
+    private VocabularyActivity vocabularyActivity;
 
-    public VocabularyAdapter(Context context, ArrayList<Vocabulary> listVocabulary) {
+    public VocabularyAdapter(Context context, ArrayList<Vocabulary> listVocabulary, VocabularyActivity vocabularyActivity) {
         this.context = context;
         this.listVocabulary = listVocabulary;
+        this.vocabularyActivity = vocabularyActivity;
     }
 
     @Override
@@ -75,6 +77,17 @@ public class VocabularyAdapter extends BaseAdapter implements TextToSpeech.OnIni
             public void onClick(View v) {
                 speakEnglish.speakOut(vocabulary.getEnglish());
 
+            }
+        });
+
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                vocabularyActivity.getEdtEnglish().setText(vocabulary.getEnglish());
+                vocabularyActivity.getEdtVietnamese().setText(vocabulary.getVietnamese());
+                vocabularyActivity.getControl_btn_update().setVisibility(View.VISIBLE);
+                return true;
             }
         });
 
