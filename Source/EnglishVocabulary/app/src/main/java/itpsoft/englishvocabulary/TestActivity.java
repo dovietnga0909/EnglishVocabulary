@@ -1,6 +1,7 @@
 package itpsoft.englishvocabulary;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,12 +19,16 @@ import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
 import itpsoft.englishvocabulary.adapter.TestPagerAdapter;
 import itpsoft.englishvocabulary.fragments.ListenFragment;
 import itpsoft.englishvocabulary.fragments.RememberFragment;
+import itpsoft.englishvocabulary.models.Vocabulary;
 import itpsoft.englishvocabulary.ultils.Log;
 
 /**
@@ -37,11 +42,32 @@ public class TestActivity extends FragmentActivity implements ActionBar.TabListe
     public static TabHost tabHost;
     List<Fragment> fragments;
     ImageView imgIcBack;
+    Vocabulary vocabulary;
+    int idTopic;
+    String nameTopic;
+    TextView txtNameTopic;
+
+    public static int ID_TOPIC;
+
+    ArrayList<Vocabulary> listVocabularies = new ArrayList<Vocabulary>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test1);
+
+        vocabulary = new Vocabulary();
+
+        Intent intent = getIntent();
+        idTopic = intent.getIntExtra("topic_id", 0);
+        nameTopic = intent.getStringExtra("topic_name");
+
+        ID_TOPIC = idTopic;
+
+        txtNameTopic = (TextView)findViewById(R.id.indicator_style);
+
+        txtNameTopic.setText(nameTopic);
 
         imgIcBack = (ImageView)findViewById(R.id.drawer_indicator);
 
@@ -67,17 +93,11 @@ public class TestActivity extends FragmentActivity implements ActionBar.TabListe
         this.testViewPager.setAdapter(this.testPagerAdapter);
         this.testViewPager.setOnPageChangeListener(this);
 
-//        getWindow().getDecorView().findViewById(android.R.id.content).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//            @Override
-//            public void onGlobalLayout() {
-//                if (getResources().getConfiguration().keyboardHidden == Configuration.KEYBOARDHIDDEN_UNDEFINED) { // Check if keyboard is not hidden
-//                    Log.d("NgaDV","true");
-//                }
-//                Log.d("NgaDV", "false");
-//            }
-//        });
+    }
 
-//        tabHost.getTabWidget().getChildAt(0).setVisibility(View.GONE);
+    public ArrayList<Vocabulary> getListVocabularies(){
+        listVocabularies = new Vocabulary().initListVocabulary(ID_TOPIC);
+        return listVocabularies;
     }
 
     private void addTab(TestActivity testActivity,String labelId,

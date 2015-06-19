@@ -8,16 +8,20 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -30,6 +34,7 @@ import itpsoft.englishvocabulary.adapter.TopicAdapter;
 import itpsoft.englishvocabulary.databases.DbController;
 import itpsoft.englishvocabulary.models.MenuItem;
 import itpsoft.englishvocabulary.models.Topic;
+import itpsoft.englishvocabulary.ultils.Keyboard;
 import itpsoft.englishvocabulary.ultils.Log;
 import itpsoft.englishvocabulary.view.DrawerArrowDrawable;
 
@@ -121,38 +126,7 @@ public class HomeActivity extends Activity {
                 } else if (i == 2) {
 
                 } else if (i == 3) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-                    builder.setCancelable(true);
-                    View dialogView = LayoutInflater.from(HomeActivity.this).inflate(R.layout.dialog_remind, null, false);
-                    dialogView.setMinimumWidth((int) (displayRectangle.width() * 0.9f));
-//                    dialogView.setMinimumHeight((int) (displayRectangle.height() * 0.9f));
-                    builder.setView(dialogView);
-                    alertDialog = builder.create();
-                    alertDialog.setCancelable(true);
-                    alertDialog.setCanceledOnTouchOutside(true);
-
-                    ImageView dBack = (ImageView) dialogView.findViewById(R.id.back);
-                    ToggleButton dStatus = (ToggleButton) dialogView.findViewById(R.id.status);
-                    TimePicker dTime = (TimePicker) dialogView.findViewById(R.id.time_picker);
-                    final TextView dDisable = (TextView) dialogView.findViewById(R.id.disable);
-                    dBack.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if (alertDialog.isShowing())
-                                alertDialog.dismiss();
-                        }
-                    });
-                    dStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                            if (b) {
-                                dDisable.setVisibility(View.GONE);
-                            } else {
-                                dDisable.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    });
-                    alertDialog.show();
+                    createDialogRemin();
                 } else if (i == 5) {
 
                 }
@@ -176,6 +150,14 @@ public class HomeActivity extends Activity {
                 overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
             }
         });
+        listTopic.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Topic topic = (Topic) adapterView.getAdapter().getItem(i);
+                createDialogTopic(topic);
+                return true;
+            }
+        });
         //End topic
         //Button Add
         add = (ImageView) findViewById(R.id.add);
@@ -185,75 +167,7 @@ public class HomeActivity extends Activity {
                 if (drawer.isDrawerOpen(START)) {
                     drawer.closeDrawer(START);
                 }
-                AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-                builder.setCancelable(true);
-                View dialogView = LayoutInflater.from(HomeActivity.this).inflate(R.layout.dialog_add_topic, null, false);
-                dialogView.setMinimumWidth((int) (displayRectangle.width() * 0.9f));
-//                    dialogView.setMinimumHeight((int) (displayRectangle.height() * 0.9f));
-                builder.setView(dialogView);
-                alertDialog = builder.create();
-                alertDialog.setCancelable(true);
-                alertDialog.setCanceledOnTouchOutside(false);
-                ImageView dBack = (ImageView) dialogView.findViewById(R.id.back);
-                final EditText dText = (EditText) dialogView.findViewById(R.id.text);
-                final ImageView dDelete = (ImageView) dialogView.findViewById(R.id.delete);
-                Button dAdd = (Button) dialogView.findViewById(R.id.add);
-
-                View.OnClickListener dOnClickListener = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        int id = view.getId();
-                        switch (id) {
-                            case R.id.delete:
-                                dText.setText("");
-                                break;
-                            case R.id.back:
-                                if (alertDialog.isShowing())
-                                    alertDialog.dismiss();
-                                break;
-                            case R.id.add:
-                                if(dText.getText().toString().trim().length()>0) {
-                                    boolean result = topic.insert(dText.getText().toString());
-                                    if (result) {
-                                        if (alertDialog.isShowing())
-                                            alertDialog.dismiss();
-                                        topicAdapter.notifyDataSetChanged();
-                                        listTopic.setSelection(topicAdapter.getCount() - 1);
-                                        Toast.makeText(HomeActivity.this, resources.getString(R.string.added), Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(HomeActivity.this, resources.getString(R.string.error), Toast.LENGTH_SHORT).show();
-                                    }
-                                }else{
-                                    Toast.makeText(HomeActivity.this, resources.getString(R.string.name_empty), Toast.LENGTH_SHORT).show();
-                                }
-                                break;
-                        }
-                    }
-                };
-                dDelete.setOnClickListener(dOnClickListener);
-                dBack.setOnClickListener(dOnClickListener);
-                dAdd.setOnClickListener(dOnClickListener);
-                dText.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                        if (i > 0) {
-                            dDelete.setVisibility(View.VISIBLE);
-                        } else {
-                            dDelete.setVisibility(View.INVISIBLE);
-                        }
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-
-                    }
-                });
-                alertDialog.show();
+                createDialogAddTopic();
             }
         });
     }
@@ -265,5 +179,284 @@ public class HomeActivity extends Activity {
         arrMenu.add(new MenuItem("#ff6f00", R.drawable.ic_clock, resources.getString(R.string.reminds_study_time), resources.getString(R.string.off)));
         arrMenu.add("");
         arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_logout, resources.getString(R.string.logout), ""));
+    }
+
+    private void createDialogRemin() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+        builder.setCancelable(true);
+        View dialogView = LayoutInflater.from(HomeActivity.this).inflate(R.layout.dialog_remind, null, false);
+        dialogView.setMinimumWidth((int) (displayRectangle.width() * 0.9f));
+//                    dialogView.setMinimumHeight((int) (displayRectangle.height() * 0.9f));
+        builder.setView(dialogView);
+        alertDialog = builder.create();
+        alertDialog.setCancelable(true);
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.show();
+
+        ImageView dBack = (ImageView) dialogView.findViewById(R.id.back);
+        ToggleButton dStatus = (ToggleButton) dialogView.findViewById(R.id.status);
+        TimePicker dTime = (TimePicker) dialogView.findViewById(R.id.time_picker);
+        final TextView dDisable = (TextView) dialogView.findViewById(R.id.disable);
+        dBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (alertDialog.isShowing())
+                    alertDialog.dismiss();
+            }
+        });
+        dStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    dDisable.setVisibility(View.GONE);
+                } else {
+                    dDisable.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
+
+    private void createDialogAddTopic() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+        builder.setCancelable(true);
+        View dialogView = LayoutInflater.from(HomeActivity.this).inflate(R.layout.dialog_add_topic, null, false);
+        dialogView.setMinimumWidth((int) (displayRectangle.width() * 0.9f));
+//                    dialogView.setMinimumHeight((int) (displayRectangle.height() * 0.9f));
+        builder.setView(dialogView);
+        alertDialog = builder.create();
+        alertDialog.setCancelable(true);
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+
+        ImageView dBack = (ImageView) dialogView.findViewById(R.id.back);
+        final EditText dText = (EditText) dialogView.findViewById(R.id.text);
+        final ImageView dDelete = (ImageView) dialogView.findViewById(R.id.delete);
+        Button dAdd = (Button) dialogView.findViewById(R.id.add);
+
+        View.OnClickListener dOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id = view.getId();
+                switch (id) {
+                    case R.id.delete:
+                        dText.setText("");
+                        break;
+                    case R.id.back:
+                        if (alertDialog.isShowing())
+                            alertDialog.dismiss();
+                        break;
+                    case R.id.add:
+                        if (dText.getText().toString().trim().length() > 0) {
+                            int result = topic.insert(dText.getText().toString());
+                            if (result == Topic.INSERT_SUCCESS) {
+                                if (alertDialog.isShowing())
+                                    alertDialog.dismiss();
+                                topicAdapter.notifyDataSetChanged();
+                                listTopic.setSelection(topicAdapter.getCount() - 1);
+                                Toast.makeText(HomeActivity.this, resources.getString(R.string.added), Toast.LENGTH_SHORT).show();
+                            } else if (result == Topic.INSERT_EXITS) {
+                                Toast.makeText(HomeActivity.this, resources.getString(R.string.exits), Toast.LENGTH_SHORT).show();
+                            } else if (result == Topic.INSERT_FALSE) {
+                                Toast.makeText(HomeActivity.this, resources.getString(R.string.error), Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(HomeActivity.this, resources.getString(R.string.name_empty), Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                }
+            }
+        };
+        dDelete.setOnClickListener(dOnClickListener);
+        dBack.setOnClickListener(dOnClickListener);
+        dAdd.setOnClickListener(dOnClickListener);
+        Keyboard.showKeyboardDialog(alertDialog);
+        dText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (i > 0) {
+                    dDelete.setVisibility(View.VISIBLE);
+                } else {
+                    dDelete.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
+
+    private void createDialogTopic(final Topic t) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+        builder.setCancelable(true);
+        View dialogView = LayoutInflater.from(HomeActivity.this).inflate(R.layout.dialog_menu, null, false);
+        dialogView.setMinimumWidth((int) (displayRectangle.width() * 0.9f));
+
+        builder.setView(dialogView);
+        alertDialog = builder.create();
+        alertDialog.setCancelable(true);
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+
+        ListView dList = (ListView) dialogView.findViewById(R.id.menu);
+        ImageView dBack = (ImageView) dialogView.findViewById(R.id.back);
+        TextView dTitle = (TextView) dialogView.findViewById(R.id.title);
+
+        dTitle.setText(t.getName());
+        dBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (alertDialog.isShowing())
+                    alertDialog.dismiss();
+            }
+        });
+        String arr[] = {resources.getString(R.string.rename), resources.getString(R.string.delete)};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(HomeActivity.this, android.R.layout.simple_list_item_1, arr);
+        dList.setAdapter(adapter);
+        dList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (alertDialog.isShowing())
+                    alertDialog.dismiss();
+                switch (i) {
+                    case 0:
+                        createDialogRenameTopic(t);
+                        break;
+                    case 1:
+                        createDialogDeleteTopic(t);
+                        break;
+                }
+            }
+        });
+    }
+
+    private void createDialogRenameTopic(final Topic t) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+        builder.setCancelable(true);
+        View dialogView = LayoutInflater.from(HomeActivity.this).inflate(R.layout.dialog_add_topic, null, false);
+        dialogView.setMinimumWidth((int) (displayRectangle.width() * 0.9f));
+//                    dialogView.setMinimumHeight((int) (displayRectangle.height() * 0.9f));
+        builder.setView(dialogView);
+        alertDialog = builder.create();
+        alertDialog.setCancelable(true);
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+
+        ImageView dBack = (ImageView) dialogView.findViewById(R.id.back);
+        TextView dTitle = (TextView) dialogView.findViewById(R.id.title);
+        final EditText dText = (EditText) dialogView.findViewById(R.id.text);
+        final ImageView dDelete = (ImageView) dialogView.findViewById(R.id.delete);
+        Button dEdit = (Button) dialogView.findViewById(R.id.add);
+
+        dTitle.setText(resources.getString(R.string.rename));
+        dEdit.setText(resources.getString(R.string.save));
+        dText.setHint(resources.getString(R.string.insert_new_name));
+        dText.append(t.getName());
+        dText.setEllipsize(TextUtils.TruncateAt.END);
+        View.OnClickListener dOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id = view.getId();
+                switch (id) {
+                    case R.id.delete:
+                        dText.setText("");
+                        break;
+                    case R.id.back:
+                        if (alertDialog.isShowing())
+                            alertDialog.dismiss();
+                        break;
+                    case R.id.add:
+                        if (dText.getText().toString().trim().length() > 0) {
+                            int result = topic.rename(t, dText.getText().toString());
+                            if (result == Topic.EDIT_SUCCESS) {
+                                if (alertDialog.isShowing())
+                                    alertDialog.dismiss();
+                                topicAdapter.notifyDataSetChanged();
+                                Toast.makeText(HomeActivity.this, resources.getString(R.string.edited), Toast.LENGTH_SHORT).show();
+                            } else if (result == Topic.EDIT_SAME) {
+                                Toast.makeText(HomeActivity.this, resources.getString(R.string.same), Toast.LENGTH_SHORT).show();
+                            } else if (result == Topic.EDIT_FALSE) {
+                                Toast.makeText(HomeActivity.this, resources.getString(R.string.error), Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(HomeActivity.this, resources.getString(R.string.name_empty), Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                }
+            }
+        };
+        dDelete.setOnClickListener(dOnClickListener);
+        dBack.setOnClickListener(dOnClickListener);
+        dEdit.setOnClickListener(dOnClickListener);
+        Keyboard.showKeyboardDialog(alertDialog);
+        dText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (i > 0) {
+                    dDelete.setVisibility(View.VISIBLE);
+                } else {
+                    dDelete.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
+
+    private void createDialogDeleteTopic(final Topic t) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+        builder.setCancelable(true);
+        View dialogView = LayoutInflater.from(HomeActivity.this).inflate(R.layout.dialog_confirm_delete, null, false);
+        dialogView.setMinimumWidth((int) (displayRectangle.width() * 0.9f));
+        builder.setView(dialogView);
+        alertDialog = builder.create();
+        alertDialog.setCancelable(true);
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+
+        ImageView dBack = (ImageView) dialogView.findViewById(R.id.back);
+        TextView dContent = (TextView) dialogView.findViewById(R.id.content);
+        Button dDelete = (Button) dialogView.findViewById(R.id.delete);
+
+        View.OnClickListener dOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id = view.getId();
+                switch (id) {
+                    case R.id.back:
+                        if (alertDialog.isShowing())
+                            alertDialog.dismiss();
+                        break;
+                    case R.id.delete:
+                        if (alertDialog.isShowing())
+                            alertDialog.dismiss();
+                        int result = topic.delete(t);
+                        if(result == Topic.INSERT_SUCCESS){
+                            topicAdapter.notifyDataSetChanged();
+                            Toast.makeText(HomeActivity.this, resources.getString(R.string.deleted), Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(HomeActivity.this, resources.getString(R.string.error), Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                }
+            }
+        };
+        dDelete.setOnClickListener(dOnClickListener);
+        dBack.setOnClickListener(dOnClickListener);
+        dContent.setText(resources.getString(R.string.really_delete) + " " + t.getName());
     }
 }

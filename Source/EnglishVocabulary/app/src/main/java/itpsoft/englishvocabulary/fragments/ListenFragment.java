@@ -1,6 +1,8 @@
 package itpsoft.englishvocabulary.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -47,14 +49,12 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
     private TextToSpeech textToSpeech;
 //    private Context mContext;
     private ArrayList<Vocabulary> listVocabularys;
-    private Vocabulary vocabulary;
     private SpeakEnglish speakEnglish;
 
-    private static int LISTEN_POS_VOCABULARY = 0;
-    private static int LISTEN_NUM_QUESTION = 0;
-    private static int LISTEN_NUM_TOTAL = 0;
-    private static int LISTEN_NUM_SKIP = 0;
-    private static int LISTEN_NUM_TRUE = 0;
+    private static int LISTEN_POS_VOCABULARY    = 0;
+    private static int LISTEN_NUM_QUESTION      = 0;
+    private static int LISTEN_NUM_SKIP          = 0;
+    private static int LISTEN_NUM_TRUE          = 0;
 
     private String strEnglish,strVietnamese;
 
@@ -62,7 +62,6 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fm_test_listen, container, false);
-
 
         //hide keyboard firstTime
         getActivity().getWindow().setSoftInputMode(
@@ -94,8 +93,7 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
         //speakEnglish
         speakEnglish    = new SpeakEnglish(getActivity(), textToSpeech);
         //Vocabulary
-        vocabulary      = new Vocabulary();
-        listVocabularys = vocabulary.initListVocabulary(1);
+        listVocabularys = new TestActivity().getListVocabularies();
 
         txtTotal.setText(Integer.toString(listVocabularys.size()));
 
@@ -147,25 +145,20 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
             }
         });
 
-        Log.d("NgaDV", "size List=" + vocabulary.initListVocabulary(1).size());
-
-        Log.d("NgaDV", "size List=" + vocabulary.initListVocabulary(2).size());
 
 
         btnRepeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                LISTEN_NUM_QUESTION++;
+
                 Collections.shuffle(listVocabularys);
                 ckSuggest.setEnabled(true);
                 btnRepeat.setText(getResources().getString(R.string.txt_btn_repeat));
 
-
-                strEnglish      = listVocabularys.get(LISTEN_POS_VOCABULARY).getEnglish();
-                strVietnamese   = listVocabularys.get(LISTEN_POS_VOCABULARY).getVietnamese();
-
-
-                txtVietnamese.setText(strVietnamese);
+                txtVietnamese.setText(listVocabularys.get(LISTEN_POS_VOCABULARY).getVietnamese());
+                txtQuestion.setText(Integer.toString(LISTEN_NUM_QUESTION));
                 speakEnglish.speakOut(strEnglish);
                 btnRepeat.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -178,25 +171,33 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
                     @Override
                     public void onClick(View v) {
 
-
-
-                        Log.d("NgaDV",edtAnswers.getText().toString().toLowerCase());
-                        Log.d("NgaDV", listVocabularys.get(LISTEN_POS_VOCABULARY).getVietnamese().toString().toLowerCase());
                         if(edtAnswers.getText().toString().toLowerCase().trim().equals(listVocabularys.get(LISTEN_POS_VOCABULARY).getEnglish().toString().toLowerCase())){
-                            LISTEN_POS_VOCABULARY++;
-                            LISTEN_NUM_QUESTION++;
-                            LISTEN_NUM_TRUE++;
-
-                            txtQuestion.setText(Integer.toString(LISTEN_NUM_QUESTION));
-                            txtNumTrue.setText(Integer.toString(LISTEN_NUM_TRUE));
-                            txtVietnamese.setText(listVocabularys.get(LISTEN_POS_VOCABULARY).getVietnamese());
-                            edtAnswers.setText("");
-                            speakEnglish.speakOut(listVocabularys.get(LISTEN_POS_VOCABULARY).getEnglish());
-
                             if(LISTEN_POS_VOCABULARY == listVocabularys.size()-1){
+
+                                final AlertDialog.Builder mDialog =  new AlertDialog.Builder(getActivity());
+
+                                mDialog.setTitle(getResources().getString(R.string.txt_completet));
+                                mDialog.setMessage(getResources().getString(R.string.txt_msg_part1)
+                                        + LISTEN_NUM_TRUE + getResources().getString(R.string.txt_msg_part2)
+                                        + listVocabularys.size() + getResources().getString(R.string.txt_msg_part3)
+                                        + getResources().getString(R.string.txt_msg_part4));
+                                mDialog.setPositiveButton(getResources().getString(R.string.txt_ok), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                });
+                                mDialog.setNegativeButton(getResources().getString(R.string.txt_no), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        getActivity().finish();
+                                    }
+                                });
+                                mDialog.setCancelable(false);
+                                mDialog.show();
                                 Toast.makeText(getActivity(),"Ban da hoan thanh",Toast.LENGTH_SHORT).show();
                                 LISTEN_POS_VOCABULARY   = 0;
-                                LISTEN_NUM_QUESTION     = 0;
+                                LISTEN_NUM_QUESTION     = 1;
                                 LISTEN_NUM_TRUE         = 0;
                                 LISTEN_NUM_SKIP         = 0;
 
@@ -205,7 +206,24 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
                                 txtVietnamese.setText(listVocabularys.get(LISTEN_POS_VOCABULARY).getVietnamese());
                                 txtNumSkip.setText(Integer.toString(LISTEN_NUM_SKIP));
 
+
+
+                            }else {
+                                LISTEN_POS_VOCABULARY++;
+                                LISTEN_NUM_QUESTION++;
+                                LISTEN_NUM_TRUE++;
+
+                                txtQuestion.setText(Integer.toString(LISTEN_NUM_QUESTION));
+                                txtNumTrue.setText(Integer.toString(LISTEN_NUM_TRUE));
+                                txtVietnamese.setText(listVocabularys.get(LISTEN_POS_VOCABULARY).getVietnamese());
+                                edtAnswers.setText("");
+                                speakEnglish.speakOut(listVocabularys.get(LISTEN_POS_VOCABULARY).getEnglish());
                             }
+
+
+                            Log.d("NgaDV","LISTEN_POS_VOCABULARY  =  "+LISTEN_POS_VOCABULARY);
+
+
                             Log.d("NgaDV", "LISTEN_POS_VOCABULARY = " + LISTEN_POS_VOCABULARY);
                         }
                         else {
@@ -221,20 +239,34 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
                 btnSkip.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        LISTEN_POS_VOCABULARY++;
-                        LISTEN_NUM_QUESTION++;
-                        LISTEN_NUM_SKIP++;
 
-                        txtQuestion.setText(Integer.toString(LISTEN_NUM_QUESTION));
-                        txtNumTrue.setText(Integer.toString(LISTEN_NUM_TRUE));
-                        txtNumSkip.setText(Integer.toString(LISTEN_NUM_SKIP));
-                        txtVietnamese.setText(listVocabularys.get(LISTEN_POS_VOCABULARY).getVietnamese());
-                        speakEnglish.speakOut(listVocabularys.get(LISTEN_POS_VOCABULARY).getEnglish());
 
                         if(LISTEN_POS_VOCABULARY == listVocabularys.size()-1){
+
+                            final AlertDialog.Builder mDialog =  new AlertDialog.Builder(getActivity());
+
+                            mDialog.setTitle(getResources().getString(R.string.txt_completet));
+                            mDialog.setMessage(getResources().getString(R.string.txt_msg_part1)
+                                    + LISTEN_NUM_TRUE + getResources().getString(R.string.txt_msg_part2)
+                                    + listVocabularys.size() + getResources().getString(R.string.txt_msg_part3)
+                                    + getResources().getString(R.string.txt_msg_part4));
+                            mDialog.setPositiveButton(getResources().getString(R.string.txt_ok), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+                            mDialog.setNegativeButton(getResources().getString(R.string.txt_no), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    getActivity().finish();
+                                }
+                            });
+                            mDialog.setCancelable(false);
+                            mDialog.show();
                             Toast.makeText(getActivity(),"Ban da hoan thanh",Toast.LENGTH_SHORT).show();
                             LISTEN_POS_VOCABULARY   = 0;
-                            LISTEN_NUM_QUESTION     = 0;
+                            LISTEN_NUM_QUESTION     = 1;
                             LISTEN_NUM_TRUE         = 0;
                             LISTEN_NUM_SKIP         = 0;
 
@@ -244,6 +276,16 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
                             txtNumSkip.setText(Integer.toString(LISTEN_NUM_SKIP));
 
 
+                        }else {
+                            LISTEN_POS_VOCABULARY++;
+                            LISTEN_NUM_QUESTION++;
+                            LISTEN_NUM_SKIP++;
+
+                            txtQuestion.setText(Integer.toString(LISTEN_NUM_QUESTION));
+                            txtNumTrue.setText(Integer.toString(LISTEN_NUM_TRUE));
+                            txtNumSkip.setText(Integer.toString(LISTEN_NUM_SKIP));
+                            txtVietnamese.setText(listVocabularys.get(LISTEN_POS_VOCABULARY).getVietnamese());
+                            speakEnglish.speakOut(listVocabularys.get(LISTEN_POS_VOCABULARY).getEnglish());
                         }
                     }
                 });
@@ -251,25 +293,6 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
 
             }
         });
-
-//        //demo
-//        while (posVocabulary<listVocabularys.size()){
-//
-//            btnRepeat.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                        Collections.shuffle(listVocabularys);
-////                        Log.d("NgaDV",listVocabularys.get(posVocabulary).getEnglish());
-//                        speakEnglish.speakOut(listVocabularys.get(posVocabulary).getEnglish());
-//                    posVocabulary++;
-//
-//                }
-//            });
-//        }
-        //end demo
-        //click btnRepeat for listen text
-
 
         return rootView;
     }
@@ -285,7 +308,6 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
         LISTEN_NUM_QUESTION = 0;
         LISTEN_POS_VOCABULARY = 0;
         LISTEN_NUM_SKIP = 0;
-        LISTEN_NUM_TOTAL = 0;
         super.onDestroy();
     }
 

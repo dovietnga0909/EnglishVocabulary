@@ -1,5 +1,7 @@
 package itpsoft.englishvocabulary.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -22,6 +24,7 @@ import java.text.Annotation;
 import java.util.ArrayList;
 
 import itpsoft.englishvocabulary.R;
+import itpsoft.englishvocabulary.TestActivity;
 import itpsoft.englishvocabulary.models.Vocabulary;
 import itpsoft.englishvocabulary.ultils.SpeakEnglish;
 
@@ -74,8 +77,10 @@ public class RememberFragment extends Fragment {
         btnSkip         = (Button)rootView.findViewById(R.id.btnSkip);
 
         //Vocabulary
-        vocabulary      = new Vocabulary();
-        listVocabularys = vocabulary.initListVocabulary(1);
+        listVocabularys = new TestActivity().getListVocabularies();
+        Log.d("NgaDV", "list vocabulary size() RememberFragment : " + listVocabularys.size());
+
+
 
         txtTotal.setText(Integer.toString(listVocabularys.size()));
         //set imgIcDeleteTxt Gone When edtAnswers = ""
@@ -117,6 +122,9 @@ public class RememberFragment extends Fragment {
         btnAnswers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                REMEMBER_NUM_QUESTION++;
+                txtQuestion.setText(Integer.toString(REMEMBER_NUM_QUESTION));
                 btnAnswers.setText(getResources().getString(R.string.txt_btn_answers));
                 txtEnglish.setVisibility(View.VISIBLE);
                 txtEnglish.setText(listVocabularys.get(REMEMBER_POS_VOCABULARY).getEnglish());
@@ -125,32 +133,57 @@ public class RememberFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         if (edtAnswers.getText().toString().trim().toLowerCase().equals(listVocabularys.get(REMEMBER_POS_VOCABULARY).getVietnamese().toLowerCase())) {
-                            REMEMBER_POS_VOCABULARY++;
-                            REMEMBER_NUM_QUESTION++;
-                            REMEMBER_NUM_TRUE++;
+                            if (REMEMBER_POS_VOCABULARY == listVocabularys.size() - 1) {
+                                final AlertDialog.Builder mDialog = new AlertDialog.Builder(getActivity());
 
-                            txtQuestion.setText(Integer.toString(REMEMBER_NUM_QUESTION));
-                            txtNumTrue.setText(Integer.toString(REMEMBER_NUM_TRUE));
-                            txtEnglish.setText(listVocabularys.get(REMEMBER_POS_VOCABULARY).getEnglish());
+                                mDialog.setTitle(getResources().getString(R.string.txt_completet));
+                                mDialog.setMessage(getResources().getString(R.string.txt_msg_part1)
+                                        + REMEMBER_NUM_TRUE + getResources().getString(R.string.txt_msg_part2)
+                                        + listVocabularys.size() + getResources().getString(R.string.txt_msg_part3)
+                                        + getResources().getString(R.string.txt_msg_part4));
+                                mDialog.setPositiveButton(getResources().getString(R.string.txt_ok), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
 
-                            edtAnswers.setText("");
+                                    }
+                                });
+                                mDialog.setNegativeButton(getResources().getString(R.string.txt_no), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        getActivity().finish();
+                                    }
+                                });
+                                mDialog.setCancelable(false);
+                                mDialog.show();
+
+                                REMEMBER_POS_VOCABULARY = 0;
+                                REMEMBER_NUM_SKIP = 0;
+                                REMEMBER_NUM_QUESTION = 1;
+                                REMEMBER_NUM_TRUE = 0;
+
+                                Toast.makeText(getActivity(), "Ban da hoan thanh", Toast.LENGTH_SHORT).show();
+                                txtQuestion.setText(Integer.toString(REMEMBER_NUM_QUESTION));
+                                txtNumTrue.setText(Integer.toString(REMEMBER_NUM_TRUE));
+                                txtEnglish.setText(listVocabularys.get(REMEMBER_POS_VOCABULARY).getEnglish());
+                                txtNumSkip.setText(Integer.toString(REMEMBER_NUM_SKIP));
+                            } else {
+                                REMEMBER_POS_VOCABULARY++;
+                                REMEMBER_NUM_QUESTION++;
+                                REMEMBER_NUM_TRUE++;
+
+                                txtQuestion.setText(Integer.toString(REMEMBER_NUM_QUESTION));
+                                txtNumTrue.setText(Integer.toString(REMEMBER_NUM_TRUE));
+                                txtEnglish.setText(listVocabularys.get(REMEMBER_POS_VOCABULARY).getEnglish());
+
+                                edtAnswers.setText("");
+                            }
+
                         } else {
                             edtAnswers.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.shake));
                             txtEnglish.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.shake));
                         }
 
-                        if (REMEMBER_POS_VOCABULARY == listVocabularys.size()-1) {
-                            REMEMBER_POS_VOCABULARY = 0;
-                            REMEMBER_NUM_SKIP       = 0;
-                            REMEMBER_NUM_QUESTION   = 0;
-                            REMEMBER_NUM_TRUE       = 0;
 
-                            Toast.makeText(getActivity(),"Ban da hoan thanh",Toast.LENGTH_SHORT).show();
-                            txtQuestion.setText(Integer.toString(REMEMBER_NUM_QUESTION));
-                            txtNumTrue.setText(Integer.toString(REMEMBER_NUM_TRUE));
-                            txtEnglish.setText(listVocabularys.get(REMEMBER_POS_VOCABULARY).getEnglish());
-                            txtNumSkip.setText(Integer.toString(REMEMBER_NUM_SKIP));
-                        }
 
                     }
                 });
@@ -158,20 +191,33 @@ public class RememberFragment extends Fragment {
                 btnSkip.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        REMEMBER_POS_VOCABULARY++;
-                        REMEMBER_NUM_QUESTION++;
-                        REMEMBER_NUM_SKIP++;
-
-                        txtQuestion.setText(Integer.toString(REMEMBER_NUM_QUESTION));
-                        txtNumSkip.setText(Integer.toString(REMEMBER_NUM_SKIP));
-                        txtEnglish.setText(listVocabularys.get(REMEMBER_POS_VOCABULARY).getEnglish());
-
-                        edtAnswers.setText("");
-
                         if (REMEMBER_POS_VOCABULARY == listVocabularys.size()-1) {
+
+                            final AlertDialog.Builder mDialog = new AlertDialog.Builder(getActivity());
+
+                            mDialog.setTitle(getResources().getString(R.string.txt_completet));
+                            mDialog.setMessage(getResources().getString(R.string.txt_msg_part1)
+                                    + REMEMBER_NUM_TRUE + getResources().getString(R.string.txt_msg_part2)
+                                    + listVocabularys.size() + getResources().getString(R.string.txt_msg_part3)
+                                    + getResources().getString(R.string.txt_msg_part4));
+                            mDialog.setPositiveButton(getResources().getString(R.string.txt_ok), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+                            mDialog.setNegativeButton(getResources().getString(R.string.txt_no), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    getActivity().finish();
+                                }
+                            });
+                            mDialog.setCancelable(false);
+                            mDialog.show();
+
                             REMEMBER_POS_VOCABULARY = 0;
                             REMEMBER_NUM_SKIP       = 0;
-                            REMEMBER_NUM_QUESTION   = 0;
+                            REMEMBER_NUM_QUESTION   = 1;
                             REMEMBER_NUM_TRUE       = 0;
 
                             Toast.makeText(getActivity(),"Ban da hoan thanh",Toast.LENGTH_SHORT).show();
@@ -179,8 +225,17 @@ public class RememberFragment extends Fragment {
                             txtNumTrue.setText(Integer.toString(REMEMBER_NUM_TRUE));
                             txtEnglish.setText(listVocabularys.get(REMEMBER_POS_VOCABULARY).getEnglish());
                             txtNumSkip.setText(Integer.toString(REMEMBER_NUM_SKIP));
-                        }
+                        }else {
+                            REMEMBER_POS_VOCABULARY++;
+                            REMEMBER_NUM_QUESTION++;
+                            REMEMBER_NUM_SKIP++;
 
+                            txtQuestion.setText(Integer.toString(REMEMBER_NUM_QUESTION));
+                            txtNumSkip.setText(Integer.toString(REMEMBER_NUM_SKIP));
+                            txtEnglish.setText(listVocabularys.get(REMEMBER_POS_VOCABULARY).getEnglish());
+
+                            edtAnswers.setText("");
+                        }
                     }
                 });
 
