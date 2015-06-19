@@ -7,6 +7,7 @@ import android.speech.tts.TextToSpeech;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -137,7 +138,7 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (i2 > 0) {
+                if (!edtEnglish.getText().toString().trim().equals("")) {
                     imgClearEnglish.setVisibility(View.VISIBLE);
                     imgSoundEdt.setVisibility(View.VISIBLE);
                 } else {
@@ -161,7 +162,7 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(i2 > 0){
+                if(!edtVietnamese.getText().toString().trim().equals("")){
                     imgClearVn.setVisibility(View.VISIBLE);
                 } else {
                     imgClearVn.setVisibility(View.GONE);
@@ -210,7 +211,6 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
 
                 if(edtVietnamese.getText().toString() != ""){
                     imgClearEnglish.setVisibility(View.VISIBLE);
-                    imgSoundEdt.setVisibility(View.VISIBLE);
                 }
 
                 return true;
@@ -222,6 +222,7 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
     private void clearEdt() {
         edtEnglish.setText("");
         edtVietnamese.setText("");
+        edtEnglish.requestFocus();
     }
 
     //add vocabulary
@@ -232,16 +233,16 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
     //validate
     public boolean validate(){
         boolean check = false;
-        if(edtEnglish.getText().toString().trim().equals("")){
+        if(TextUtils.isEmpty(edtEnglish.getText())){
             layout_en.startAnimation(
                     AnimationUtils.loadAnimation(VocabularyActivity.this, R.anim.shake));
-            Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.empty), Toast.LENGTH_SHORT).show();
+            edtEnglish.setError(getResources().getString(R.string.empty));
             edtEnglish.requestFocus();
             return false;
-        } else if(edtVietnamese.getText().toString().trim().equals("")){
+        } else if(TextUtils.isEmpty(edtVietnamese.getText())){
             layout_vi.startAnimation(
                     AnimationUtils.loadAnimation(VocabularyActivity.this, R.anim.shake));
-            Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.empty), Toast.LENGTH_SHORT).show();
+            edtVietnamese.setError(getResources().getString(R.string.empty));
             edtVietnamese.requestFocus();
             return false;
         } else {
