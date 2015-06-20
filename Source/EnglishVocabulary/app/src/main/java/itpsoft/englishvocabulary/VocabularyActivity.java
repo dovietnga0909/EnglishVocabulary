@@ -19,12 +19,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import itpsoft.englishvocabulary.adapter.VocabularyAdapter;
 import itpsoft.englishvocabulary.models.Vocabulary;
+import itpsoft.englishvocabulary.ultils.AccentRemover;
 import itpsoft.englishvocabulary.ultils.Keyboard;
 import itpsoft.englishvocabulary.ultils.SpeakEnglish;
 
@@ -33,19 +36,21 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
 
     private ActionBar actionBar;
     private VocabularyAdapter adapter;
-    private ArrayList<Vocabulary> listVocabulary;
+    private ArrayList<Vocabulary> listVocabulary, listVocaSearch;
     private ListView listView;
     private Vocabulary vocabulary;
     public static int idTopic;
     private long idVoca;
     private int positionItemSelected;
     private String topicName;
-    private EditText edtEnglish, edtVietnamese;
+    private EditText edtEnglish, edtVietnamese, edtSearch;
     private Button btnAddVoca, btnCancel, btnUpdate, btnDelete;
     private LinearLayout control_btn_update, layout_en, layout_vi;
+    private RelativeLayout layout_search;
     private TextToSpeech textToSpeech;
     private SpeakEnglish speakEnglish;
-    private ImageView imgSoundEdt, imgClearEdtEnglish, imgClearEdtVn;
+    private ImageView imgSoundEdt, imgClearEdtEnglish, imgClearEdtVn, imgSearch, imgClose;
+    private TextView txtTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,9 +82,48 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.actionBar)));
-        actionBar.setTitle(topicName);
 
+        //custom view search
+        actionBar.setCustomView(R.layout.search_view);
+        txtTitle = (TextView) actionBar.getCustomView().findViewById(R.id.txtTitle);
+        imgSearch = (ImageView) actionBar.getCustomView().findViewById(R.id.imgSearch);
+        imgClose = (ImageView) actionBar.getCustomView().findViewById(R.id.imgClose);
+        edtSearch = (EditText) actionBar.getCustomView().findViewById(R.id.edtSearch);
+        layout_search = (RelativeLayout) actionBar.getCustomView().findViewById(R.id.layout_search);
+
+        txtTitle.setText(topicName);
+        //click imgSearch
+        imgSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                actionBar.setDisplayHomeAsUpEnabled(false);
+                txtTitle.setVisibility(View.GONE);
+                imgSearch.setVisibility(View.GONE);
+                layout_search.setVisibility(View.VISIBLE);
+                edtSearch.requestFocus();
+                Keyboard.showKeyboard(VocabularyActivity.this, edtSearch);
+            }
+        });
+
+        //click imgClose
+        imgClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!edtSearch.getText().toString().equals("")){
+                    edtSearch.setText("");
+                }else{
+                    actionBar.setDisplayHomeAsUpEnabled(true);
+                    txtTitle.setVisibility(View.VISIBLE);
+                    imgSearch.setVisibility(View.VISIBLE);
+                    layout_search.setVisibility(View.GONE);
+                    Keyboard.hideKeyboard(VocabularyActivity.this, edtSearch);
+                }
+            }
+        });
+
+        //listview
         listView = (ListView) findViewById(R.id.listVocabulary);
         vocabulary = new Vocabulary();
         listVocabulary = vocabulary.initListVocabulary(idTopic);
@@ -266,7 +310,29 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
 
             }
         });
+    }
 
+    @Override
+    protected void onResume() {
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                listVocaSearch = filter(charSequence.toString(), vocabulary.initListVocabulary(idTopic));
+                adapter = new VocabularyAdapter(VocabularyActivity.this, listVocaSearch);
+                listView.setAdapter(adapter);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        super.onResume();
     }
 
     private void clearEdt() {
@@ -334,6 +400,9 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
                 finish();
                 overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
                 break;
+            case R.id.search:
+
+                break;
             default:
                 break;
         }
@@ -344,5 +413,20 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
     @Override
     public void onInit(int i) {
 
+    }
+
+    private ArrayList<Vocabulary> filter(String value, ArrayList<Vocabulary> parentData){
+        ArrayList<Vocabulary> newData = new ArrayList<Vocabulary>();
+        String vReplace = AccentRemover.getInstance(VocabularyActivity.this).removeAccent(value);
+        if(!parentData.isEmpty()){
+            for (int i = 0; i < parentData.size(); i++){
+                String iReplace = AccentRemover.getInstance(VocabularyActivity.this).removeAccent(parentData.get(i).getEnglish());
+                String replace = AccentRemover.getInstance(VocabularyActivity.this).removeAccent(parentData.get(i).getVietnamese());
+                if(iReplace.toLowerCase().contains(vReplace.toLowerCase()) || replace.toLowerCase().contains(vReplace.toLowerCase())){
+                    newData.add(parentData.get(i));
+                }
+            }
+        }
+        return newData;
     }
 }

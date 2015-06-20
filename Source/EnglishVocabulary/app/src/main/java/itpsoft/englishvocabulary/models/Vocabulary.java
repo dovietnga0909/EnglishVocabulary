@@ -121,7 +121,7 @@ public class Vocabulary{
         DbController dbController = DbController.getInstance(context);
         int result = INSERT_FALSE;
         try {
-            String sql = "SELECT count(*) as 'count' FROM " + DbController.TABLE_VOCABULARY + " WHERE " + DbController.ENGLISH + " = '" + en.trim() + "';";
+            String sql = "SELECT count(*) as 'count' FROM " + DbController.TABLE_VOCABULARY + " WHERE " + DbController.ENGLISH + " = '" + en.trim() + "' and " + DbController.VIETNAMESE + " = '" + vi.trim() + "';";
             Cursor cursor = dbController.rawQuery(sql, null);
             int number = 0;
             if (cursor.moveToFirst()) {
@@ -152,7 +152,7 @@ public class Vocabulary{
         DbController dbController = DbController.getInstance(context);
         int result = EDIT_FALSE;
         try {
-            String sql = "SELECT count(*) as 'count' FROM " + DbController.TABLE_VOCABULARY + " WHERE " + DbController.ENGLISH + " = '" + en.trim() + "';";
+            String sql = "SELECT count(*) as 'count' FROM " + DbController.TABLE_VOCABULARY + " WHERE " + DbController.ENGLISH + " = '" + en.trim() + "' and " + DbController.VIETNAMESE + " = '" + vi.trim() + "';";
             Cursor cursor = dbController.rawQuery(sql, null);
             int number = 0;
             if (cursor.moveToFirst()) {
