@@ -9,6 +9,7 @@ public class SPUtil {
     public static final String PREF_FILE_NAME = "SharedPref";
     //Ten key
     public static final String KEY_AGREE_RUN = "agree_start";
+    public static final String KEY_REMIN_TIME = "remin_time";
     private SharedPreferences pref;
 
     private SPUtil(Context context) {
@@ -42,6 +43,12 @@ public class SPUtil {
         editor.commit();
     }
 
+    public void set(String keyName, long value) {
+        Editor editor = pref.edit();
+        editor.putLong(keyName, value);
+        editor.commit();
+    }
+
     public boolean get(String key, Boolean defaultValue) {
         boolean ret;
         ret = pref.getBoolean(key, defaultValue);
@@ -51,6 +58,12 @@ public class SPUtil {
     public int get(String key, int defaultValue) {
         int ret;
         ret = pref.getInt(key, defaultValue);
+        return ret;
+    }
+
+    public long get(String key, long defaultValue) {
+        long ret;
+        ret = pref.getLong(key, defaultValue);
         return ret;
     }
 }

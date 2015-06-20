@@ -28,6 +28,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -39,6 +40,7 @@ import itpsoft.englishvocabulary.models.MenuItem;
 import itpsoft.englishvocabulary.models.Topic;
 import itpsoft.englishvocabulary.ultils.Keyboard;
 import itpsoft.englishvocabulary.ultils.Log;
+import itpsoft.englishvocabulary.ultils.SPUtil;
 import itpsoft.englishvocabulary.view.DrawerArrowDrawable;
 
 import static android.view.Gravity.START;
@@ -60,14 +62,15 @@ public class HomeActivity extends Activity {
     private Topic topic;
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
-    private int intervalTime = 1000 * 60;
+    private int intervalTime = 1000 * 60 * 60 * 24;
+    private long reminTime = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ///start up
-
+        reminTime = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_REMIN_TIME, (long) -1);
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent alarmIntent = new Intent(HomeActivity.this, AlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0, alarmIntent, 0);
@@ -198,6 +201,7 @@ public class HomeActivity extends Activity {
     }
 
     private void createDialogRemin() {
+        reminTime = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_REMIN_TIME, (long) -1);
         AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
         builder.setCancelable(true);
         View dialogView = LayoutInflater.from(HomeActivity.this).inflate(R.layout.dialog_remind, null, false);
@@ -220,6 +224,21 @@ public class HomeActivity extends Activity {
                     alertDialog.dismiss();
             }
         });
+
+        if (reminTime != -1) {
+            dStatus.setChecked(true);
+            dDisable.setVisibility(View.GONE);
+
+            // lay gio
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss.SSS");
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(reminTime);
+            dTime.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
+            dTime.setCurrentMinute(calendar.get(Calendar.MINUTE));
+        } else {
+            dStatus.setChecked(false);
+            dDisable.setVisibility(View.VISIBLE);
+        }
         dStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -228,10 +247,17 @@ public class HomeActivity extends Activity {
                     calendar.set(Calendar.HOUR_OF_DAY, dTime.getCurrentHour());
                     calendar.set(Calendar.MINUTE, dTime.getCurrentMinute());
                     calendar.set(Calendar.SECOND, 0);
-                    startAlarm(calendar.getTimeInMillis()+intervalTime);
+                    long time = calendar.getTimeInMillis() + intervalTime;
+                    startAlarm(time);
+                    SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_REMIN_TIME, time);
+                    ((MenuItem)arrMenu.get(2)).setValue(calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
+                    menuAdapter.notifyDataSetChanged();
                     dDisable.setVisibility(View.GONE);
                 } else {
+                    SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_REMIN_TIME, (long) -1);
                     alarmManager.cancel(pendingIntent);
+                    ((MenuItem)arrMenu.get(2)).setValue(resources.getString(R.string.off));
+                    menuAdapter.notifyDataSetChanged();
                     dDisable.setVisibility(View.VISIBLE);
                 }
             }
@@ -243,7 +269,11 @@ public class HomeActivity extends Activity {
                 calendar.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
                 calendar.set(Calendar.MINUTE, timePicker.getCurrentMinute());
                 calendar.set(Calendar.SECOND, 0);
-                startAlarm(calendar.getTimeInMillis());
+                long time = calendar.getTimeInMillis();
+                startAlarm(time);
+                SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_REMIN_TIME, time);
+                ((MenuItem)arrMenu.get(2)).setValue(calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
+                menuAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -491,12 +521,25 @@ public class HomeActivity extends Activity {
         dBack.setOnClickListener(dOnClickListener);
         dContent.setText(resources.getString(R.string.really_delete) + " " + t.getName());
     }
-    private void startAlarm(long time){
+
+    private void startAlarm(long time) {
         alarmManager.cancel(pendingIntent);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, time,
                 intervalTime, pendingIntent);
     }
-    private void dateSetChange(){
+
+    private void dateSetChange() {
         topicAdapter.notifyDataSetChanged();
+        long reminTime = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_REMIN_TIME, (long) -1);
+        if (reminTime != -1) {
+            // lay gio
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss.SSS");
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(reminTime);
+            ((MenuItem)arrMenu.get(2)).setValue(calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
+        } else {
+            ((MenuItem)arrMenu.get(2)).setValue(resources.getString(R.string.off));
+        }
+        menuAdapter.notifyDataSetChanged();
     }
 }
