@@ -64,6 +64,7 @@ public class HomeActivity extends Activity {
     private PendingIntent pendingIntent;
     private int intervalTime = 1000 * 60 * 60 * 24;
     private long reminTime = -1;
+    private Intent alarmIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +73,7 @@ public class HomeActivity extends Activity {
         ///start up
         reminTime = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_REMIN_TIME, (long) -1);
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent alarmIntent = new Intent(HomeActivity.this, AlarmReceiver.class);
+        alarmIntent = new Intent(HomeActivity.this, AlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0, alarmIntent, 0);
 
         displayRectangle = new Rect();
@@ -523,7 +524,8 @@ public class HomeActivity extends Activity {
     }
 
     private void startAlarm(long time) {
-        alarmManager.cancel(pendingIntent);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//        alarmManager.cancel(pendingIntent);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, time,
                 intervalTime, pendingIntent);
     }
