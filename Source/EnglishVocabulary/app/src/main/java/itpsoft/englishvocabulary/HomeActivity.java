@@ -1,7 +1,10 @@
 package itpsoft.englishvocabulary;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -13,7 +16,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,16 +23,17 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import itpsoft.englishvocabulary.adapter.MenuAdapter;
 import itpsoft.englishvocabulary.adapter.TopicAdapter;
+import itpsoft.englishvocabulary.alarm.AlarmReceiver;
 import itpsoft.englishvocabulary.databases.DbController;
 import itpsoft.englishvocabulary.models.MenuItem;
 import itpsoft.englishvocabulary.models.Topic;
@@ -50,18 +53,25 @@ public class HomeActivity extends Activity {
     private ListView listMenu, listTopic;
     private ArrayList<Object> arrMenu;
     private MenuAdapter menuAdapter;
-    private ArrayList<Topic> arrTopic;
     private TopicAdapter topicAdapter;
     private ImageView add;
     private AlertDialog alertDialog;
     private Rect displayRectangle;
     private Topic topic;
+    private AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
+    private int intervalTime = 1000 * 60;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ///start up
+
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent alarmIntent = new Intent(HomeActivity.this, AlarmReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0, alarmIntent, 0);
+
         displayRectangle = new Rect();
         Window window = getWindow();
         window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
@@ -104,12 +114,12 @@ public class HomeActivity extends Activity {
             }
         });
 
-//        initView();
+        initView();
     }
 
     @Override
     protected void onResume() {
-        initView();
+        dateSetChange();
         super.onResume();
     }
 
@@ -140,7 +150,6 @@ public class HomeActivity extends Activity {
         });
         //End menu
         //Topic
-//        arrTopic = topic.getAll();
         listTopic = (ListView) findViewById(R.id.listTopic);
         topicAdapter = new TopicAdapter(HomeActivity.this, topic);
         listTopic.setAdapter(topicAdapter);
@@ -202,7 +211,7 @@ public class HomeActivity extends Activity {
 
         ImageView dBack = (ImageView) dialogView.findViewById(R.id.back);
         ToggleButton dStatus = (ToggleButton) dialogView.findViewById(R.id.status);
-        TimePicker dTime = (TimePicker) dialogView.findViewById(R.id.time_picker);
+        final TimePicker dTime = (TimePicker) dialogView.findViewById(R.id.time_picker);
         final TextView dDisable = (TextView) dialogView.findViewById(R.id.disable);
         dBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,10 +224,26 @@ public class HomeActivity extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(Calendar.HOUR_OF_DAY, dTime.getCurrentHour());
+                    calendar.set(Calendar.MINUTE, dTime.getCurrentMinute());
+                    calendar.set(Calendar.SECOND, 0);
+                    startAlarm(calendar.getTimeInMillis()+intervalTime);
                     dDisable.setVisibility(View.GONE);
                 } else {
+                    alarmManager.cancel(pendingIntent);
                     dDisable.setVisibility(View.VISIBLE);
                 }
+            }
+        });
+        dTime.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker timePicker, int i, int i1) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
+                calendar.set(Calendar.MINUTE, timePicker.getCurrentMinute());
+                calendar.set(Calendar.SECOND, 0);
+                startAlarm(calendar.getTimeInMillis());
             }
         });
     }
@@ -465,5 +490,13 @@ public class HomeActivity extends Activity {
         dDelete.setOnClickListener(dOnClickListener);
         dBack.setOnClickListener(dOnClickListener);
         dContent.setText(resources.getString(R.string.really_delete) + " " + t.getName());
+    }
+    private void startAlarm(long time){
+        alarmManager.cancel(pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, time,
+                intervalTime, pendingIntent);
+    }
+    private void dateSetChange(){
+        topicAdapter.notifyDataSetChanged();
     }
 }
