@@ -159,7 +159,7 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
 
                 txtVietnamese.setText(listVocabularys.get(LISTEN_POS_VOCABULARY).getVietnamese());
                 txtQuestion.setText(Integer.toString(LISTEN_NUM_QUESTION));
-                speakEnglish.speakOut(strEnglish);
+                speakEnglish.speakOut(listVocabularys.get(LISTEN_POS_VOCABULARY).getEnglish());
                 btnRepeat.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
