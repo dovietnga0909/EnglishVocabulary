@@ -134,7 +134,7 @@
         android:layout_height="40dp"
         android:layout_marginBottom="@dimen/vocabulary_activity_margin"
         android:layout_marginTop="@dimen/vocabulary_activity_margin"
-        android:background="@drawable/bg_btn_ansers_selector"
+        android:background="@drawable/bg_btn_skip_selector"
         android:text="@string/add_vocabulary"
         android:textColor="@color/white" />
 
@@ -152,7 +152,7 @@
             android:layout_height="40dp"
             android:layout_marginBottom="@dimen/vocabulary_activity_margin"
             android:layout_marginTop="@dimen/vocabulary_activity_margin"
-            android:background="@drawable/bg_btn_ansers_selector"
+            android:background="@drawable/bg_btn_skip_selector"
             android:text="@string/cancel"
             android:textColor="@color/white" />
 
@@ -167,7 +167,7 @@
             android:layout_height="40dp"
             android:layout_marginBottom="@dimen/vocabulary_activity_margin"
             android:layout_marginTop="@dimen/vocabulary_activity_margin"
-            android:background="@drawable/bg_btn_ansers_selector"
+            android:background="@drawable/bg_btn_skip_selector"
             android:text="@string/delete"
             android:textColor="@color/white" />
 
@@ -182,7 +182,7 @@
             android:layout_height="40dp"
             android:layout_marginBottom="@dimen/vocabulary_activity_margin"
             android:layout_marginTop="@dimen/vocabulary_activity_margin"
-            android:background="@drawable/bg_btn_ansers_selector"
+            android:background="@drawable/bg_btn_skip_selector"
             android:text="@string/update"
             android:textColor="@color/white" />
 
