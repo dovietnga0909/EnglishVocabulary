@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import itpsoft.englishvocabulary.R;
+import itpsoft.englishvocabulary.VocabularyActivity;
 import itpsoft.englishvocabulary.models.Vocabulary;
 import itpsoft.englishvocabulary.ultils.SpeakEnglish;
 
@@ -22,10 +23,18 @@ public class VocabularyAdapter extends BaseAdapter {
 
     private Context context;
     private ArrayList<Vocabulary> listVocabulary;
+    private Vocabulary vocabulary;
 
     public VocabularyAdapter(Context context, ArrayList<Vocabulary> listVocabulary) {
         this.context = context;
         this.listVocabulary = listVocabulary;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+        vocabulary = new Vocabulary();
+        listVocabulary = vocabulary.initListVocabulary(VocabularyActivity.idTopic);
     }
 
     @Override
@@ -71,4 +80,6 @@ public class VocabularyAdapter extends BaseAdapter {
         TextView txtVietnamese;
         ImageView imgSound;
     }
+
+
 }

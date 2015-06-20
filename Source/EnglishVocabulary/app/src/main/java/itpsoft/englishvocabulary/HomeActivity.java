@@ -104,7 +104,13 @@ public class HomeActivity extends Activity {
             }
         });
 
+//        initView();
+    }
+
+    @Override
+    protected void onResume() {
         initView();
+        super.onResume();
     }
 
     private void initView() {

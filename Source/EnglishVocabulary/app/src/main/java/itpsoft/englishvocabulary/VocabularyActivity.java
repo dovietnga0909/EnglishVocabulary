@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 import itpsoft.englishvocabulary.adapter.VocabularyAdapter;
 import itpsoft.englishvocabulary.models.Vocabulary;
+import itpsoft.englishvocabulary.ultils.Keyboard;
 import itpsoft.englishvocabulary.ultils.SpeakEnglish;
 
 
@@ -35,14 +36,16 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
     private ArrayList<Vocabulary> listVocabulary;
     private ListView listView;
     private Vocabulary vocabulary;
-    private int idTopic;
+    public static int idTopic;
+    private long idVoca;
+    private int positionItemSelected;
     private String topicName;
     private EditText edtEnglish, edtVietnamese;
-    private Button btnAddVoca, btnCancel, btnUpdate;
+    private Button btnAddVoca, btnCancel, btnUpdate, btnDelete;
     private LinearLayout control_btn_update, layout_en, layout_vi;
     private TextToSpeech textToSpeech;
     private SpeakEnglish speakEnglish;
-    private ImageView imgSoundEdt, imgClearEnglish, imgClearVn;
+    private ImageView imgSoundEdt, imgClearEdtEnglish, imgClearEdtVn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,114 +69,11 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
         btnAddVoca = (Button) findViewById(R.id.btnAddVoca);
         btnCancel = (Button) findViewById(R.id.btnCancel);
         btnUpdate = (Button) findViewById(R.id.btnUpdate);
+        btnDelete = (Button) findViewById(R.id.btnDelete);
 
         imgSoundEdt = (ImageView) findViewById(R.id.imgEdtSound);
-        imgClearEnglish = (ImageView) findViewById(R.id.clearEdtEnglish);
-        imgClearVn = (ImageView) findViewById(R.id.clearEdtVn);
-
-        //add vocabulary
-        btnAddVoca.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                String en = edtEnglish.getText().toString();
-                String vi = edtVietnamese.getText().toString();
-
-                if(validate()){
-                    addVocabulary(en, vi);
-                }
-
-            }
-        });
-
-        //cancel
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                control_btn_update.setVisibility(View.GONE);
-                btnAddVoca.setVisibility(View.VISIBLE);
-
-                clearEdt();
-            }
-        });
-
-        //update
-        btnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        //click icon sound in edittext
-        imgSoundEdt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                speakEnglish.speakOut(edtEnglish.getText().toString());
-            }
-        });
-
-        //click icon clear edittext english
-        imgClearEnglish.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                edtEnglish.setText("");
-            }
-        });
-
-        //click icon clear edittext tieng viet
-        imgClearVn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                edtVietnamese.setText("");
-            }
-        });
-
-        //edittext english
-        edtEnglish.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!edtEnglish.getText().toString().trim().equals("")) {
-                    imgClearEnglish.setVisibility(View.VISIBLE);
-                    imgSoundEdt.setVisibility(View.VISIBLE);
-                } else {
-                    imgClearEnglish.setVisibility(View.GONE);
-                    imgSoundEdt.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        //edittext vietnamese
-        edtVietnamese.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(!edtVietnamese.getText().toString().trim().equals("")){
-                    imgClearVn.setVisibility(View.VISIBLE);
-                } else {
-                    imgClearVn.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
+        imgClearEdtEnglish = (ImageView) findViewById(R.id.clearEdtEnglish);
+        imgClearEdtVn = (ImageView) findViewById(R.id.clearEdtVn);
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -198,22 +98,172 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                positionItemSelected = i;
+                idVoca = ((Vocabulary) adapterView.getAdapter().getItem(i)).getId();
                 edtEnglish.setText(((Vocabulary) adapterView.getAdapter().getItem(i)).getEnglish());
                 edtVietnamese.setText(((Vocabulary) adapterView.getAdapter().getItem(i)).getVietnamese());
                 control_btn_update.setVisibility(View.VISIBLE);
                 btnAddVoca.setVisibility(View.GONE);
 
-                if(edtEnglish.getText().toString() != ""){
-                    imgClearEnglish.setVisibility(View.VISIBLE);
+                if (edtEnglish.getText().toString() != "") {
+                    imgClearEdtEnglish.setVisibility(View.VISIBLE);
                     imgSoundEdt.setVisibility(View.VISIBLE);
                 }
 
-                if(edtVietnamese.getText().toString() != ""){
-                    imgClearEnglish.setVisibility(View.VISIBLE);
+                if (edtVietnamese.getText().toString() != "") {
+                    imgClearEdtEnglish.setVisibility(View.VISIBLE);
                 }
 
                 return true;
+            }
+        });
+
+        //add vocabulary
+        btnAddVoca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String en = edtEnglish.getText().toString();
+                String vi = edtVietnamese.getText().toString();
+
+                if (validate()) {
+                    int result = vocabulary.addVocabulary(idTopic, en, vi);
+                    if (result == Vocabulary.INSERT_SUCCESS) {
+                        clearEdt();
+                        adapter.notifyDataSetChanged();
+                        listView.setSelection(adapter.getCount() - 1);
+                        Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.added), Toast.LENGTH_SHORT).show();
+                    } else if (result == Vocabulary.INSERT_EXITS) {
+                        Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.exits_voca), Toast.LENGTH_SHORT).show();
+                    } else if (result == Vocabulary.INSERT_FALSE) {
+                        Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.error), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+        });
+
+        //cancel
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                control_btn_update.setVisibility(View.GONE);
+                btnAddVoca.setVisibility(View.VISIBLE);
+
+                clearEdt();
+            }
+        });
+
+        //update
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String en = edtEnglish.getText().toString();
+                String vi = edtVietnamese.getText().toString();
+                if(validate()){
+                    int result = vocabulary.updateVocabulary(idVoca, en, vi);
+                    if (result == Vocabulary.EDIT_SUCCESS) {
+                        control_btn_update.setVisibility(View.GONE);
+                        btnAddVoca.setVisibility(View.VISIBLE);
+                        clearEdt();
+                        adapter.notifyDataSetChanged();
+                        listView.setSelection(positionItemSelected);
+                        Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.edited), Toast.LENGTH_SHORT).show();
+                    } else if (result == Vocabulary.EDIT_EXITS) {
+                        Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.exits_voca), Toast.LENGTH_SHORT).show();
+                    } else if (result == Vocabulary.EDIT_FALSE) {
+                        Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.error), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
+        //delete
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(validate()){
+                    int result = vocabulary.delete(idVoca);
+                    if (result == Vocabulary.DELETE_SUCCESS) {
+                        control_btn_update.setVisibility(View.GONE);
+                        btnAddVoca.setVisibility(View.VISIBLE);
+                        clearEdt();
+                        adapter.notifyDataSetChanged();
+                        Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.deleted), Toast.LENGTH_SHORT).show();
+                    } else if (result == Vocabulary.DELETE_FALSE) {
+                        Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.error), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
+        //click icon sound in edittext
+        imgSoundEdt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                speakEnglish.speakOut(edtEnglish.getText().toString());
+            }
+        });
+
+        //click icon clear edittext english
+        imgClearEdtEnglish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                edtEnglish.setText("");
+            }
+        });
+
+        //click icon clear edittext tieng viet
+        imgClearEdtVn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                edtVietnamese.setText("");
+            }
+        });
+
+        //edittext english
+        edtEnglish.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!edtEnglish.getText().toString().trim().equals("")) {
+                    imgClearEdtEnglish.setVisibility(View.VISIBLE);
+                    imgSoundEdt.setVisibility(View.VISIBLE);
+                } else {
+                    imgClearEdtEnglish.setVisibility(View.GONE);
+                    imgSoundEdt.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        //edittext vietnamese
+        edtVietnamese.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(!edtVietnamese.getText().toString().trim().equals("")){
+                    imgClearEdtVn.setVisibility(View.VISIBLE);
+                } else {
+                    imgClearEdtVn.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
 
@@ -225,11 +275,6 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
         edtEnglish.requestFocus();
     }
 
-    //add vocabulary
-    private void addVocabulary(String en, String vi) {
-
-    }
-
     //validate
     public boolean validate(){
         boolean check = false;
@@ -238,12 +283,14 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
                     AnimationUtils.loadAnimation(VocabularyActivity.this, R.anim.shake));
             edtEnglish.setError(getResources().getString(R.string.empty));
             edtEnglish.requestFocus();
+            Keyboard.showKeyboard(this, edtEnglish);
             return false;
         } else if(TextUtils.isEmpty(edtVietnamese.getText())){
             layout_vi.startAnimation(
                     AnimationUtils.loadAnimation(VocabularyActivity.this, R.anim.shake));
             edtVietnamese.setError(getResources().getString(R.string.empty));
             edtVietnamese.requestFocus();
+            Keyboard.showKeyboard(this, edtVietnamese);
             return false;
         } else {
             check = true;

@@ -55,6 +55,7 @@
     <string name="add_topic">Thêm chủ đề</string>
     <string name="error">Lỗi</string>
     <string name="exits">Đã tồn tại</string>
+    <string name="exits_voca">Từ này đã tồn tại</string>
     <string name="added">Thêm thành công</string>
     <string name="edited">Sửa thành công</string>
     <string name="same">Giống tên cũ</string>
