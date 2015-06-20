@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:id="@+id/txtQuestions"
-                    android:textSize="25dp"
+                    android:textSize="15dp"
                     android:textColor="@color/cl_actionbar"
                     android:textStyle="bold" />
 
@@ -109,7 +109,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:id="@+id/imgIcDeleteTxt"
-                    android:src="@drawable/delete"
+                    android:src="@drawable/delete_selector"
                     android:visibility="invisible"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
@@ -210,7 +210,7 @@
                     android:gravity="center"
                     android:textStyle="bold"
                     android:textSize="50dp"
-                    android:textColor="@color/cl_actionbar"/>
+                    android:textColor="@color/cl_pressed"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -220,7 +220,7 @@
                     android:textSize="15dp"
                     android:textStyle="bold"
                     android:gravity="center"
-                    android:background="@color/cl_actionbar"
+                    android:background="@color/cl_pressed"
                     android:textColor="@color/white"/>
             </LinearLayout>
 
@@ -249,7 +249,7 @@
                     android:gravity="center"
                     android:textStyle="bold"
                     android:textSize="50dp"
-                    android:textColor="@color/cl_pressed"/>
+                    android:textColor="@color/cl_actionbar"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -258,7 +258,7 @@
                     android:textSize="15dp"
                     android:textStyle="bold"
                     android:gravity="center"
-                    android:background="@color/cl_pressed"
+                    android:background="@color/cl_actionbar"
                     android:textColor="@color/white"/>
             </LinearLayout>
 

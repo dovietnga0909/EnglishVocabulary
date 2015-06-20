@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
-    <solid android:color="@color/cl_pressed"/>
+    <solid android:color="@color/cl_actionbar"/>
     <corners android:radius="4dp"/>
     <size android:height="40dp"></size>
 </shape>
