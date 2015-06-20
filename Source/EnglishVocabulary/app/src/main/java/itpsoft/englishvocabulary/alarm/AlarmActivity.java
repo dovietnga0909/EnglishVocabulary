@@ -31,6 +31,7 @@ public class AlarmActivity extends Activity {
 
     private PendingIntent pendingIntent;
     private MediaPlayer mp = null;
+    private int timeOut = 1000 * 60;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class AlarmActivity extends Activity {
         });
 
         playSound(this, getAlarmUri());
-        new CountDownTimer(5 * 1000, 500) {
+        new CountDownTimer(timeOut, 500) {
 
             public void onTick(long millisUntilFinished) {
             }
