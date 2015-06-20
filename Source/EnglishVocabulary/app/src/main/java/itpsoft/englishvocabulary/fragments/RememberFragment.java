@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import itpsoft.englishvocabulary.R;
 import itpsoft.englishvocabulary.TestActivity;
 import itpsoft.englishvocabulary.models.Vocabulary;
+import itpsoft.englishvocabulary.ultils.Keyboard;
 import itpsoft.englishvocabulary.ultils.SpeakEnglish;
 
 /**
@@ -122,6 +123,8 @@ public class RememberFragment extends Fragment {
         btnAnswers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Keyboard.showKeyboard(getActivity(), edtAnswers);
 
                 REMEMBER_NUM_QUESTION++;
                 txtQuestion.setText(Integer.toString(REMEMBER_NUM_QUESTION));

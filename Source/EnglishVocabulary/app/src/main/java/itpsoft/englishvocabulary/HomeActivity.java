@@ -285,7 +285,7 @@ public class HomeActivity extends Activity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (i > 0) {
+                if (!dText.getText().toString().trim().equals("")) {
                     dDelete.setVisibility(View.VISIBLE);
                 } else {
                     dDelete.setVisibility(View.INVISIBLE);
@@ -410,7 +410,7 @@ public class HomeActivity extends Activity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (i > 0) {
+                if (!dText.getText().toString().trim().equals("")) {
                     dDelete.setVisibility(View.VISIBLE);
                 } else {
                     dDelete.setVisibility(View.INVISIBLE);

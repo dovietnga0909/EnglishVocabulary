@@ -33,6 +33,7 @@ import java.util.Locale;
 import itpsoft.englishvocabulary.R;
 import itpsoft.englishvocabulary.TestActivity;
 import itpsoft.englishvocabulary.models.Vocabulary;
+import itpsoft.englishvocabulary.ultils.Keyboard;
 import itpsoft.englishvocabulary.ultils.SpeakEnglish;
 
 
@@ -152,6 +153,8 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
             public void onClick(View v) {
 
                 LISTEN_NUM_QUESTION++;
+
+                Keyboard.showKeyboard(getActivity(), edtAnswers);
 
                 Collections.shuffle(listVocabularys);
                 ckSuggest.setEnabled(true);
