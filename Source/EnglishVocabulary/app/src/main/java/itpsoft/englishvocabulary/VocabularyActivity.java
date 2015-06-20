@@ -226,17 +226,15 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(validate()){
-                    int result = vocabulary.delete(idVoca);
-                    if (result == Vocabulary.DELETE_SUCCESS) {
-                        control_btn_update.setVisibility(View.GONE);
-                        btnAddVoca.setVisibility(View.VISIBLE);
-                        clearEdt();
-                        adapter.notifyDataSetChanged();
-                        Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.deleted), Toast.LENGTH_SHORT).show();
-                    } else if (result == Vocabulary.DELETE_FALSE) {
-                        Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.error), Toast.LENGTH_SHORT).show();
-                    }
+                int result = vocabulary.delete(idVoca);
+                if (result == Vocabulary.DELETE_SUCCESS) {
+                    control_btn_update.setVisibility(View.GONE);
+                    btnAddVoca.setVisibility(View.VISIBLE);
+                    clearEdt();
+                    adapter.notifyDataSetChanged();
+                    Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.deleted), Toast.LENGTH_SHORT).show();
+                } else if (result == Vocabulary.DELETE_FALSE) {
+                    Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.error), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -344,14 +342,14 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
     //validate
     public boolean validate(){
         boolean check = false;
-        if(TextUtils.isEmpty(edtEnglish.getText())){
+        if(edtEnglish.getText().toString().trim().equals("")){
             layout_en.startAnimation(
                     AnimationUtils.loadAnimation(VocabularyActivity.this, R.anim.shake));
             edtEnglish.setError(getResources().getString(R.string.empty));
             edtEnglish.requestFocus();
             Keyboard.showKeyboard(this, edtEnglish);
             return false;
-        } else if(TextUtils.isEmpty(edtVietnamese.getText())){
+        } else if(edtVietnamese.getText().toString().trim().equals("")){
             layout_vi.startAnimation(
                     AnimationUtils.loadAnimation(VocabularyActivity.this, R.anim.shake));
             edtVietnamese.setError(getResources().getString(R.string.empty));
