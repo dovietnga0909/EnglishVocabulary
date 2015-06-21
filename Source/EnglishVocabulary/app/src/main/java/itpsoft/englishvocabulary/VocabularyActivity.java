@@ -7,7 +7,6 @@ import android.speech.tts.TextToSpeech;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -51,6 +50,7 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
     private SpeakEnglish speakEnglish;
     private ImageView imgSoundEdt, imgClearEdtEnglish, imgClearEdtVn, imgSearch, imgClose;
     private TextView txtTitle;
+    private boolean newAction = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +98,6 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
         imgSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                actionBar.setDisplayHomeAsUpEnabled(false);
                 txtTitle.setVisibility(View.GONE);
                 imgSearch.setVisibility(View.GONE);
                 layout_search.setVisibility(View.VISIBLE);
@@ -114,7 +113,6 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
                 if(!edtSearch.getText().toString().equals("")){
                     edtSearch.setText("");
                 }else{
-                    actionBar.setDisplayHomeAsUpEnabled(true);
                     txtTitle.setVisibility(View.VISIBLE);
                     imgSearch.setVisibility(View.VISIBLE);
                     layout_search.setVisibility(View.GONE);
@@ -172,6 +170,7 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
 
                 if (validate()) {
                     int result = vocabulary.addVocabulary(idTopic, en, vi);
+                    newAction = true;
                     if (result == Vocabulary.INSERT_SUCCESS) {
                         clearEdt();
                         adapter.notifyDataSetChanged();
@@ -206,6 +205,7 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
                 String vi = edtVietnamese.getText().toString();
                 if(validate()){
                     int result = vocabulary.updateVocabulary(idVoca, en, vi);
+                    newAction = true;
                     if (result == Vocabulary.EDIT_SUCCESS) {
                         control_btn_update.setVisibility(View.GONE);
                         btnAddVoca.setVisibility(View.VISIBLE);
@@ -227,6 +227,7 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
             @Override
             public void onClick(View view) {
                 int result = vocabulary.delete(idVoca);
+                newAction = true;
                 if (result == Vocabulary.DELETE_SUCCESS) {
                     control_btn_update.setVisibility(View.GONE);
                     btnAddVoca.setVisibility(View.VISIBLE);
@@ -320,7 +321,13 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                listVocaSearch = filter(charSequence.toString(), vocabulary.initListVocabulary(idTopic));
+                if(newAction) {
+                    listVocaSearch = filter(charSequence.toString(), vocabulary.initListVocabulary(idTopic));
+                    listVocabulary = listVocaSearch;
+                    newAction = false;
+                } else {
+                    listVocaSearch = filter(charSequence.toString(), listVocabulary);
+                }
                 adapter = new VocabularyAdapter(VocabularyActivity.this, listVocaSearch);
                 listView.setAdapter(adapter);
             }
