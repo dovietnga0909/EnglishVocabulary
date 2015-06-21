@@ -523,7 +523,8 @@ public class HomeActivity extends Activity {
     }
 
     private void startAlarm(long time) {
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 //        alarmManager.cancel(pendingIntent);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, time,
                 intervalTime, pendingIntent);
