@@ -83,7 +83,7 @@
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:background="@drawable/bg_btn_ansers_selector"
+            android:background="@drawable/bg_btn_skip_selector"
             android:text="@string/add"
             android:textColor="@color/white" />
     </LinearLayout>
