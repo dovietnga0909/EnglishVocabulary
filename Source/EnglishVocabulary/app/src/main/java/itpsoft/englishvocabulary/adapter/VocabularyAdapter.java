@@ -1,7 +1,6 @@
 package itpsoft.englishvocabulary.adapter;
 
 import android.content.Context;
-import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import itpsoft.englishvocabulary.R;
 import itpsoft.englishvocabulary.VocabularyActivity;
 import itpsoft.englishvocabulary.models.Vocabulary;
-import itpsoft.englishvocabulary.ultils.SpeakEnglish;
 
 /**
  * Created by luand_000 on 05/06/2015.

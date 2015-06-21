@@ -12,13 +12,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import itpsoft.englishvocabulary.R;
 import itpsoft.englishvocabulary.models.MenuItem;
-import itpsoft.englishvocabulary.ultils.SPUtil;
 
 /**
  * Created by Thanh Tu on 6/6/2015.

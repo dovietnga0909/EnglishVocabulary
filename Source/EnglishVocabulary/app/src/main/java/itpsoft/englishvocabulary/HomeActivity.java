@@ -39,7 +39,6 @@ import itpsoft.englishvocabulary.databases.DbController;
 import itpsoft.englishvocabulary.models.MenuItem;
 import itpsoft.englishvocabulary.models.Topic;
 import itpsoft.englishvocabulary.ultils.Keyboard;
-import itpsoft.englishvocabulary.ultils.Log;
 import itpsoft.englishvocabulary.ultils.SPUtil;
 import itpsoft.englishvocabulary.view.DrawerArrowDrawable;
 

@@ -2,7 +2,6 @@ package itpsoft.englishvocabulary.ultils;
 
 import android.content.Context;
 import android.speech.tts.TextToSpeech;
-import android.util.*;
 import android.widget.Toast;
 
 import java.util.Locale;

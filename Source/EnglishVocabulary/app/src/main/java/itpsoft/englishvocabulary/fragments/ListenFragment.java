@@ -1,9 +1,7 @@
 package itpsoft.englishvocabulary.fragments;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
@@ -13,8 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -28,7 +24,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Locale;
 
 import itpsoft.englishvocabulary.R;
 import itpsoft.englishvocabulary.TestActivity;
@@ -48,7 +43,6 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
     private CheckBox ckSuggest;
     private Button btnAnswers,btnRepeat,btnSkip;
     private TextToSpeech textToSpeech;
-//    private Context mContext;
     private ArrayList<Vocabulary> listVocabularys;
     private SpeakEnglish speakEnglish;
 
@@ -72,8 +66,8 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
         ScrollView scrollView = (ScrollView) rootView.findViewById(R.id.scrContentTestListen);
         //TextView
         txtVietnamese   = (TextView)rootView.findViewById(R.id.txtVietnamese);
-            //hide txtVietnamese
-            txtVietnamese.setVisibility(View.INVISIBLE);
+        //hide txtVietnamese
+        txtVietnamese.setVisibility(View.INVISIBLE);
         txtQuestion         = (TextView)rootView.findViewById(R.id.txtQuestions);
         txtTotal        = (TextView)rootView.findViewById(R.id.txtTotal);
         txtNumTrue      = (TextView)rootView.findViewById(R.id.txt_num_true);
@@ -90,7 +84,6 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
         btnSkip         = (Button)rootView.findViewById(R.id.btnSkip);
         //TextToSpeech
         textToSpeech = new TextToSpeech(getActivity(), this);
-//        textToSpeech = new TextToSpeech(getActivity(),getActivity().);
         //speakEnglish
         speakEnglish    = new SpeakEnglish(getActivity(), textToSpeech);
         //Vocabulary
@@ -110,8 +103,6 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
                 }
             }
         });
-        //set imgIcDeleteTxt Gone When edtAnswers = ""
-//        imgIcDeleteTxt.setVisibility(View.GONE);
 
         edtAnswers.addTextChangedListener(new TextWatcher() {
 
@@ -230,7 +221,7 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
                             Log.d("NgaDV", "LISTEN_POS_VOCABULARY = " + LISTEN_POS_VOCABULARY);
                         }
                         else {
-                           //
+                            //
                             Toast.makeText(getActivity(),"sai",Toast.LENGTH_SHORT).show();
                             edtAnswers.startAnimation(
                                     AnimationUtils.loadAnimation(getActivity(), R.anim.shake));

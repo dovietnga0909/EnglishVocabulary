@@ -2,7 +2,6 @@ package itpsoft.englishvocabulary;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -11,15 +10,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +23,6 @@ import itpsoft.englishvocabulary.adapter.TestPagerAdapter;
 import itpsoft.englishvocabulary.fragments.ListenFragment;
 import itpsoft.englishvocabulary.fragments.RememberFragment;
 import itpsoft.englishvocabulary.models.Vocabulary;
-import itpsoft.englishvocabulary.ultils.Log;
 
 /**
  * Created by Do on 05/06/2015.

@@ -10,24 +10,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.Annotation;
 import java.util.ArrayList;
 
 import itpsoft.englishvocabulary.R;
 import itpsoft.englishvocabulary.TestActivity;
 import itpsoft.englishvocabulary.models.Vocabulary;
 import itpsoft.englishvocabulary.ultils.Keyboard;
-import itpsoft.englishvocabulary.ultils.SpeakEnglish;
 
 /**
  * Created by Do on 05/06/2015.
@@ -62,8 +57,8 @@ public class RememberFragment extends Fragment {
 //        });
         //TextView
         txtEnglish      = (TextView)rootView.findViewById(R.id.txtEnglish);
-            //hide txtVietnamese
-            txtEnglish.setVisibility(View.INVISIBLE);
+        //hide txtVietnamese
+        txtEnglish.setVisibility(View.INVISIBLE);
         txtQuestion     = (TextView)rootView.findViewById(R.id.txtQuestions);
         txtTotal        = (TextView)rootView.findViewById(R.id.txtTotal);
         txtNumTrue      = (TextView)rootView.findViewById(R.id.txt_num_true);
