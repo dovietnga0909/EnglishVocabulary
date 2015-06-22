@@ -59,11 +59,8 @@ public class HomeActivity extends Activity {
     private AlertDialog alertDialog;
     private Rect displayRectangle;
     private Topic topic;
-    private AlarmManager alarmManager;
-    private PendingIntent pendingIntent;
     private int intervalTime = 1000 * 60 * 60 * 24;
     private long reminTime = -1;
-    private Intent alarmIntent;
     private boolean modify = false;
 
     @Override
@@ -73,10 +70,6 @@ public class HomeActivity extends Activity {
         setContentView(R.layout.activity_home);
         ///start up
         reminTime = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_REMIN_TIME, (long) -1);
-        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmIntent = new Intent(HomeActivity.this, AlarmReceiver.class);
-        alarmIntent.setAction("itpsoft.englishvocabulary.AlarmIntent");
-        pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0, alarmIntent, 0);
 
         displayRectangle = new Rect();
         Window window = getWindow();
@@ -257,6 +250,10 @@ public class HomeActivity extends Activity {
                     modify = false;
                     Keyboard.hideKeyboard(HomeActivity.this, dTime);
                     SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_REMIN_TIME, (long) -1);
+
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    Intent alarmIntent = new Intent(HomeActivity.this, AlarmReceiver.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0, alarmIntent, 0);
                     alarmManager.cancel(pendingIntent);
                     ((MenuItem) arrMenu.get(2)).setValue(resources.getString(R.string.off));
                     menuAdapter.notifyDataSetChanged();
@@ -537,9 +534,17 @@ public class HomeActivity extends Activity {
 
     private void startAlarm(long time) {
         SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_REMIN_TIME, time);
+        //cancel alarm
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent alarmIntent = new Intent(HomeActivity.this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0, alarmIntent, 0);
         alarmManager.cancel(pendingIntent);
+        //new alarm
+        AlarmManager alarmManager2 = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent alarmIntent2 = new Intent(HomeActivity.this, AlarmReceiver.class);
+        PendingIntent pendingIntent2 = PendingIntent.getBroadcast(HomeActivity.this, 0, alarmIntent, 0);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, time,
-                intervalTime, pendingIntent);
+                intervalTime, pendingIntent2);
     }
 
     private void dateSetChange() {
