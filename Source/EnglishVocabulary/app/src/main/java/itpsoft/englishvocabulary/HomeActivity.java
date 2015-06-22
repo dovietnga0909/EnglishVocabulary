@@ -59,6 +59,9 @@ public class HomeActivity extends Activity {
     private AlertDialog alertDialog;
     private Rect displayRectangle;
     private Topic topic;
+    private AlarmManager alarmManager;
+    private Intent alarmIntent;
+    private PendingIntent pendingIntent;
     private int intervalTime = 1000 * 60 * 60 * 24;
     private long reminTime = -1;
     private boolean modify = false;
@@ -69,6 +72,9 @@ public class HomeActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_home);
         ///start up
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmIntent = new Intent(HomeActivity.this, AlarmReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0, alarmIntent, 0);
         reminTime = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_REMIN_TIME, (long) -1);
 
         displayRectangle = new Rect();
@@ -219,7 +225,7 @@ public class HomeActivity extends Activity {
             public void onClick(View view) {
                 if (alertDialog.isShowing())
                     alertDialog.dismiss();
-                if(modify){
+                if (modify) {
                     modify = false;
                     Toast.makeText(HomeActivity.this, resources.getString(R.string.dont_save), Toast.LENGTH_SHORT).show();
                 }
@@ -251,9 +257,7 @@ public class HomeActivity extends Activity {
                     Keyboard.hideKeyboard(HomeActivity.this, dTime);
                     SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_REMIN_TIME, (long) -1);
 
-                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                    Intent alarmIntent = new Intent(HomeActivity.this, AlarmReceiver.class);
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0, alarmIntent, 0);
+                    alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                     alarmManager.cancel(pendingIntent);
                     ((MenuItem) arrMenu.get(2)).setValue(resources.getString(R.string.off));
                     menuAdapter.notifyDataSetChanged();
@@ -266,10 +270,14 @@ public class HomeActivity extends Activity {
             @Override
             public void onClick(View view) {
                 modify = false;
+                Calendar now = Calendar.getInstance();
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(Calendar.HOUR_OF_DAY, dTime.getCurrentHour());
                 calendar.set(Calendar.MINUTE, dTime.getCurrentMinute());
                 calendar.set(Calendar.SECOND, 0);
+                if (calendar.before(now)) {
+                    calendar.add(Calendar.DATE, 1);
+                }
                 long time = calendar.getTimeInMillis();
                 startAlarm(time);
                 updateTimeMenuItem(calendar);
@@ -537,16 +545,12 @@ public class HomeActivity extends Activity {
     private void startAlarm(long time) {
         SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_REMIN_TIME, time);
         //cancel alarm
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent alarmIntent = new Intent(HomeActivity.this, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0, alarmIntent, 0);
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
-        //new alarm
-        AlarmManager alarmManager2 = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent alarmIntent2 = new Intent(HomeActivity.this, AlarmReceiver.class);
-        PendingIntent pendingIntent2 = PendingIntent.getBroadcast(HomeActivity.this, 0, alarmIntent, 0);
+        // new alarm
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, time,
-                intervalTime, pendingIntent2);
+                AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
     private void dateSetChange() {
@@ -559,24 +563,24 @@ public class HomeActivity extends Activity {
             calendar.setTimeInMillis(reminTime);
             updateTimeMenuItem(calendar);
         } else {
-            ((MenuItem)arrMenu.get(2)).setValue(resources.getString(R.string.off));
+            ((MenuItem) arrMenu.get(2)).setValue(resources.getString(R.string.off));
         }
         menuAdapter.notifyDataSetChanged();
     }
 
-    private void updateTimeMenuItem(Calendar calendar){
+    private void updateTimeMenuItem(Calendar calendar) {
         String hour = "";
         String minute = "";
-        if(calendar.get(Calendar.HOUR_OF_DAY)<10){
-            hour = "0"+calendar.get(Calendar.HOUR_OF_DAY);
-        }else{
-            hour = ""+calendar.get(Calendar.HOUR_OF_DAY);
+        if (calendar.get(Calendar.HOUR_OF_DAY) < 10) {
+            hour = "0" + calendar.get(Calendar.HOUR_OF_DAY);
+        } else {
+            hour = "" + calendar.get(Calendar.HOUR_OF_DAY);
         }
-        if(calendar.get(Calendar.MINUTE)<10){
-            minute = "0"+calendar.get(Calendar.MINUTE);
-        }else{
-            minute = ""+calendar.get(Calendar.MINUTE);
+        if (calendar.get(Calendar.MINUTE) < 10) {
+            minute = "0" + calendar.get(Calendar.MINUTE);
+        } else {
+            minute = "" + calendar.get(Calendar.MINUTE);
         }
-        ((MenuItem)arrMenu.get(2)).setValue(hour + ":" + minute);
+        ((MenuItem) arrMenu.get(2)).setValue(hour + ":" + minute);
     }
 }
