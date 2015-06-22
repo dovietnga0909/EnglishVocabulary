@@ -75,6 +75,7 @@ public class HomeActivity extends Activity {
         reminTime = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_REMIN_TIME, (long) -1);
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmIntent = new Intent(HomeActivity.this, AlarmReceiver.class);
+        alarmIntent.setAction("itpsoft.englishvocabulary.AlarmIntent");
         pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0, alarmIntent, 0);
 
         displayRectangle = new Rect();
