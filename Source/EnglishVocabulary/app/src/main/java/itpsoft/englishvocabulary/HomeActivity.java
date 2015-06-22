@@ -69,6 +69,7 @@ public class HomeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_home);
         ///start up
         reminTime = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_REMIN_TIME, (long) -1);
@@ -211,7 +212,7 @@ public class HomeActivity extends Activity {
         builder.setView(dialogView);
         alertDialog = builder.create();
         alertDialog.setCancelable(true);
-        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
 
         ImageView dBack = (ImageView) dialogView.findViewById(R.id.back);
@@ -253,6 +254,7 @@ public class HomeActivity extends Activity {
                     dDisable.setVisibility(View.GONE);
                 } else {
                     modify = false;
+                    Keyboard.hideKeyboard(HomeActivity.this, dTime);
                     SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_REMIN_TIME, (long) -1);
                     alarmManager.cancel(pendingIntent);
                     ((MenuItem) arrMenu.get(2)).setValue(resources.getString(R.string.off));

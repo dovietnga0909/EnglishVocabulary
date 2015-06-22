@@ -65,7 +65,8 @@
                 android:hint="@string/hint_name"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:paddingRight="45dp"/>
+                android:paddingRight="45dp"
+                android:maxLength="100"/>
 
             <ImageView
                 android:id="@+id/delete"
