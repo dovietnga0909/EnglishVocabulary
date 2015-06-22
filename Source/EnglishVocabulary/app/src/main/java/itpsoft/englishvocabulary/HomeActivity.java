@@ -272,7 +272,7 @@ public class HomeActivity extends Activity {
                 calendar.set(Calendar.SECOND, 0);
                 long time = calendar.getTimeInMillis();
                 startAlarm(time);
-                ((MenuItem) arrMenu.get(2)).setValue(calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
+                updateTimeMenuItem(calendar);
                 menuAdapter.notifyDataSetChanged();
                 if (alertDialog.isShowing())
                     alertDialog.dismiss();
@@ -557,10 +557,26 @@ public class HomeActivity extends Activity {
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss.SSS");
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(reminTime);
-            ((MenuItem)arrMenu.get(2)).setValue(calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
+            updateTimeMenuItem(calendar);
         } else {
             ((MenuItem)arrMenu.get(2)).setValue(resources.getString(R.string.off));
         }
         menuAdapter.notifyDataSetChanged();
+    }
+
+    private void updateTimeMenuItem(Calendar calendar){
+        String hour = "";
+        String minute = "";
+        if(calendar.get(Calendar.HOUR_OF_DAY)<10){
+            hour = "0"+calendar.get(Calendar.HOUR_OF_DAY);
+        }else{
+            hour = ""+calendar.get(Calendar.HOUR_OF_DAY);
+        }
+        if(calendar.get(Calendar.MINUTE)<10){
+            minute = "0"+calendar.get(Calendar.MINUTE);
+        }else{
+            minute = ""+calendar.get(Calendar.MINUTE);
+        }
+        ((MenuItem)arrMenu.get(2)).setValue(hour + ":" + minute);
     }
 }
