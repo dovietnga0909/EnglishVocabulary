@@ -85,7 +85,7 @@ public class AlarmActivity extends Activity {
             public void onClick(View view) {
                 mp.stop();
                 finish();
-                Intent intent = new Intent(AlarmActivity.this, WelcomeActivity.class);
+                Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
                 startActivity(intent);
             }
         });

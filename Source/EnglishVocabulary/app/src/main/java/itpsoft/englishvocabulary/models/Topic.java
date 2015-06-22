@@ -18,6 +18,7 @@ public class Topic {
     public static int INSERT_EXITS = 2;
     public static int EDIT_FALSE = 0;
     public static int EDIT_SUCCESS = 1;
+    public static int EDIT_EXITS = 3;
     public static int EDIT_SAME = 2;
     public static int DELETE_FALSE = 0;
     public static int DELETE_SUCCESS = 1;
@@ -134,10 +135,22 @@ public class Topic {
             result = EDIT_SAME;
         } else {
             try {
-                ContentValues values = new ContentValues();
-                values.put(DbController.CATEGORIES_NAME, name.trim());
-                dbController.updateCategories(DbController.TABLE_CATEGORIES, values, DbController.CATEGORIES_NAME, new String[]{Integer.toString(topic.getId())});
-                result = EDIT_SUCCESS;
+                String sql = "SELECT count(*) as 'count' FROM " + DbController.TABLE_CATEGORIES + " WHERE " + DbController.CATEGORIES_NAME + " = '" + name.trim() + "';";
+                Cursor cursor = dbController.rawQuery(sql, null);
+                int number = 0;
+                if (cursor.moveToFirst()) {
+                    do {
+                        number = cursor.getInt(cursor.getColumnIndex("count"));
+                    } while (cursor.moveToNext());
+                }
+                if (number > 0) {
+                    result = EDIT_EXITS;
+                } else {
+                    ContentValues values = new ContentValues();
+                    values.put(DbController.CATEGORIES_NAME, name.trim());
+                    dbController.updateCategories(DbController.TABLE_CATEGORIES, values, DbController.CATEGORIES_NAME, new String[]{Integer.toString(topic.getId())});
+                    result = EDIT_SUCCESS;
+                }
             } catch (Exception e) {
                 result = EDIT_FALSE;
                 e.printStackTrace();

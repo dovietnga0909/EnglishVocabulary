@@ -453,6 +453,8 @@ public class HomeActivity extends Activity {
                                 Toast.makeText(HomeActivity.this, resources.getString(R.string.edited), Toast.LENGTH_SHORT).show();
                             } else if (result == Topic.EDIT_SAME) {
                                 Toast.makeText(HomeActivity.this, resources.getString(R.string.same), Toast.LENGTH_SHORT).show();
+                            } else if (result == Topic.EDIT_EXITS) {
+                                Toast.makeText(HomeActivity.this, resources.getString(R.string.exits), Toast.LENGTH_SHORT).show();
                             } else if (result == Topic.EDIT_FALSE) {
                                 Toast.makeText(HomeActivity.this, resources.getString(R.string.error), Toast.LENGTH_SHORT).show();
                             }
