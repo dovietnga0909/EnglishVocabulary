@@ -80,10 +80,10 @@ public class Topic {
             Cursor cursor = dbController.rawQuery(sql, null);
             if (cursor.moveToFirst()) {
                 do {
-                    int id = cursor.getInt(cursor.getColumnIndex(DbController.ID_CATEGORIES));
+                    int id = cursor.getInt(cursor.getColumnIndex(DbController.ID_AUTO_CATE));
                     String name = cursor.getString(cursor.getColumnIndex(DbController.CATEGORIES_NAME));
                     //
-                    String sql2 = "Select count(*) as 'count' from " + DbController.TABLE_VOCABULARY + " Where " + DbController.CATEGORIES_ID + " = " + id;
+                    String sql2 = "Select count(*) as 'count' from " + DbController.TABLE_VOCABULARY + " Where " + DbController.ID_CATE + " = " + id;
                     Cursor cursor2 = dbController.rawQuery(sql2, null);
                     int number = 0;
                     if (cursor2.moveToFirst()) {
@@ -118,7 +118,7 @@ public class Topic {
             } else {
                 ContentValues values = new ContentValues();
                 values.put(DbController.CATEGORIES_NAME, name.trim());
-                values.put(DbController.CATEGORIES_STATUS, "1");
+                values.put(DbController.CATEGORIES_STATUS, "0");
                 dbController.insert(DbController.TABLE_CATEGORIES, null, values);
                 result = INSERT_SUCCESS;
             }

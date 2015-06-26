@@ -96,12 +96,12 @@ public class Vocabulary{
         DbController dbController = DbController.getInstance(context);
 
         try {
-            String sql = "Select * from " + DbController.TABLE_VOCABULARY + " Where " + DbController.CATEGORIES_ID + " = " + cate_id;
+            String sql = "Select * from " + DbController.TABLE_VOCABULARY + " Where " + DbController.ID_CATE + " = " + cate_id;
             Cursor cursor = dbController.rawQuery(sql, null);
             if (cursor.moveToFirst()) {
                 do {
-                    long id = cursor.getInt(cursor.getColumnIndex(DbController.ID_VOCABULARY));
-                    int cateId = cursor.getInt(cursor.getColumnIndex(DbController.CATEGORIES_ID));
+                    long id = cursor.getInt(cursor.getColumnIndex(DbController.ID_AUTO_VOCA));
+                    int cateId = cursor.getInt(cursor.getColumnIndex(DbController.ID_CATE));
                     String english = cursor.getString(cursor.getColumnIndex(DbController.ENGLISH));
                     String vietnamese = cursor.getString(cursor.getColumnIndex(DbController.VIETNAMESE));
                     String status_sync = cursor.getString(cursor.getColumnIndex(DbController.VOCABULARY_STATUS));
@@ -133,7 +133,7 @@ public class Vocabulary{
                 result = INSERT_EXITS;
             } else {
                 ContentValues values = new ContentValues();
-                values.put(DbController.CATEGORIES_ID, idTopic);
+                values.put(DbController.ID_CATE, idTopic);
                 values.put(DbController.ENGLISH, en.trim());
                 values.put(DbController.VIETNAMESE, vi.trim());
                 values.put(DbController.VOCABULARY_STATUS, "0");
