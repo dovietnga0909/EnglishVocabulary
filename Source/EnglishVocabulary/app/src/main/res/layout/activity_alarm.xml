@@ -4,16 +4,63 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical">
-
-    <Button
-        android:id="@+id/stopMusic"
-        android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Stop music" />
-
-    <Button
-        android:id="@+id/startApp"
-        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="@string/app_name"
+        android:textStyle="bold"
+        android:textColor="@color/cl_actionbar"
+        android:textSize="30sp" />
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Start app" />
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="02:02"
+        android:textColor="@color/cl_pressed"
+        android:textSize="120sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:gravity="center"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:text="@string/note"
+        android:textColor="@color/cl_actionbar_alpha"
+        android:textSize="24dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/stopMusic"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_skip_selector"
+            android:text="@string/stop"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/startApp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_skip_selector"
+            android:text="@string/start_app"
+            android:textColor="@color/white" />
+    </LinearLayout>
 </LinearLayout>

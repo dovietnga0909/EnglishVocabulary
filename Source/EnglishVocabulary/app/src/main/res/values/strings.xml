@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EnglishVocabulary</string>
+    <string name="app_name">English Vocabulary</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -72,6 +72,9 @@
     <string name="topic_empty">Không có từ vựng trong chủ đề này</string>
     <string name="dont_save">Thay đổi chưa được lưu lại</string>
     <string name="change_success">Thay đổi thành công</string>
+    <string name="stop">Dừng</string>
+    <string name="start_app">Mở ứng dụng</string>
+    <string name="note">Đã đến giờ học nhấn vào "Mở ứng dụng" để bắt đầu.</string>
     <!-- End - TuNT -->
 
     <!--LuanDT-->

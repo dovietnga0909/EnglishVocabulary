@@ -10,17 +10,25 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Vibrator;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import itpsoft.englishvocabulary.R;
 import itpsoft.englishvocabulary.WelcomeActivity;
 import itpsoft.englishvocabulary.ultils.Log;
+import itpsoft.englishvocabulary.ultils.SPUtil;
 
 //https://developer.android.com/training/scheduling/alarms.html
 public class AlarmActivity extends Activity {
@@ -30,6 +38,9 @@ public class AlarmActivity extends Activity {
     private int timeOut = 1000 * 60;
     private AudioManager mAudioManager;
     private int originalVolume;
+    private long remindTime;
+    Vibrator v;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +48,35 @@ public class AlarmActivity extends Activity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_alarm);
-
+        remindTime = SPUtil.instance(AlarmActivity.this).get(SPUtil.KEY_REMIN_TIME, (long) -1);
+        if (remindTime != -1) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss.SSS");
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(remindTime);
+            String hour = "";
+            String minute = "";
+            if (calendar.get(Calendar.HOUR_OF_DAY) < 10) {
+                hour = "0" + calendar.get(Calendar.HOUR_OF_DAY);
+            } else {
+                hour = "" + calendar.get(Calendar.HOUR_OF_DAY);
+            }
+            if (calendar.get(Calendar.MINUTE) < 10) {
+                minute = "0" + calendar.get(Calendar.MINUTE);
+            } else {
+                minute = "" + calendar.get(Calendar.MINUTE);
+            }
+            TextView time = (TextView) findViewById(R.id.time);
+            time.setText(hour + ":" + minute);
+        } else {
+            finish();
+        }
+        // Get instance of Vibrator from current Context
+        v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        // Start without a delay
+        // Each element then alternates between vibrate, sleep, vibrate, sleep...
+        long[] pattern = {0, 100, 1000, 300, 200, 100, 500, 200, 100};
+        // The '-1' here means to vibrate once, as '-1' is out of bounds in the pattern array
+        v.vibrate(pattern, 1);
         /* Retrieve a PendingIntent that will perform a broadcast */
         Intent alarmIntent = new Intent(AlarmActivity.this, AlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(AlarmActivity.this, 0, alarmIntent, 0);
@@ -62,6 +101,7 @@ public class AlarmActivity extends Activity {
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
                 // TODO Auto-generated method stub
+                v.cancel();
                 mp.stop();
                 finish();
                 return false;
@@ -75,6 +115,7 @@ public class AlarmActivity extends Activity {
             }
 
             public void onFinish() {
+                v.cancel();
                 mp.stop();
                 finish();
             }
@@ -83,6 +124,7 @@ public class AlarmActivity extends Activity {
         startApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                v.cancel();
                 mp.stop();
                 finish();
                 Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
@@ -107,6 +149,7 @@ public class AlarmActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        v.cancel();
         mp.stop();
     }               //Get an alarm sound. Try for an alarm. If none set, try notification,
 
@@ -117,6 +160,7 @@ public class AlarmActivity extends Activity {
         window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
                 WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
     }
+
     //Otherwise, ringtone.
     private Uri getAlarmUri() {
 
@@ -136,6 +180,7 @@ public class AlarmActivity extends Activity {
     @Override
     protected void onUserLeaveHint() {
         mp.stop();
+        v.cancel();
         finish();
         super.onUserLeaveHint();
     }
@@ -143,6 +188,7 @@ public class AlarmActivity extends Activity {
     @Override
     public void onBackPressed() {
         mp.stop();
+        v.cancel();
         finish();
         super.onBackPressed();
     }
