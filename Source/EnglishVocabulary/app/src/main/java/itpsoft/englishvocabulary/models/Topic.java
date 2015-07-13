@@ -103,7 +103,7 @@ public class Topic {
     }
 
     //insert Topic
-    public int insert(String name) {
+    public int insert(int idCate, String name) {
         int result = INSERT_FALSE;
         try {
             String sql = "SELECT count(*) as 'count' FROM " + DbController.TABLE_CATEGORIES + " WHERE " + DbController.CATEGORIES_NAME + " = '" + name.trim() + "';";
@@ -118,6 +118,7 @@ public class Topic {
                 result = INSERT_EXITS;
             } else {
                 ContentValues values = new ContentValues();
+                values.put(DbController.ID_CATE, idCate);
                 values.put(DbController.CATEGORIES_NAME, name.trim());
                 values.put(DbController.CATEGORIES_STATUS, "0");
                 dbController.insert(DbController.TABLE_CATEGORIES, null, values);

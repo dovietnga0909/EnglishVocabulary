@@ -327,7 +327,7 @@ public class HomeActivity extends Activity {
                         break;
                     case R.id.add:
                         if (dText.getText().toString().trim().length() > 0) {
-                            int result = topic.insert(dText.getText().toString());
+                            int result = topic.insert(topic.maxId() + 1, dText.getText().toString());
                             if (result == Topic.INSERT_SUCCESS) {
                                 if (alertDialog.isShowing())
                                     alertDialog.dismiss();

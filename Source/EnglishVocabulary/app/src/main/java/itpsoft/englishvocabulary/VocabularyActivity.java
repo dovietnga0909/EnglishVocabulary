@@ -25,9 +25,11 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import itpsoft.englishvocabulary.adapter.VocabularyAdapter;
+import itpsoft.englishvocabulary.models.Topic;
 import itpsoft.englishvocabulary.models.Vocabulary;
 import itpsoft.englishvocabulary.ultils.AccentRemover;
 import itpsoft.englishvocabulary.ultils.Keyboard;
+import itpsoft.englishvocabulary.ultils.Log;
 import itpsoft.englishvocabulary.ultils.SpeakEnglish;
 
 
@@ -128,6 +130,11 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
         adapter = new VocabularyAdapter(VocabularyActivity.this, listVocabulary);
         listView.setAdapter(adapter);
 
+//        Topic topic = new Topic(VocabularyActivity.this);
+//        vocabulary.listVocabularyAdd();
+//        Log.d("LuanDT", "MaxID: " + vocabulary.maxId());
+//        Log.d("LuanDT", "MaxID Topic: " + topic.maxId());
+
         //click
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -169,7 +176,7 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
                 String vi = edtVietnamese.getText().toString();
 
                 if (validate()) {
-                    int result = vocabulary.addVocabulary(idTopic, en, vi);
+                    int result = vocabulary.addVocabulary(vocabulary.maxId() + 1, idTopic, en, vi);
                     newAction = true;
                     if (result == Vocabulary.INSERT_SUCCESS) {
                         clearEdt();

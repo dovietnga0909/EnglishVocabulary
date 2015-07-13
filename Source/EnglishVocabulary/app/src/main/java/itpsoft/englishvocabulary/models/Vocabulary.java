@@ -117,7 +117,7 @@ public class Vocabulary{
     }
 
     //add vocabulary
-    public int addVocabulary(int idTopic, String en, String vi) {
+    public int addVocabulary(int idVoca, int idTopic, String en, String vi) {
         DbController dbController = DbController.getInstance(context);
         int result = INSERT_FALSE;
         try {
@@ -133,6 +133,7 @@ public class Vocabulary{
                 result = INSERT_EXITS;
             } else {
                 ContentValues values = new ContentValues();
+                values.put(DbController.ID_VOCA, idVoca);
                 values.put(DbController.ID_CATE, idTopic);
                 values.put(DbController.ENGLISH, en.trim());
                 values.put(DbController.VIETNAMESE, vi.trim());
