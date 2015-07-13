@@ -84,6 +84,8 @@
     <string name="cancel">Hủy bỏ</string>
     <string name="vietnamese">Tiếng việt</string>
     <string name="empty">Bạn phải nhập trường này</string>
+    <string name="english">Nhập từ tiếng anh</string>
+    <string name="vn">Nghĩa tiếng việt</string>
 
     <!-- AcctentRemover -->
     <string-array name="special_characters">

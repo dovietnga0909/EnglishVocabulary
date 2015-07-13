@@ -68,6 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
+                android:hint="@string/english"
                 android:padding="5dp"
                 android:minHeight="50dp" />
 
@@ -119,6 +120,7 @@
                 android:id="@+id/edtVietnamese"
                 android:maxLines="3"
                 android:maxLength="100"
+                android:hint="@string/vn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
