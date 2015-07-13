@@ -3,14 +3,14 @@ package itpsoft.englishvocabulary.models;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.speech.tts.TextToSpeech;
-import android.util.Log;
-import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import itpsoft.englishvocabulary.databases.DbController;
+import itpsoft.englishvocabulary.ultils.Log;
 
 /**
  * Created by luand_000 on 05/06/2015.
@@ -100,7 +100,7 @@ public class Vocabulary{
             Cursor cursor = dbController.rawQuery(sql, null);
             if (cursor.moveToFirst()) {
                 do {
-                    long id = cursor.getInt(cursor.getColumnIndex(DbController.ID_AUTO_VOCA));
+                    long id = cursor.getInt(cursor.getColumnIndex(DbController.ID_VOCA));
                     int cateId = cursor.getInt(cursor.getColumnIndex(DbController.ID_CATE));
                     String english = cursor.getString(cursor.getColumnIndex(DbController.ENGLISH));
                     String vietnamese = cursor.getString(cursor.getColumnIndex(DbController.VIETNAMESE));
@@ -186,6 +186,86 @@ public class Vocabulary{
             result = DELETE_SUCCESS;
         } catch (Exception e) {
             result = DELETE_FALSE;
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    //list vocabulary add sync
+    public JSONArray listVocabularyAdd(){
+        JSONArray array = new JSONArray();
+        DbController dbController = DbController.getInstance(context);
+
+        try {
+            String sql = "Select * from " + DbController.TABLE_VOCABULARY + " Where " + DbController.VOCABULARY_STATUS + " = 0";
+            Cursor cursor = dbController.rawQuery(sql, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    long id = cursor.getInt(cursor.getColumnIndex(DbController.ID_VOCA));
+                    int cateId = cursor.getInt(cursor.getColumnIndex(DbController.ID_CATE));
+                    String english = cursor.getString(cursor.getColumnIndex(DbController.ENGLISH));
+                    String vietnamese = cursor.getString(cursor.getColumnIndex(DbController.VIETNAMESE));
+
+                    JSONObject voca = new JSONObject();
+
+                    voca.put("table", "vocabularies");
+                    //voca_id, id_clien, cate_id, english, vietnamese, user_id
+                    voca.put("sql", "null,'" + id + "','" + cateId  + "','" + english  + "','" + vietnamese  + "','" + 1 + "'" );
+
+
+                    array.put(voca);
+
+                } while (cursor.moveToNext());
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        //list topic add sync
+        try {
+            String sql = "Select * from " + DbController.TABLE_CATEGORIES + " Where " + DbController.CATEGORIES_STATUS + " = 0";
+            Cursor cursor = dbController.rawQuery(sql, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    long id = cursor.getInt(cursor.getColumnIndex(DbController.ID_CATE));
+                    String name = cursor.getString(cursor.getColumnIndex(DbController.CATEGORIES_NAME));
+
+                    JSONObject voca = new JSONObject();
+
+                    voca.put("table", "categories");
+                    //cate_id, id_clien, name, user_id
+                    voca.put("sql", "null,'" + id + "','" + name  + "','" + 1 + "'" );
+
+
+                    array.put(voca);
+
+                } while (cursor.moveToNext());
+
+                Log.d("LuanDT", "array topic: " + array);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return array;
+    }
+
+    //max id
+    public int maxId() {
+        DbController dbController = DbController.getInstance(context);
+        int result = -1;
+        try {
+            String sql = "SELECT MAX(voca_id) as 'maxid' FROM " + DbController.TABLE_VOCABULARY;
+            Cursor cursor = dbController.rawQuery(sql, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    result = cursor.getInt(cursor.getColumnIndex("maxid"));
+                } while (cursor.moveToNext());
+            }
+
+        } catch (Exception e) {
+            result = -1;
             e.printStackTrace();
         }
         return result;

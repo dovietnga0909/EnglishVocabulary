@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import itpsoft.englishvocabulary.databases.DbController;
 import itpsoft.englishvocabulary.ultils.Color;
+import itpsoft.englishvocabulary.ultils.Log;
 
 /**
  * Created by Thanh Tu on 6/8/2015.
@@ -80,7 +81,7 @@ public class Topic {
             Cursor cursor = dbController.rawQuery(sql, null);
             if (cursor.moveToFirst()) {
                 do {
-                    int id = cursor.getInt(cursor.getColumnIndex(DbController.ID_AUTO_CATE));
+                    int id = cursor.getInt(cursor.getColumnIndex(DbController.ID_CATE));
                     String name = cursor.getString(cursor.getColumnIndex(DbController.CATEGORIES_NAME));
                     //
                     String sql2 = "Select count(*) as 'count' from " + DbController.TABLE_VOCABULARY + " Where " + DbController.ID_CATE + " = " + id;
@@ -167,6 +168,25 @@ public class Topic {
             result = DELETE_SUCCESS;
         } catch (Exception e) {
             result = DELETE_FALSE;
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    //max id
+    public int maxId() {
+        int result = -1;
+        try {
+            String sql = "SELECT MAX(cate_id) as 'maxid' FROM " + DbController.TABLE_CATEGORIES;
+            Cursor cursor = dbController.rawQuery(sql, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    result = cursor.getInt(cursor.getColumnIndex("maxid"));
+                } while (cursor.moveToNext());
+            }
+
+        } catch (Exception e) {
+            result = -1;
             e.printStackTrace();
         }
         return result;

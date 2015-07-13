@@ -17,29 +17,25 @@ public class DbController extends SQLiteOpenHelper {
 
     //Table tbl_categories
     public static final String TABLE_CATEGORIES = "tbl_categories";
-    public static final String ID_AUTO_CATE = "id_auto";
     public static final String ID_CATE = "cate_id";
     public static final String ID_SERVER_CATE = "id_server";
     public static final String CATEGORIES_NAME = "name";
     public static final String CATEGORIES_STATUS = "status_sync";
     public static final String CREATE_TABLE_CATEGORIES = "create table "
-            + TABLE_CATEGORIES + " (" + ID_AUTO_CATE + " integer primary key autoincrement, "
-            + ID_CATE + " integer, "
+            + TABLE_CATEGORIES + " (" + ID_CATE + " integer primary key, "
             + ID_SERVER_CATE + " integer, "
             + CATEGORIES_NAME + " text not null, "
             + CATEGORIES_STATUS + " text  not null);";
 
     //Table tbl_vocabulary
     public static final String TABLE_VOCABULARY = "tbl_vocabulary";
-    public static final String ID_AUTO_VOCA = "id_auto";
     public static final String ID_VOCA = "voca_id";
     public static final String ID_SERVER_VOCA = "id_server";
     public static final String ENGLISH = "english";
     public static final String VIETNAMESE = "vietnamese";
     public static final String VOCABULARY_STATUS = "status_sync";
     public static final String CREATE_TABLE_VOCABULARY = "create table "
-            + TABLE_VOCABULARY + " (" + ID_AUTO_VOCA + " integer primary key autoincrement, "
-            + ID_VOCA + " integer, "
+            + TABLE_VOCABULARY + " (" + ID_VOCA + " integer primary key, "
             + ID_CATE + " integer, "
             + ID_SERVER_VOCA + " integer, "
             + ENGLISH + " text not null, "
@@ -93,59 +89,51 @@ public class DbController extends SQLiteOpenHelper {
     private void insertDefaultCategories(SQLiteDatabase db) {
         if (db != null) {
             ContentValues values = new ContentValues();
+            values.put(ID_CATE, 1);
             values.put(CATEGORIES_NAME, "Animals");
             values.put(CATEGORIES_STATUS, "1");
             db.insert(TABLE_CATEGORIES, null, values);
 
+            values.put(ID_CATE, 2);
             values.put(CATEGORIES_NAME, "Mnimals 2");
-            values.put(CATEGORIES_STATUS, "1");
+            values.put(CATEGORIES_STATUS, "0");
             db.insert(TABLE_CATEGORIES, null, values);
 
-            values.put(CATEGORIES_NAME, "Knimals 3");
-            values.put(CATEGORIES_STATUS, "1");
-            db.insert(TABLE_CATEGORIES, null, values);
-
-            values.put(CATEGORIES_NAME, "Hnimals 4");
-            values.put(CATEGORIES_STATUS, "1");
-            db.insert(TABLE_CATEGORIES, null, values);
-
-            values.put(CATEGORIES_NAME, "Enimals 5");
-            values.put(CATEGORIES_STATUS, "1");
-            db.insert(TABLE_CATEGORIES, null, values);
-
-            values.put(CATEGORIES_NAME, "Pnimals 5");
-            values.put(CATEGORIES_STATUS, "1");
-            db.insert(TABLE_CATEGORIES, null, values);
         }
     }
 
     private void insertDefaultVocabulary(SQLiteDatabase db) {
         if (db != null) {
             ContentValues values = new ContentValues();
+            values.put(ID_VOCA, 1);
             values.put(ID_CATE, 1);
             values.put(ENGLISH, "Dog");
             values.put(VIETNAMESE, "con chó");
-            values.put(VOCABULARY_STATUS, "1");
+            values.put(VOCABULARY_STATUS, "0");
             db.insert(TABLE_VOCABULARY, null, values);
 
+            values.put(ID_VOCA, 2);
             values.put(ID_CATE, 1);
             values.put(ENGLISH, "hourse");
             values.put(VIETNAMESE, "con ngựa");
             values.put(VOCABULARY_STATUS, "1");
             db.insert(TABLE_VOCABULARY, null, values);
 
+            values.put(ID_VOCA, 3);
             values.put(ID_CATE, 1);
             values.put(ENGLISH, "bird");
             values.put(VIETNAMESE, "con chim");
-            values.put(VOCABULARY_STATUS, "1");
+            values.put(VOCABULARY_STATUS, "0");
             db.insert(TABLE_VOCABULARY, null, values);
 
+            values.put(ID_VOCA, 4);
             values.put(ID_CATE, 1);
             values.put(ENGLISH, "cat");
             values.put(VIETNAMESE, "con mèo");
-            values.put(VOCABULARY_STATUS, "1");
+            values.put(VOCABULARY_STATUS, "0");
             db.insert(TABLE_VOCABULARY, null, values);
 
+            values.put(ID_VOCA, 5);
             values.put(ID_CATE, 1);
             values.put(ENGLISH, "duck");
             values.put(VIETNAMESE, "con vịt");
@@ -221,7 +209,7 @@ public class DbController extends SQLiteOpenHelper {
     //delete categories by id
     public int deleteCategoriesById(String[] id) {
         int ret = -1;
-        String whereClause = ID_AUTO_CATE + " IN (";
+        String whereClause = ID_CATE + " IN (";
         for (int i = 0; i < id.length; i++) {
             whereClause += "?,";
         }
@@ -240,7 +228,7 @@ public class DbController extends SQLiteOpenHelper {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        whereClause = ID_AUTO_CATE + " IN (";
+        whereClause = ID_CATE + " IN (";
         whereClause += "?,";
         whereClause = whereClause.substring(0, whereClause.length() - 1);
         whereClause += ") ";
@@ -252,7 +240,7 @@ public class DbController extends SQLiteOpenHelper {
     //delete vocabylary by id
     public int deleteVocabylaryById(String[] id) {
         int ret = -1;
-        String whereClause = ID_AUTO_VOCA + " IN (";
+        String whereClause = ID_VOCA + " IN (";
         for (int i = 0; i < id.length; i++) {
             whereClause += "?,";
         }
@@ -271,7 +259,7 @@ public class DbController extends SQLiteOpenHelper {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        whereClause = ID_AUTO_VOCA + " IN (";
+        whereClause = ID_VOCA + " IN (";
         whereClause += "?,";
         whereClause = whereClause.substring(0, whereClause.length() - 1);
         whereClause += ") ";
