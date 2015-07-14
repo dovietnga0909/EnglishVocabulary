@@ -14,6 +14,9 @@ public class SPUtil {
     public static final String KEY_VOCA_UPDATE = "id_voca_update";
     public static final String KEY_CATE_DELETE = "id_cate_delete";
     public static final String KEY_CATE_UPDATE = "id_cate_update";
+    public static final String KEY_USER_ID = "user_id";
+    public static final String KEY_TIME_LAST_SYNC = "time_last_sync";
+    public static final String KEY_SYNC = "sync";
     private SharedPreferences pref;
 
     private SPUtil(Context context) {

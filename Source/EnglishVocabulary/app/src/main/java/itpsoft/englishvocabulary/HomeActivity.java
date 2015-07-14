@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -13,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -27,6 +30,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -68,12 +79,15 @@ public class HomeActivity extends Activity {
     private int intervalTime = 1000 * 60 * 60 * 24;
     private long reminTime = -1;
     private boolean modify = false;
+    private ProgressDialog progressDialog;
+    private Vocabulary vocabulary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_home);
+        vocabulary = new Vocabulary();
         ///start up
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmIntent = new Intent(HomeActivity.this, AlarmReceiver.class);
@@ -129,10 +143,6 @@ public class HomeActivity extends Activity {
     protected void onResume() {
         dateSetChange();
         testSyncVoca();
-
-        Vocabulary vocabulary = new Vocabulary();
-        vocabulary.listVocabularyUpdate();
-        vocabulary.listVocabularyAdd();
         super.onResume();
     }
 
@@ -153,6 +163,31 @@ public class HomeActivity extends Activity {
                         drawer.closeDrawer(START);
                     }
                 } else if (i == 2) {
+                    //set is sync
+                    SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_SYNC, true);
+
+                    final Calendar c = Calendar.getInstance();
+                    int minute = c.get(Calendar.MINUTE);
+                    int hours = c.get(Calendar.HOUR);
+                    int date = c.get(Calendar.DATE);
+                    int months = c.get(Calendar.MONTH);
+                    int years_now = c.get(Calendar.YEAR);
+
+                    String time = "" + hours + ":" + minute + " " + date + "/" + months + "/" + years_now;
+
+                    //set time sync last
+                    SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_TIME_LAST_SYNC, time);
+
+                    //update ui
+                    ((MenuItem) arrMenu.get(1)).setValue(time);
+                    menuAdapter.notifyDataSetChanged();
+
+                    String updateCate = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_CATE_UPDATE, "");
+                    String updateVoca = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_VOCA_UPDATE, "");
+                    if(updateCate.equals("") || updateVoca.equals("")){
+                        syncUpdate();
+                    }
+//                    syncInsert();
 
                 } else if (i == 3) {
                     createDialogRemind();
@@ -202,9 +237,14 @@ public class HomeActivity extends Activity {
     }
 
     private void createDataMenu() {
+        boolean isSync = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_SYNC, false);
         arrMenu = new ArrayList<Object>();
         arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_home, resources.getString(R.string.ev), ""));
-        arrMenu.add(new MenuItem("#53dd00", R.drawable.ic_refesh, resources.getString(R.string.sync), resources.getString(R.string.off)));
+        if(isSync){
+            arrMenu.add(new MenuItem("#53dd00", R.drawable.ic_refesh, resources.getString(R.string.sync), SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_TIME_LAST_SYNC, "-1")));
+        }else {
+            arrMenu.add(new MenuItem("#53dd00", R.drawable.ic_refesh, resources.getString(R.string.sync), resources.getString(R.string.off)));
+        }
         arrMenu.add(new MenuItem("#ff6f00", R.drawable.ic_clock, resources.getString(R.string.reminds_study_time), resources.getString(R.string.off)));
         arrMenu.add("");
         arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_logout, resources.getString(R.string.logout), ""));
@@ -685,4 +725,166 @@ public class HomeActivity extends Activity {
         SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_CATE_UPDATE, "" + newIdUpdate);
 
     }
+
+    //////////////excute///////////////////////////
+
+    private void syncInsert(){
+        progressDialog();
+        excuteInsert(vocabulary.listVocabularyAdd(), new OnLoadListener() {
+            @Override
+            public void onStart() {
+                progressDialog.show();
+            }
+
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailure() {
+//                progressDialog.dismiss();
+            }
+        });
+    }
+
+    private void syncUpdate(){
+        progressDialog();
+        excuteUpdate(vocabulary.listVocabularyUpdate(), new OnLoadListener() {
+            @Override
+            public void onStart() {
+                progressDialog.show();
+            }
+
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailure() {
+//                progressDialog.dismiss();
+            }
+        });
+    }
+
+    private void syncDelete(){
+        progressDialog();
+        excuteDelete(vocabulary.listVocabularyAdd(), new OnLoadListener() {
+            @Override
+            public void onStart() {
+                progressDialog.show();
+            }
+
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailure() {
+//                progressDialog.dismiss();
+            }
+        });
+    }
+
+    private void excuteInsert(JSONArray array, OnLoadListener OnLoadListener){
+        this.onLoadListener = OnLoadListener;
+        onLoadListener.onStart();
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.add("user_id", SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_USER_ID, "-1"));
+        params.add("array", "" + array);
+
+        Log.d("LuanDT", "params----excuteInsert: " + params);
+
+        client.post(getResources().getString(R.string.api_push_insert), params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                String result = response.toString();
+                Log.d("LuanDT", "excuteInsert: " + result);
+
+                onLoadListener.onSuccess();
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                onLoadListener.onFailure();
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
+    }
+
+    private void excuteUpdate(JSONArray array, OnLoadListener OnLoadListener){
+        this.onLoadListener = OnLoadListener;
+        onLoadListener.onStart();
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.add("user_id", SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_USER_ID, "-1"));
+        params.add("array", "" + array);
+
+        Log.d("LuanDT", "params----excuteUpdate: " + params);
+
+        client.post(getResources().getString(R.string.api_push_update), params, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                String result = response.toString();
+                Log.d("LuanDT", "excuteUpdate: " + result);
+
+                onLoadListener.onSuccess();
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                onLoadListener.onFailure();
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
+    }
+
+    private void excuteDelete(JSONArray array, OnLoadListener OnLoadListener){
+        this.onLoadListener = OnLoadListener;
+        onLoadListener.onStart();
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.add("user_id", SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_USER_ID, "-1"));
+        params.add("array", "" + array);
+
+        Log.d("LuanDT", "params----excuteDelete: " + params);
+
+        client.post(getResources().getString(R.string.api_push_delete), params, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                String result = response.toString();
+                Log.d("LuanDT", "excuteDelete: " + result);
+
+                onLoadListener.onSuccess();
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                onLoadListener.onFailure();
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
+    }
+
+    private ProgressDialog progressDialog() {
+        progressDialog = new ProgressDialog(HomeActivity.this);
+//        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setMessage(getResources().getString(R.string.waiting));
+        return progressDialog;
+    }
+
+    private OnLoadListener onLoadListener;
+    public interface OnLoadListener {
+        void onStart();
+        void onSuccess();
+        void onFailure();
+    }
+
 }

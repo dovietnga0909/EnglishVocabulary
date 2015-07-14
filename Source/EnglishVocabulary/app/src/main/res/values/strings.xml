@@ -87,6 +87,13 @@
     <string name="empty">Bạn phải nhập trường này</string>
     <string name="english">Nhập từ tiếng anh</string>
     <string name="vn">Nghĩa tiếng việt</string>
+    <string name="waiting">Đang đồng bộ...</string>
+    <string name="cancel_sync">Đang đồng bộ bạn có thực sự muốn hủy?</string>
+    
+    <!--link api-->
+    <string name="api_push_insert"></string>
+    <string name="api_push_update"></string>
+    <string name="api_push_delete"></string>
 
     <!-- AcctentRemover -->
     <string-array name="special_characters">
