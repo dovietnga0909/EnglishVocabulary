@@ -78,6 +78,7 @@
     <!-- End - TuNT -->
 
     <!--LuanDT-->
+    <string name="warning">(Nếu bạn xóa thì toàn bộ từ trong chủ đề này cũng bị xóa)</string>
     <string name="add_vocabulary">Thêm</string>
     <string name="add">Thêm</string>
     <string name="update">Cập nhật</string>

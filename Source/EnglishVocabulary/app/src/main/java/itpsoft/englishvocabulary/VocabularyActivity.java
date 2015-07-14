@@ -25,11 +25,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import itpsoft.englishvocabulary.adapter.VocabularyAdapter;
-import itpsoft.englishvocabulary.models.Topic;
 import itpsoft.englishvocabulary.models.Vocabulary;
 import itpsoft.englishvocabulary.ultils.AccentRemover;
 import itpsoft.englishvocabulary.ultils.Keyboard;
-import itpsoft.englishvocabulary.ultils.Log;
 import itpsoft.englishvocabulary.ultils.SpeakEnglish;
 
 

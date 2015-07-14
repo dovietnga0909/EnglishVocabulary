@@ -90,11 +90,25 @@ public class DbController extends SQLiteOpenHelper {
         if (db != null) {
             ContentValues values = new ContentValues();
             values.put(ID_CATE, 1);
+            values.put(ID_SERVER_CATE, 1);
             values.put(CATEGORIES_NAME, "Animals");
             values.put(CATEGORIES_STATUS, "1");
             db.insert(TABLE_CATEGORIES, null, values);
 
             values.put(ID_CATE, 2);
+            values.put(ID_SERVER_CATE, 2);
+            values.put(CATEGORIES_NAME, "Mnimals 2");
+            values.put(CATEGORIES_STATUS, "1");
+            db.insert(TABLE_CATEGORIES, null, values);
+
+            values.put(ID_CATE, 3);
+            values.put(ID_SERVER_CATE, 3);
+            values.put(CATEGORIES_NAME, "Animals");
+            values.put(CATEGORIES_STATUS, "1");
+            db.insert(TABLE_CATEGORIES, null, values);
+
+            values.put(ID_CATE, 4);
+            values.put(ID_SERVER_CATE, "");
             values.put(CATEGORIES_NAME, "Mnimals 2");
             values.put(CATEGORIES_STATUS, "0");
             db.insert(TABLE_CATEGORIES, null, values);
@@ -116,7 +130,7 @@ public class DbController extends SQLiteOpenHelper {
             values.put(ID_CATE, 1);
             values.put(ENGLISH, "hourse");
             values.put(VIETNAMESE, "con ngựa");
-            values.put(VOCABULARY_STATUS, "1");
+            values.put(VOCABULARY_STATUS, "0");
             db.insert(TABLE_VOCABULARY, null, values);
 
             values.put(ID_VOCA, 3);
@@ -128,13 +142,15 @@ public class DbController extends SQLiteOpenHelper {
 
             values.put(ID_VOCA, 4);
             values.put(ID_CATE, 1);
+            values.put(ID_SERVER_VOCA, 2);
             values.put(ENGLISH, "cat");
             values.put(VIETNAMESE, "con mèo");
-            values.put(VOCABULARY_STATUS, "0");
+            values.put(VOCABULARY_STATUS, "1");
             db.insert(TABLE_VOCABULARY, null, values);
 
             values.put(ID_VOCA, 5);
             values.put(ID_CATE, 1);
+            values.put(ID_SERVER_VOCA, 5);
             values.put(ENGLISH, "duck");
             values.put(VIETNAMESE, "con vịt");
             values.put(VOCABULARY_STATUS, "1");
@@ -241,6 +257,20 @@ public class DbController extends SQLiteOpenHelper {
     public int deleteVocabylaryById(String[] id) {
         int ret = -1;
         String whereClause = ID_VOCA + " IN (";
+        for (int i = 0; i < id.length; i++) {
+            whereClause += "?,";
+        }
+        whereClause = whereClause.substring(0, whereClause.length() - 1);
+        whereClause += ") ";
+        String[] whereArgs = id;
+        ret = database.delete(TABLE_VOCABULARY, whereClause, whereArgs);
+        return ret;
+    }
+
+    //delete vocabylary by id_cate
+    public int deleteVocabylaryByIdCate(String[] id) {
+        int ret = -1;
+        String whereClause = ID_CATE + " IN (";
         for (int i = 0; i < id.length; i++) {
             whereClause += "?,";
         }

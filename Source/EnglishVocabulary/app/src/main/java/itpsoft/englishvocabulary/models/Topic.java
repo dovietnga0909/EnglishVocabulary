@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import itpsoft.englishvocabulary.databases.DbController;
 import itpsoft.englishvocabulary.ultils.Color;
 import itpsoft.englishvocabulary.ultils.Log;
+import itpsoft.englishvocabulary.ultils.SPUtil;
 
 /**
  * Created by Thanh Tu on 6/8/2015.
@@ -26,6 +27,7 @@ public class Topic {
     private int id, number;
     private String color, name;
     private DbController dbController;
+    private Context context;
 
     public Topic(Context context) {
         dbController = DbController.getInstance(context);
@@ -148,6 +150,17 @@ public class Topic {
                 if (number > 0) {
                     result = EDIT_EXITS;
                 } else {
+
+                    String idUpdateCate = SPUtil.instance(context).get(SPUtil.KEY_CATE_UPDATE, "");
+                    String id_serverCate = "" + idServerByCateId(topic.getId());
+                    if(!id_serverCate.equals("-1")){
+                        if(!idUpdateCate.equals("")){
+                            SPUtil.instance(context).set(SPUtil.KEY_CATE_UPDATE, idUpdateCate + "," + id_serverCate);
+                        }else {
+                            SPUtil.instance(context).set(SPUtil.KEY_CATE_UPDATE, id_serverCate);
+                        }
+                    }
+
                     ContentValues values = new ContentValues();
                     values.put(DbController.CATEGORIES_NAME, name.trim());
                     dbController.updateCategories(DbController.TABLE_CATEGORIES, values, DbController.CATEGORIES_NAME, new String[]{Integer.toString(topic.getId())});
@@ -165,13 +178,68 @@ public class Topic {
     public int delete(Topic topic) {
         int result = DELETE_FALSE;
         try {
-            dbController.deleteCategoriesById(new String[] {Integer.toString(topic.getId())});
+
+            //id_cate_delete
+            String idDeleteCate = SPUtil.instance(context).get(SPUtil.KEY_CATE_DELETE, "");
+            String id_serverCate = "" + idServerByCateId(topic.getId());
+            if(!id_serverCate.equals("-1")){
+                if(!idDeleteCate.equals("")){
+                    SPUtil.instance(context).set(SPUtil.KEY_CATE_DELETE, idDeleteCate + "," + id_serverCate);
+                }else {
+                    SPUtil.instance(context).set(SPUtil.KEY_CATE_DELETE, id_serverCate);
+                }
+            }
+
+            dbController.deleteCategoriesById(new String[]{Integer.toString(topic.getId())});
+
+            //reset id_voca_delete
+            String listId = listIdVocaOfCateId(topic.getId());
+            Log.d("LuanDT", "ListId: " + listId);
+            String idDelete = SPUtil.instance(context).get(SPUtil.KEY_VOCA_DELETE, "");
+            if(!idDelete.equals("")){
+                SPUtil.instance(context).set(SPUtil.KEY_VOCA_DELETE, idDelete + "," + listId);
+            }else {
+                SPUtil.instance(context).set(SPUtil.KEY_VOCA_DELETE, listId);
+            }
+
+            deleteVocaByCateId(topic.getId());
             result = DELETE_SUCCESS;
         } catch (Exception e) {
             result = DELETE_FALSE;
             e.printStackTrace();
         }
         return result;
+    }
+
+    private String listIdVocaOfCateId(int id) {
+        String result = "";
+        try {
+            String sql = "SELECT " + DbController.ID_SERVER_VOCA + " FROM " + DbController.TABLE_VOCABULARY + " WHERE " + DbController.VOCABULARY_STATUS + " = 1" + " and " + DbController.ID_CATE + " = " + id + ";";
+            Log.d("LuanDT", "SQL: " + sql);
+            Cursor cursor = dbController.rawQuery(sql, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    if(cursor.isFirst()){
+                        result += cursor.getInt(cursor.getColumnIndex(DbController.ID_SERVER_VOCA));
+                    }else {
+                        result += "," + cursor.getInt(cursor.getColumnIndex(DbController.ID_SERVER_VOCA));
+                    }
+                } while (cursor.moveToNext());
+            }
+
+        } catch (Exception e) {
+            result = "";
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private void deleteVocaByCateId(int id) {
+        try {
+            dbController.deleteVocabylaryByIdCate(new String[] {Integer.toString(id)});
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //max id
@@ -186,6 +254,26 @@ public class Topic {
                 } while (cursor.moveToNext());
             }
 
+        } catch (Exception e) {
+            result = -1;
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    //id_server by cate_id
+    public int idServerByCateId(long cate_id) {
+        DbController dbController = DbController.getInstance(context);
+        int result = -1;
+        try {
+            String sql = "SELECT " + DbController.ID_SERVER_CATE + " FROM " + DbController.TABLE_CATEGORIES + " where " + DbController.ID_CATE + " = " + cate_id + " and " + DbController.CATEGORIES_STATUS + " = 1";
+            Log.d("LuanDT", "SQL: " + sql);
+            Cursor cursor = dbController.rawQuery(sql, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    result = cursor.getInt(cursor.getColumnIndex(DbController.ID_SERVER_CATE));
+                } while (cursor.moveToNext());
+            }
         } catch (Exception e) {
             result = -1;
             e.printStackTrace();

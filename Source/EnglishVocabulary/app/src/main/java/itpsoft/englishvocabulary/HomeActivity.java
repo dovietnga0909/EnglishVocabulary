@@ -30,6 +30,7 @@ import android.widget.ToggleButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import itpsoft.englishvocabulary.adapter.MenuAdapter;
@@ -38,7 +39,9 @@ import itpsoft.englishvocabulary.alarm.AlarmReceiver;
 import itpsoft.englishvocabulary.databases.DbController;
 import itpsoft.englishvocabulary.models.MenuItem;
 import itpsoft.englishvocabulary.models.Topic;
+import itpsoft.englishvocabulary.models.Vocabulary;
 import itpsoft.englishvocabulary.ultils.Keyboard;
+import itpsoft.englishvocabulary.ultils.Log;
 import itpsoft.englishvocabulary.ultils.SPUtil;
 import itpsoft.englishvocabulary.view.DrawerArrowDrawable;
 
@@ -125,6 +128,11 @@ public class HomeActivity extends Activity {
     @Override
     protected void onResume() {
         dateSetChange();
+        testSyncVoca();
+
+        Vocabulary vocabulary = new Vocabulary();
+        vocabulary.listVocabularyUpdate();
+        vocabulary.listVocabularyAdd();
         super.onResume();
     }
 
@@ -455,6 +463,8 @@ public class HomeActivity extends Activity {
                         if (dText.getText().toString().trim().length() > 0) {
                             int result = topic.rename(t, dText.getText().toString());
                             if (result == Topic.EDIT_SUCCESS) {
+                                testSyncCate();
+                                testSyncVoca();
                                 if (alertDialog.isShowing())
                                     alertDialog.dismiss();
                                 topicAdapter.notifyDataSetChanged();
@@ -527,8 +537,10 @@ public class HomeActivity extends Activity {
                         if (alertDialog.isShowing())
                             alertDialog.dismiss();
                         int result = topic.delete(t);
-                        if (result == Topic.INSERT_SUCCESS) {
+                        if (result == Topic.DELETE_SUCCESS) {
                             topicAdapter.notifyDataSetChanged();
+                            testSyncCate();
+                            testSyncVoca();
                             Toast.makeText(HomeActivity.this, resources.getString(R.string.deleted), Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(HomeActivity.this, resources.getString(R.string.error), Toast.LENGTH_SHORT).show();
@@ -539,7 +551,7 @@ public class HomeActivity extends Activity {
         };
         dDelete.setOnClickListener(dOnClickListener);
         dBack.setOnClickListener(dOnClickListener);
-        dContent.setText(resources.getString(R.string.really_delete) + " " + t.getName());
+        dContent.setText(resources.getString(R.string.really_delete) + " " + t.getName() + " " + resources.getString(R.string.warning));
     }
 
     private void startAlarm(long time) {
@@ -582,5 +594,95 @@ public class HomeActivity extends Activity {
             minute = "" + calendar.get(Calendar.MINUTE);
         }
         ((MenuItem) arrMenu.get(2)).setValue(hour + ":" + minute);
+    }
+
+    private void testSyncVoca(){
+
+        Log.d("LuanDT", "testSyncVoca");
+        String[] id_delete = new String[0];
+        String[] id_update = new String[0];
+        String idDelete = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_VOCA_DELETE, "");
+        String idUpdate = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_VOCA_UPDATE, "");
+
+        if(!idDelete.equals("")){
+            id_delete = idDelete.split(",");
+        }
+
+        if(!idUpdate.equals("")){
+            id_update = idUpdate.split(",");
+        }
+
+        ArrayList<String> listIdDelete = new ArrayList<String>(Arrays.asList(id_delete));
+        ArrayList<String> listIdUpdate = new ArrayList<String>(Arrays.asList(id_update));
+
+        if(listIdDelete.size() > 0){
+            for(int i = 0; i < listIdDelete.size(); i++){
+                Log.d("LuanDT", "id_delete: " + listIdDelete.get(i));
+                for(int j = 0; j < listIdUpdate.size(); j++){
+                    Log.d("LuanDT", "id_update: " + listIdUpdate.get(j));
+                    if(listIdDelete.get(i).equals(listIdUpdate.get(j))){
+                        listIdUpdate.remove(j);
+                    }
+                }
+            }
+            Log.d("LuanDT", "listIdUpdate.size(): " + listIdUpdate.size());
+        }
+
+        StringBuffer newIdUpdate = new StringBuffer();
+        for (int i = 0; i < listIdUpdate.size(); i++){
+            if(i == 0){
+                newIdUpdate = newIdUpdate.append(listIdUpdate.get(i));
+            }else {
+                newIdUpdate = newIdUpdate.append("," + listIdUpdate.get(i));
+            }
+        }
+
+        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_VOCA_UPDATE, "" + newIdUpdate);
+
+    }
+
+    private void testSyncCate(){
+
+        Log.d("LuanDT", "testSyncCate");
+        String[] id_delete = new String[0];
+        String[] id_update = new String[0];
+        String idDelete = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_CATE_DELETE, "");
+        String idUpdate = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_CATE_UPDATE, "");
+
+        if(!idDelete.equals("")){
+            id_delete = idDelete.split(",");
+        }
+
+        if(!idUpdate.equals("")){
+            id_update = idUpdate.split(",");
+        }
+
+        ArrayList<String> listIdDelete = new ArrayList<String>(Arrays.asList(id_delete));
+        ArrayList<String> listIdUpdate = new ArrayList<String>(Arrays.asList(id_update));
+
+        if(listIdDelete.size() > 0){
+            for(int i = 0; i < listIdDelete.size(); i++){
+                Log.d("LuanDT", "id_delete_cate: " + listIdDelete.get(i));
+                for(int j = 0; j < listIdUpdate.size(); j++){
+                    Log.d("LuanDT", "id_update_cate: " + listIdUpdate.get(j));
+                    if(listIdDelete.get(i).equals(listIdUpdate.get(j))){
+                        listIdUpdate.remove(j);
+                    }
+                }
+            }
+            Log.d("LuanDT", "listIdUpdate_cate.size(): " + listIdUpdate.size());
+        }
+
+        StringBuffer newIdUpdate = new StringBuffer();
+        for (int i = 0; i < listIdUpdate.size(); i++){
+            if(i == 0){
+                newIdUpdate = newIdUpdate.append(listIdUpdate.get(i));
+            }else {
+                newIdUpdate = newIdUpdate.append("," + listIdUpdate.get(i));
+            }
+        }
+
+        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_CATE_UPDATE, "" + newIdUpdate);
+
     }
 }

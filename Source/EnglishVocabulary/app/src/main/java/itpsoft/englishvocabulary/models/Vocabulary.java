@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import itpsoft.englishvocabulary.databases.DbController;
 import itpsoft.englishvocabulary.ultils.Log;
+import itpsoft.englishvocabulary.ultils.SPUtil;
 
 /**
  * Created by luand_000 on 05/06/2015.
@@ -164,10 +165,21 @@ public class Vocabulary{
             if (number > 0) {
                 result = EDIT_EXITS;
             } else {
+
+                String idUpdate = SPUtil.instance(context).get(SPUtil.KEY_VOCA_UPDATE, "");
+                String id_server = "" + idServerByVocaId(idVoca);
+                if(!id_server.equals("-1")){
+                    if(!idUpdate.equals("")){
+                        SPUtil.instance(context).set(SPUtil.KEY_VOCA_UPDATE, idUpdate + "," + id_server);
+                    }else {
+                        SPUtil.instance(context).set(SPUtil.KEY_VOCA_UPDATE, id_server);
+                    }
+                }
+
                 ContentValues values = new ContentValues();
                 values.put(DbController.ENGLISH, en.trim());
                 values.put(DbController.VIETNAMESE, vi.trim());
-                values.put(DbController.VOCABULARY_STATUS, "0");
+//                values.put(DbController.VOCABULARY_STATUS, "0");
                 dbController.updateVocabylary(DbController.TABLE_CATEGORIES, values, DbController.CATEGORIES_NAME, new String[]{Long.toString(idVoca)});
                 result = EDIT_SUCCESS;
             }
@@ -183,6 +195,15 @@ public class Vocabulary{
         DbController dbController = DbController.getInstance(context);
         int result = DELETE_FALSE;
         try {
+            String idDelete = SPUtil.instance(context).get(SPUtil.KEY_VOCA_DELETE, "");
+            String id_server = "" + idServerByVocaId(idVoca);
+            if(!id_server.equals("-1")){
+                if(!idDelete.equals("")){
+                    SPUtil.instance(context).set(SPUtil.KEY_VOCA_DELETE, idDelete + "," + id_server);
+                }else {
+                    SPUtil.instance(context).set(SPUtil.KEY_VOCA_DELETE, id_server);
+                }
+            }
             dbController.deleteVocabylaryById(new String[]{Long.toString(idVoca)});
             result = DELETE_SUCCESS;
         } catch (Exception e) {
@@ -243,7 +264,7 @@ public class Vocabulary{
 
                 } while (cursor.moveToNext());
 
-                Log.d("LuanDT", "array topic: " + array);
+                Log.d("LuanDT", "array add: " + array);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -270,5 +291,88 @@ public class Vocabulary{
             e.printStackTrace();
         }
         return result;
+    }
+
+    //id_server by voca_id
+    public int idServerByVocaId(long idVoca) {
+        DbController dbController = DbController.getInstance(context);
+        int result = -1;
+        try {
+            String sql = "SELECT " + DbController.ID_SERVER_VOCA + " FROM " + DbController.TABLE_VOCABULARY + " where " + DbController.ID_VOCA + " = " + idVoca + " and " + DbController.VOCABULARY_STATUS + " = 1";
+            Cursor cursor = dbController.rawQuery(sql, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    result = cursor.getInt(cursor.getColumnIndex(DbController.ID_SERVER_VOCA));
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            result = -1;
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    //list vocabulary update sync
+    public JSONArray listVocabularyUpdate(){
+        JSONArray array = new JSONArray();
+        DbController dbController = DbController.getInstance(context);
+
+        try {
+            String sql = "Select * from " + DbController.TABLE_VOCABULARY + " Where " + DbController.ID_SERVER_VOCA + " IN (" + SPUtil.instance(context).get(SPUtil.KEY_VOCA_UPDATE, "") + ");";
+//            Log.d("LuanDT", "SQL: " + sql);
+            Cursor cursor = dbController.rawQuery(sql, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    int idServer = cursor.getInt(cursor.getColumnIndex(DbController.ID_SERVER_VOCA));
+                    String english = cursor.getString(cursor.getColumnIndex(DbController.ENGLISH));
+                    String vietnamese = cursor.getString(cursor.getColumnIndex(DbController.VIETNAMESE));
+
+                    JSONObject voca = new JSONObject();
+
+                    voca.put("table", "vocabularies");
+                    voca.put("voca_id", idServer);
+                    //voca_id, id_clien, cate_id, english, vietnamese, user_id
+                    voca.put("sql", "'" + english  + "','" + vietnamese  + "'" );
+
+
+                    array.put(voca);
+
+                } while (cursor.moveToNext());
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        //list topic add sync
+        try {
+            String sql = "Select * from " + DbController.TABLE_CATEGORIES + " Where " + DbController.ID_SERVER_CATE + " IN (" + SPUtil.instance(context).get(SPUtil.KEY_CATE_UPDATE, "") + ");";
+//            Log.d("LuanDT", "SQL: " + sql);
+            Cursor cursor = dbController.rawQuery(sql, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    int cate_id = cursor.getInt(cursor.getColumnIndex(DbController.ID_SERVER_CATE));
+                    String name = cursor.getString(cursor.getColumnIndex(DbController.CATEGORIES_NAME));
+
+                    JSONObject voca = new JSONObject();
+
+                    voca.put("table", "categories");
+                    voca.put("cate_id", cate_id);
+                    //cate_id, id_clien, name, user_id
+                    voca.put("sql", "'" + name + "'" );
+
+
+                    array.put(voca);
+
+                } while (cursor.moveToNext());
+
+                Log.d("LuanDT", "array update: " + array);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return array;
     }
 }

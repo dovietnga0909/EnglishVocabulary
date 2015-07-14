@@ -10,6 +10,10 @@ public class SPUtil {
     //Ten key
     public static final String KEY_AGREE_RUN = "agree_start";
     public static final String KEY_REMIN_TIME = "remin_time";
+    public static final String KEY_VOCA_DELETE = "id_voca_delete";
+    public static final String KEY_VOCA_UPDATE = "id_voca_update";
+    public static final String KEY_CATE_DELETE = "id_cate_delete";
+    public static final String KEY_CATE_UPDATE = "id_cate_update";
     private SharedPreferences pref;
 
     private SPUtil(Context context) {
@@ -52,6 +56,12 @@ public class SPUtil {
     public boolean get(String key, Boolean defaultValue) {
         boolean ret;
         ret = pref.getBoolean(key, defaultValue);
+        return ret;
+    }
+
+    public String get(String key, String defaultValue) {
+        String ret;
+        ret = pref.getString(key, defaultValue);
         return ret;
     }
 
