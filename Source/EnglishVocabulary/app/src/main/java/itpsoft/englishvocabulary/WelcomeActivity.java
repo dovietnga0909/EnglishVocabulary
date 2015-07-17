@@ -32,7 +32,7 @@ public class WelcomeActivity
         super.onCreate(savedInstanceState);
         agreeRun = SPUtil.instance(WelcomeActivity.this).get(SPUtil.KEY_AGREE_RUN, false);
         if(agreeRun){
-            Intent intent = new Intent(WelcomeActivity.this, HomeActivity.class);
+            Intent intent = new Intent(WelcomeActivity.this, SplashActivity.class);
             startActivity(intent);
             finish();
         }
