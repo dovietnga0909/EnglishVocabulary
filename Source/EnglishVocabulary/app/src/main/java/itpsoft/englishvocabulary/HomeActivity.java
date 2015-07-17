@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -15,7 +14,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -37,6 +35,7 @@ import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -173,6 +172,11 @@ public class HomeActivity extends Activity {
                     int months = c.get(Calendar.MONTH);
                     int years_now = c.get(Calendar.YEAR);
 
+                    if(hours < 10){
+                        Log.d("LuanDT", "hours: " + hours);
+                    }
+                    months = months + 1;
+
                     String time = "" + hours + ":" + minute + " " + date + "/" + months + "/" + years_now;
 
                     //set time sync last
@@ -184,10 +188,15 @@ public class HomeActivity extends Activity {
 
                     String updateCate = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_CATE_UPDATE, "");
                     String updateVoca = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_VOCA_UPDATE, "");
-                    if(updateCate.equals("") || updateVoca.equals("")){
+                    if(!updateCate.equals("") || !updateVoca.equals("")){
                         syncUpdate();
+                        syncInsert();
+                        try {
+                            syncDelete();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-//                    syncInsert();
 
                 } else if (i == 3) {
                     createDialogRemind();
@@ -768,9 +777,9 @@ public class HomeActivity extends Activity {
         });
     }
 
-    private void syncDelete(){
+    private void syncDelete() throws JSONException{
         progressDialog();
-        excuteDelete(vocabulary.listVocabularyAdd(), new OnLoadListener() {
+        excuteDelete(listVocabularyDelete(), new OnLoadListener() {
             @Override
             public void onStart() {
                 progressDialog.show();
@@ -870,6 +879,30 @@ public class HomeActivity extends Activity {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
             }
         });
+    }
+
+    //list vocabulary delete sync
+    public JSONArray listVocabularyDelete() throws JSONException {
+
+        String deleteCate = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_CATE_DELETE, "");
+        String deleteVoca = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_VOCA_DELETE, "");
+
+        JSONArray array = new JSONArray();
+        JSONObject voca = new JSONObject();
+
+        voca.put("table", "vocabularies");
+        voca.put("sql", "'" + deleteVoca + "'" );
+
+        array.put(voca);
+
+        JSONObject voca1 = new JSONObject();
+
+        voca1.put("table", "categories");
+        voca1.put("sql", "'" + deleteCate + "'" );
+
+
+        array.put(voca1);
+        return array;
     }
 
     private ProgressDialog progressDialog() {

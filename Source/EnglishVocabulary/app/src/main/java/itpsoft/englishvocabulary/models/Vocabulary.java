@@ -332,7 +332,7 @@ public class Vocabulary{
                     voca.put("table", "vocabularies");
                     voca.put("voca_id", idServer);
                     //voca_id, id_clien, cate_id, english, vietnamese, user_id
-                    voca.put("sql", "'" + english  + "','" + vietnamese  + "'" );
+                    voca.put("sql", "english='" + english  + "', vietnamese='" + vietnamese  + "'" );
 
 
                     array.put(voca);
@@ -360,7 +360,7 @@ public class Vocabulary{
                     voca.put("table", "categories");
                     voca.put("cate_id", cate_id);
                     //cate_id, id_clien, name, user_id
-                    voca.put("sql", "'" + name + "'" );
+                    voca.put("sql", "name='" + name + "'" );
 
 
                     array.put(voca);
