@@ -43,6 +43,8 @@
     <string name="txt_ok">Có</string>
     <string name="txt_no">Không</string>
 
+    <string name="txt_copyright">Created by ITPSoft</string>
+
     <!-- TuNT-->
     <string name="ev">Từ vựng tiếng Anh</string>
     <string name="sync">Đồng bộ</string>
