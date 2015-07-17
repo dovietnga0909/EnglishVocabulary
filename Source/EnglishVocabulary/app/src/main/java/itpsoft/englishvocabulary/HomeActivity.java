@@ -80,6 +80,7 @@ public class HomeActivity extends Activity {
     private boolean modify = false;
     private ProgressDialog progressDialog;
     private Vocabulary vocabulary;
+    private DbController dbController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +97,7 @@ public class HomeActivity extends Activity {
         displayRectangle = new Rect();
         Window window = getWindow();
         window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
-        DbController dbController = DbController.getInstance(this);
+        dbController = DbController.getInstance(this);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         final ImageView back = (ImageView) findViewById(R.id.drawer_indicator);
@@ -201,6 +202,7 @@ public class HomeActivity extends Activity {
                 } else if (i == 3) {
                     createDialogRemind();
                 } else if (i == 5) {
+                    dbController.deleteAllDataTable();
 
                 }
             }
@@ -891,14 +893,14 @@ public class HomeActivity extends Activity {
         JSONObject voca = new JSONObject();
 
         voca.put("table", "vocabularies");
-        voca.put("sql", "'" + deleteVoca + "'" );
+        voca.put("sql", deleteVoca);
 
         array.put(voca);
 
         JSONObject voca1 = new JSONObject();
 
         voca1.put("table", "categories");
-        voca1.put("sql", "'" + deleteCate + "'" );
+        voca1.put("sql", deleteCate);
 
 
         array.put(voca1);

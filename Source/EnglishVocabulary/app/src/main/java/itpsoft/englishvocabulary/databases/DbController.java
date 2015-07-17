@@ -298,4 +298,12 @@ public class DbController extends SQLiteOpenHelper {
         return ret;
     }
 
+    //delete all data
+    public void deleteAllDataTable(){
+        SQLiteDatabase database = this.getWritableDatabase();
+        database.delete(TABLE_CATEGORIES, null, null);
+        database.delete(TABLE_VOCABULARY, null, null);
+
+    }
+
 }

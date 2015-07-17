@@ -18,7 +18,7 @@
             android:layout_gravity="center_vertical"
             android:layout_margin="8dp"
             android:clickable="true"
-            android:src="@drawable/welcome1"
+            android:src="@drawable/luan"
             app:civ_border="true"
             app:civ_borderColor="#FFFFFFFF"
             app:civ_borderWidth="2dp"
