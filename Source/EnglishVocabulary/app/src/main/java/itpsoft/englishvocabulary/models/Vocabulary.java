@@ -10,6 +10,7 @@ import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -26,7 +27,9 @@ import itpsoft.englishvocabulary.ultils.SPUtil;
 public class Vocabulary{
     private long id;
     private int cate_id;
-    private String english, vietnamese;
+    private int id_server;
+    private String english;
+    private String vietnamese;
     private String status_sync;
     private Context context;
 
@@ -50,13 +53,14 @@ public class Vocabulary{
         this.status_sync = status_sync;
     }
 
-    public Vocabulary(int cate_id, String english, String vietnamese, String status_sync) {
+    public Vocabulary(long id, int cate_id, int id_server, String english, String vietnamese, String status_sync) {
+        this.id = id;
         this.cate_id = cate_id;
+        this.id_server = id_server;
         this.english = english;
         this.vietnamese = vietnamese;
         this.status_sync = status_sync;
     }
-
 
     public long getId() {
         return id;
@@ -96,6 +100,18 @@ public class Vocabulary{
 
     public void setStatus_sync(String status_sync) {
         this.status_sync = status_sync;
+    }
+
+    public int getId_server() {
+        return id_server;
+    }
+
+    public void setId_server(int id_server) {
+        this.id_server = id_server;
+    }
+
+    public String getStatus_sync() {
+        return status_sync;
     }
 
     //get vocabulary by cate_id
@@ -386,20 +402,63 @@ public class Vocabulary{
     //--------------------excute---------------------//
 
     //add database
-    private void addDataToDatabase(Context context, String url, OnLoadListener OnLoadListener){
+    public void excuteAddDataToDatabase(Context context, OnLoadListener OnLoadListener){
         this.onLoadListener = OnLoadListener;
         onLoadListener.onStart();
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        params.add("user_id", SPUtil.instance(context).get(SPUtil.KEY_USER_ID, "-1"));
+//        params.add("userId", SPUtil.instance(context).get(SPUtil.KEY_USER_ID, "-1"));
+//        params.add("username", SPUtil.instance(context).get(SPUtil.KEY_USERNAME, "-1"));
+        params.add("userId", "1");
+        params.add("username", "admin");
 
-        Log.d("LuanDT", "params----excuteUpdate: " + params);
+        Log.d("LuanDT", "params----excuteAddDataToDatabase: " + params);
 
         client.post(context.getResources().getString(R.string.api_get_all_data), params, new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 String result = response.toString();
-                Log.d("LuanDT", "excuteUpdate: " + result);
+                Log.d("LuanDT", "excuteAddDataToDatabase: " + result);
+
+                if(!result.isEmpty()){
+                    try {
+                        JSONObject object = new JSONObject(result);
+                        JSONObject data = object.getJSONObject("data");
+
+                        //get data categories
+                        JSONArray categories = data.getJSONArray("categories");
+
+                        for (int i = 0; i < categories.length(); i++){
+                            JSONObject rows = categories.getJSONObject(i);
+
+                            String id_server = rows.getString("cate_id");
+                            String id_clien = rows.getString("id_clien");
+                            String name = rows.getString("name");
+
+                            addCategories(id_clien, id_server, name);
+                            Log.d("LuanDT", "add categories to database");
+                        }
+
+                        //get data vocabularies
+                        JSONArray vocabularies = data.getJSONArray("vocabularies");
+                        for (int i = 0; i < vocabularies.length(); i++){
+                            JSONObject rows = vocabularies.getJSONObject(i);
+
+                            String id_server = rows.getString("voca_id");
+                            String id_clien = rows.getString("id_clien");
+                            String cate_id = rows.getString("cate_id");
+                            String english = rows.getString("english");
+                            String vietnamese = rows.getString("vietnamese");
+
+                            Log.d("LuanDT", "add vocabularies to database");
+
+                            addVoca(id_clien, id_server, cate_id, english, vietnamese);
+                        }
+
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
 
                 onLoadListener.onSuccess();
                 super.onSuccess(statusCode, headers, response);
@@ -413,14 +472,39 @@ public class Vocabulary{
         });
     }
 
+    public void addCategories(String id_clien, String id_server, String name){
+        DbController dbController = DbController.getInstance(context);
+        ContentValues values = new ContentValues();
+        values.put(DbController.ID_CATE, id_clien);
+        values.put(DbController.ID_SERVER_CATE, id_server);
+        values.put(DbController.CATEGORIES_NAME, name);
+        values.put(DbController.CATEGORIES_STATUS, "1");
+        dbController.insert(DbController.TABLE_CATEGORIES, null, values);
+
+    }
+
+    public void addVoca(String id_clien, String id_server, String cate_id, String english, String vietnamese){
+        DbController dbController = DbController.getInstance(context);
+        ContentValues values = new ContentValues();
+        values.put(DbController.ID_VOCA, id_clien);
+        values.put(DbController.ID_CATE, cate_id);
+        values.put(DbController.ID_SERVER_VOCA, id_server);
+        values.put(DbController.ENGLISH, english);
+        values.put(DbController.VIETNAMESE, vietnamese);
+        values.put(DbController.VOCABULARY_STATUS, "1");
+        dbController.insert(DbController.TABLE_VOCABULARY, null, values);
+
+    }
+
     //sync insert
-    public void excuteInsert(Context context, JSONArray array, OnLoadListener OnLoadListener){
+    public void excuteInsert(Context context, JSONArray json, OnLoadListener OnLoadListener){
         this.onLoadListener = OnLoadListener;
         onLoadListener.onStart();
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        params.add("user_id", SPUtil.instance(context).get(SPUtil.KEY_USER_ID, "-1"));
-        params.add("array", "" + array);
+        params.add("userId", SPUtil.instance(context).get(SPUtil.KEY_USER_ID, "-1"));
+        params.add("username", SPUtil.instance(context).get(SPUtil.KEY_USERNAME, "-1"));
+        params.add("json", "" + json);
 
         Log.d("LuanDT", "params----excuteInsert: " + params);
 
@@ -443,13 +527,14 @@ public class Vocabulary{
     }
 
     //sync update
-    public void excuteUpdate(Context context, JSONArray array, OnLoadListener OnLoadListener){
+    public void excuteUpdate(Context context, JSONArray json, OnLoadListener OnLoadListener){
         this.onLoadListener = OnLoadListener;
         onLoadListener.onStart();
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        params.add("user_id", SPUtil.instance(context).get(SPUtil.KEY_USER_ID, "-1"));
-        params.add("array", "" + array);
+        params.add("userId", SPUtil.instance(context).get(SPUtil.KEY_USER_ID, "-1"));
+        params.add("username", SPUtil.instance(context).get(SPUtil.KEY_USERNAME, "-1"));
+        params.add("json", "" + json);
 
         Log.d("LuanDT", "params----excuteUpdate: " + params);
 
@@ -472,13 +557,14 @@ public class Vocabulary{
     }
 
     //sync delete
-    public void excuteDelete(Context context, JSONArray array, OnLoadListener OnLoadListener){
+    public void excuteDelete(Context context, JSONArray json, OnLoadListener OnLoadListener){
         this.onLoadListener = OnLoadListener;
         onLoadListener.onStart();
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        params.add("user_id", SPUtil.instance(context).get(SPUtil.KEY_USER_ID, "-1"));
-        params.add("array", "" + array);
+        params.add("userId", SPUtil.instance(context).get(SPUtil.KEY_USER_ID, "-1"));
+        params.add("username", SPUtil.instance(context).get(SPUtil.KEY_USERNAME, "-1"));
+        params.add("json", "" + json);
 
         Log.d("LuanDT", "params----excuteDelete: " + params);
 

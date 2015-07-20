@@ -93,12 +93,12 @@
     <string name="cancel_sync">Đang đồng bộ bạn có thực sự muốn hủy?</string>
     
     <!--link api-->
-    <string name="api_push_insert"></string>
-    <string name="api_push_update"></string>
-    <string name="api_push_delete"></string>
-    <string name="api_get_all_data"></string>
-    <string name="api_register"></string>
-    <string name="api_login"></string>
+    <string name="api_push_insert">http://myapp.freezoy.com/Vocabulary/insert.php</string>
+    <string name="api_push_update">http://myapp.freezoy.com/Vocabulary/update.php</string>
+    <string name="api_push_delete">http://myapp.freezoy.com/Vocabulary/delete.php</string>
+    <string name="api_get_all_data">http://myapp.freezoy.com/Vocabulary/alldata.php</string>
+    <string name="api_register">http://myapp.freezoy.com/Vocabulary/register.php</string>
+    <string name="api_login">http://myapp.freezoy.com/Vocabulary/login.php</string>
 
     <!-- AcctentRemover -->
     <string-array name="special_characters">

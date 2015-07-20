@@ -29,11 +29,6 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
-import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -187,21 +182,24 @@ public class HomeActivity extends Activity {
 
                     String updateCate = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_CATE_UPDATE, "");
                     String updateVoca = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_VOCA_UPDATE, "");
-                    if(!updateCate.equals("") || !updateVoca.equals("")){
-                        syncUpdate();
-                        syncInsert();
-                        try {
-                            syncDelete();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
+
+                    syncAddDataToDatabase();
+
+//                    if(!updateCate.equals("") || !updateVoca.equals("")){
+//                        syncUpdate();
+//                        syncInsert();
+//                        try {
+//                            syncDelete();
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
 
                 } else if (i == 3) {
                     createDialogRemind();
                 } else if (i == 5) {
                     dbController.deleteAllDataTable();
-
+                    dateSetChange();
                 }
             }
         });
@@ -247,6 +245,7 @@ public class HomeActivity extends Activity {
 
     private void createDataMenu() {
         boolean isSync = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_SYNC, false);
+        boolean isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, false);
         arrMenu = new ArrayList<Object>();
         arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_home, resources.getString(R.string.ev), ""));
         if(isSync){
@@ -256,7 +255,11 @@ public class HomeActivity extends Activity {
         }
         arrMenu.add(new MenuItem("#ff6f00", R.drawable.ic_clock, resources.getString(R.string.reminds_study_time), resources.getString(R.string.off)));
         arrMenu.add("");
-        arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_logout, resources.getString(R.string.logout), ""));
+        if(isLogin){
+            arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_logout, resources.getString(R.string.logout), ""));
+        } else {
+            arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_login, resources.getString(R.string.login), ""));
+        }
     }
 
     private void createDialogRemind() {
@@ -797,7 +800,25 @@ public class HomeActivity extends Activity {
         });
     }
 
+    private void syncAddDataToDatabase(){
+        progressDialog();
+        vocabulary.excuteAddDataToDatabase(HomeActivity.this, new Vocabulary.OnLoadListener() {
+            @Override
+            public void onStart() {
+                progressDialog.show();
+            }
 
+            @Override
+            public void onSuccess() {
+                progressDialog.show();
+            }
+
+            @Override
+            public void onFailure() {
+                progressDialog.dismiss();
+            }
+        });
+    }
 
     //list vocabulary delete sync
     public JSONArray listVocabularyDelete() throws JSONException {
