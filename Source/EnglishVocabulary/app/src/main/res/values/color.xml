@@ -13,4 +13,6 @@
     <color name="text">#191919</color>
     <color name="logo">#0078ba</color>
     <color name="splash">#ffffff</color>
+
+    <color name="transparent">#00ffffff</color>
 </resources>
