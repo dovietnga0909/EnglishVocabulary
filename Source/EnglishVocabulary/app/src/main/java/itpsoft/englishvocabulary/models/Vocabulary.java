@@ -4,11 +4,18 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import itpsoft.englishvocabulary.HomeActivity;
+import itpsoft.englishvocabulary.R;
 import itpsoft.englishvocabulary.databases.DbController;
 import itpsoft.englishvocabulary.ultils.Log;
 import itpsoft.englishvocabulary.ultils.SPUtil;
@@ -374,5 +381,129 @@ public class Vocabulary{
         }
 
         return array;
+    }
+
+    //--------------------excute---------------------//
+
+    //add database
+    private void addDataToDatabase(Context context, String url, OnLoadListener OnLoadListener){
+        this.onLoadListener = OnLoadListener;
+        onLoadListener.onStart();
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.add("user_id", SPUtil.instance(context).get(SPUtil.KEY_USER_ID, "-1"));
+
+        Log.d("LuanDT", "params----excuteUpdate: " + params);
+
+        client.post(context.getResources().getString(R.string.api_get_all_data), params, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                String result = response.toString();
+                Log.d("LuanDT", "excuteUpdate: " + result);
+
+                onLoadListener.onSuccess();
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                onLoadListener.onFailure();
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
+    }
+
+    //sync insert
+    public void excuteInsert(Context context, JSONArray array, OnLoadListener OnLoadListener){
+        this.onLoadListener = OnLoadListener;
+        onLoadListener.onStart();
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.add("user_id", SPUtil.instance(context).get(SPUtil.KEY_USER_ID, "-1"));
+        params.add("array", "" + array);
+
+        Log.d("LuanDT", "params----excuteInsert: " + params);
+
+        client.post(context.getResources().getString(R.string.api_push_insert), params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                String result = response.toString();
+                Log.d("LuanDT", "excuteInsert: " + result);
+
+                onLoadListener.onSuccess();
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                onLoadListener.onFailure();
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
+    }
+
+    //sync update
+    public void excuteUpdate(Context context, JSONArray array, OnLoadListener OnLoadListener){
+        this.onLoadListener = OnLoadListener;
+        onLoadListener.onStart();
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.add("user_id", SPUtil.instance(context).get(SPUtil.KEY_USER_ID, "-1"));
+        params.add("array", "" + array);
+
+        Log.d("LuanDT", "params----excuteUpdate: " + params);
+
+        client.post(context.getResources().getString(R.string.api_push_update), params, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                String result = response.toString();
+                Log.d("LuanDT", "excuteUpdate: " + result);
+
+                onLoadListener.onSuccess();
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                onLoadListener.onFailure();
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
+    }
+
+    //sync delete
+    public void excuteDelete(Context context, JSONArray array, OnLoadListener OnLoadListener){
+        this.onLoadListener = OnLoadListener;
+        onLoadListener.onStart();
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.add("user_id", SPUtil.instance(context).get(SPUtil.KEY_USER_ID, "-1"));
+        params.add("array", "" + array);
+
+        Log.d("LuanDT", "params----excuteDelete: " + params);
+
+        client.post(context.getResources().getString(R.string.api_push_delete), params, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                String result = response.toString();
+                Log.d("LuanDT", "excuteDelete: " + result);
+
+                onLoadListener.onSuccess();
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                onLoadListener.onFailure();
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
+    }
+
+    private OnLoadListener onLoadListener;
+    public interface OnLoadListener {
+        void onStart();
+        void onSuccess();
+        void onFailure();
     }
 }

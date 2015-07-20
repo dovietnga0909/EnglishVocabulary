@@ -81,6 +81,15 @@ public class HomeActivity extends Activity {
     private ProgressDialog progressDialog;
     private Vocabulary vocabulary;
     private DbController dbController;
+    private String s_hours = "";
+    private String s_minute = "";
+    private String s_months = "";
+    private String s_day = "";
+    private int minute;
+    private int hours;
+    private int date;
+    private int months;
+    private int years_now;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,22 +172,11 @@ public class HomeActivity extends Activity {
                         drawer.closeDrawer(START);
                     }
                 } else if (i == 2) {
+                    dateTimeSync();
+                    String time = "" + s_hours + ":" + s_minute + " " + s_day + "/" + s_months + "/" + years_now;
+
                     //set is sync
                     SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_SYNC, true);
-
-                    final Calendar c = Calendar.getInstance();
-                    int minute = c.get(Calendar.MINUTE);
-                    int hours = c.get(Calendar.HOUR);
-                    int date = c.get(Calendar.DATE);
-                    int months = c.get(Calendar.MONTH);
-                    int years_now = c.get(Calendar.YEAR);
-
-                    if(hours < 10){
-                        Log.d("LuanDT", "hours: " + hours);
-                    }
-                    months = months + 1;
-
-                    String time = "" + hours + ":" + minute + " " + date + "/" + months + "/" + years_now;
 
                     //set time sync last
                     SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_TIME_LAST_SYNC, time);
@@ -741,7 +739,7 @@ public class HomeActivity extends Activity {
 
     private void syncInsert(){
         progressDialog();
-        excuteInsert(vocabulary.listVocabularyAdd(), new OnLoadListener() {
+        vocabulary.excuteInsert(HomeActivity.this, vocabulary.listVocabularyAdd(), new Vocabulary.OnLoadListener() {
             @Override
             public void onStart() {
                 progressDialog.show();
@@ -761,7 +759,7 @@ public class HomeActivity extends Activity {
 
     private void syncUpdate(){
         progressDialog();
-        excuteUpdate(vocabulary.listVocabularyUpdate(), new OnLoadListener() {
+        vocabulary.excuteUpdate(HomeActivity.this, vocabulary.listVocabularyUpdate(), new Vocabulary.OnLoadListener() {
             @Override
             public void onStart() {
                 progressDialog.show();
@@ -781,7 +779,7 @@ public class HomeActivity extends Activity {
 
     private void syncDelete() throws JSONException{
         progressDialog();
-        excuteDelete(listVocabularyDelete(), new OnLoadListener() {
+        vocabulary.excuteDelete(HomeActivity.this, listVocabularyDelete(), new Vocabulary.OnLoadListener() {
             @Override
             public void onStart() {
                 progressDialog.show();
@@ -799,89 +797,7 @@ public class HomeActivity extends Activity {
         });
     }
 
-    private void excuteInsert(JSONArray array, OnLoadListener OnLoadListener){
-        this.onLoadListener = OnLoadListener;
-        onLoadListener.onStart();
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        params.add("user_id", SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_USER_ID, "-1"));
-        params.add("array", "" + array);
 
-        Log.d("LuanDT", "params----excuteInsert: " + params);
-
-        client.post(getResources().getString(R.string.api_push_insert), params, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                String result = response.toString();
-                Log.d("LuanDT", "excuteInsert: " + result);
-
-                onLoadListener.onSuccess();
-                super.onSuccess(statusCode, headers, response);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                onLoadListener.onFailure();
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-            }
-        });
-    }
-
-    private void excuteUpdate(JSONArray array, OnLoadListener OnLoadListener){
-        this.onLoadListener = OnLoadListener;
-        onLoadListener.onStart();
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        params.add("user_id", SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_USER_ID, "-1"));
-        params.add("array", "" + array);
-
-        Log.d("LuanDT", "params----excuteUpdate: " + params);
-
-        client.post(getResources().getString(R.string.api_push_update), params, new JsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                String result = response.toString();
-                Log.d("LuanDT", "excuteUpdate: " + result);
-
-                onLoadListener.onSuccess();
-                super.onSuccess(statusCode, headers, response);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                onLoadListener.onFailure();
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-            }
-        });
-    }
-
-    private void excuteDelete(JSONArray array, OnLoadListener OnLoadListener){
-        this.onLoadListener = OnLoadListener;
-        onLoadListener.onStart();
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        params.add("user_id", SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_USER_ID, "-1"));
-        params.add("array", "" + array);
-
-        Log.d("LuanDT", "params----excuteDelete: " + params);
-
-        client.post(getResources().getString(R.string.api_push_delete), params, new JsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                String result = response.toString();
-                Log.d("LuanDT", "excuteDelete: " + result);
-
-                onLoadListener.onSuccess();
-                super.onSuccess(statusCode, headers, response);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                onLoadListener.onFailure();
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-            }
-        });
-    }
 
     //list vocabulary delete sync
     public JSONArray listVocabularyDelete() throws JSONException {
@@ -909,17 +825,46 @@ public class HomeActivity extends Activity {
 
     private ProgressDialog progressDialog() {
         progressDialog = new ProgressDialog(HomeActivity.this);
-//        progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setMessage(getResources().getString(R.string.waiting));
         return progressDialog;
     }
 
-    private OnLoadListener onLoadListener;
-    public interface OnLoadListener {
-        void onStart();
-        void onSuccess();
-        void onFailure();
+    //date time sync
+    public void dateTimeSync(){
+        final Calendar c = Calendar.getInstance();
+        minute = c.get(Calendar.MINUTE);
+        hours = c.get(Calendar.HOUR_OF_DAY);
+        date = c.get(Calendar.DATE);
+        months = c.get(Calendar.MONTH);
+        years_now = c.get(Calendar.YEAR);
+
+        if(hours < 10){
+            s_hours = "0" + hours;
+        } else {
+            s_hours = "" + hours;
+        }
+
+        if(minute < 10){
+            s_minute = "0" + minute;
+        }else {
+            s_minute = "" + minute;
+        }
+
+        months = months + 1;
+
+        if(months < 10){
+            s_months = "0" + months;
+        }else {
+            s_months = "" + months;
+        }
+
+        if(date < 10){
+            s_day = "0" + date;
+        }else {
+            s_day = "" + date;
+        }
+
     }
 
 }
