@@ -1,16 +1,21 @@
 <?php
 	require_once('Database.php');
-	if(isset($_POST['json'])){
+	if(isset($_POST['userId']) && isset($_POST['username'])&&isset($_POST['json'])){
+		$userId = $_POST['userId'];
+		$username = $_POST['username'];
 		$json = $_POST['json'];
 		$db = new Database();
-		$result = $db->delete($json);
-		if($result)
-			success();
-		else
-			error("Lỗi, không xác định.");
-	}else{
-		error("Thiếu nội dung.");
-	}
+		$check = $db->checkUser($userId, $username);
+		if($check){
+			$result = $db->delete($json);
+			if($result)
+				success();
+			else
+				error("Lỗi, không xác định.");
+		}else
+			error("Tài khoản không tồn tại");
+	}else
+		error("Dữ liệu gửi lên không đầy đủ.");
 	
 	function success(){
     	$response = array();
