@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -71,6 +70,7 @@ public class HomeActivity extends Activity {
     private AlarmManager alarmManager;
     private Intent alarmIntent;
     private PendingIntent pendingIntent;
+    private TextView fullName;
     private int intervalTime = 1000 * 60 * 60 * 24;
     private long reminTime = -1;
     private boolean modify = false;
@@ -87,24 +87,24 @@ public class HomeActivity extends Activity {
     private int months;
     private int years_now;
 
-    private boolean isSync;
-    private String isLogin;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_home);
         vocabulary = new Vocabulary();
+
+        //demo data
+        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_LOGIN, true);
+        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_FULLNAME, "Đinh Thế Luân");
+        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_USER_ID, "1");
+        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_USERNAME, "admin");
+
         ///start up
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmIntent = new Intent(HomeActivity.this, AlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0, alarmIntent, 0);
         reminTime = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_REMIN_TIME, (long) -1);
-        isSync = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_SYNC, false);
-        isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, "false");
-
-        Log.d("NgaDV","trang thai login : "+isLogin);
 
         displayRectangle = new Rect();
         Window window = getWindow();
@@ -165,39 +165,39 @@ public class HomeActivity extends Activity {
         createDataMenu();
         View menuHeader = LayoutInflater.from(HomeActivity.this).inflate(R.layout.menu_header, null);
         listMenu.addHeaderView(menuHeader);
+        fullName = (TextView) menuHeader.findViewById(R.id.name);
+        fullName.setText(SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_FULLNAME, ""));
         menuAdapter = new MenuAdapter(HomeActivity.this, arrMenu);
         listMenu.setAdapter(menuAdapter);
+
         listMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 1) {
-                    Log.d("NgaDV",i+"");
-
                     if (drawer.isDrawerVisible(START)) {
                         drawer.closeDrawer(START);
                     }
                 } else if (i == 2) {
-                    Log.d("NgaDV",i+"");
+                    boolean isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, false);
+                    if(isLogin) {
+                        dateTimeSync();
+                        String time = "" + s_hours + ":" + s_minute + " " + s_day + "/" + s_months + "/" + years_now;
 
-                    dateTimeSync();
-                    String time = "" + s_hours + ":" + s_minute + " " + s_day + "/" + s_months + "/" + years_now;
 
-                    //set is sync
-                    SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_SYNC, true);
+                        //set is sync
+                        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_SYNC, true);
 
-                    //set time sync last
-                    SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_TIME_LAST_SYNC, time);
+                        //set time sync last
+                        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_TIME_LAST_SYNC, time);
 
-                    //update ui
-                    ((MenuItem) arrMenu.get(1)).setValue(time);
-                    menuAdapter.notifyDataSetChanged();
+                        //update ui
+                        ((MenuItem) arrMenu.get(1)).setValue(time);
+                        menuAdapter.notifyDataSetChanged();
 
-                    String updateCate = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_CATE_UPDATE, "");
-                    String updateVoca = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_VOCA_UPDATE, "");
+                        String updateCate = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_CATE_UPDATE, "");
+                        String updateVoca = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_VOCA_UPDATE, "");
 
-                    syncAddDataToDatabase();
-
-//                    if(!updateCate.equals("") || !updateVoca.equals("")){
+                        syncAddDataToDatabase();
 //                        syncUpdate();
 //                        syncInsert();
 //                        try {
@@ -205,50 +205,38 @@ public class HomeActivity extends Activity {
 //                        } catch (JSONException e) {
 //                            e.printStackTrace();
 //                        }
-//                    }
-
-                } else if (i == 3) {
-                    Log.d("NgaDV",i+"");
-
-                    createDialogRemind();
-                }else if (i == 5) {
-                    if(isLogin.equals("true")){
-                        android.util.Log.d("NgaDV", isLogin + "1");
-                        // sua o day
-
-//                            dbController.deleteAllDataTable();
-//                            dateSetChange();
-//                            SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_FULLNAME, "fullname");
-//                            SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_LOGIN,"false");
-//                            SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_USER_ID, "user_id");
-//                            SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_USERNAME, "username");
-
-                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeActivity.this,AlertDialog.THEME_HOLO_LIGHT);
-                        alertDialog.setTitle("ban co muon dang xuat");
-                        alertDialog.setNegativeButton("ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(getApplicationContext(), "ok", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        alertDialog.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(getApplicationContext(), "cancel", Toast.LENGTH_SHORT).show();
-
-                            }
-                        });
-                        alertDialog.setCancelable(false);
-                        alertDialog.show();
-
+//
+//                        if(!updateCate.equals("") || !updateVoca.equals("")){
+//
+//                        }
                     } else {
-                        android.util.Log.d("NgaDV",isLogin+"2");
-                        Intent intent = new Intent(HomeActivity.this,LoginActivity.class);
+                        Intent intent = new Intent();
+                        intent.setClass(HomeActivity.this, LoginActivity.class);
                         startActivity(intent);
-                        finish();
                     }
 
+                } else if (i == 3) {
+                    createDialogRemind();
+                } else if (i == 5) {
+                    boolean isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, false);
+                    if (isLogin) {
+                        dbController.deleteAllDataTable();
+                        dateSetChange();
+                        SPUtil.instance(HomeActivity.this).logout();
+                        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_AGREE_RUN, true);
 
+                        fullName.setText("");
+
+                        ((MenuItem) arrMenu.get(1)).setValue(resources.getString(R.string.off));
+//                        arrMenu.set(5, new MenuItem("#03A9F4", R.drawable.ic_login, resources.getString(R.string.login), ""));
+                        ((MenuItem) arrMenu.get(4)).setTitle(resources.getString(R.string.login));
+                        ((MenuItem) arrMenu.get(4)).setIcon(R.drawable.ic_login);
+                        menuAdapter.notifyDataSetChanged();
+                    } else {
+                        Intent intent = new Intent();
+                        intent.setClass(HomeActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
                 }
             }
         });
@@ -293,6 +281,8 @@ public class HomeActivity extends Activity {
     }
 
     private void createDataMenu() {
+        boolean isSync = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_SYNC, false);
+        boolean isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, false);
         arrMenu = new ArrayList<Object>();
         arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_home, resources.getString(R.string.ev), ""));
         if(isSync){
@@ -302,11 +292,9 @@ public class HomeActivity extends Activity {
         }
         arrMenu.add(new MenuItem("#ff6f00", R.drawable.ic_clock, resources.getString(R.string.reminds_study_time), resources.getString(R.string.off)));
         arrMenu.add("");
-        if(isLogin.equals("true")){
-            Log.d("NgaDV",isLogin+"createdata");
+        if(isLogin){
             arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_logout, resources.getString(R.string.logout), ""));
         } else {
-
             arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_login, resources.getString(R.string.login), ""));
         }
     }
@@ -799,12 +787,14 @@ public class HomeActivity extends Activity {
 
             @Override
             public void onSuccess() {
+                progressDialog.dismiss();
 
             }
 
             @Override
             public void onFailure() {
-//                progressDialog.dismiss();
+                progressDialog.dismiss();
+                Log.d("LuanDT", "onFailure syncInsert");
             }
         });
     }
@@ -819,12 +809,13 @@ public class HomeActivity extends Activity {
 
             @Override
             public void onSuccess() {
-
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure() {
-//                progressDialog.dismiss();
+                progressDialog.dismiss();
+                Log.d("LuanDT", "onFailure syncUpdate");
             }
         });
     }
@@ -839,12 +830,13 @@ public class HomeActivity extends Activity {
 
             @Override
             public void onSuccess() {
-
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure() {
-//                progressDialog.dismiss();
+                progressDialog.dismiss();
+                Log.d("LuanDT", "onFailure syncDelete");
             }
         });
     }
@@ -859,12 +851,14 @@ public class HomeActivity extends Activity {
 
             @Override
             public void onSuccess() {
-                progressDialog.show();
+                progressDialog.dismiss();
+                dateSetChange();
             }
 
             @Override
             public void onFailure() {
                 progressDialog.dismiss();
+                Log.d("LuanDT", "onFailure syncAddDataToDatabase");
             }
         });
     }
