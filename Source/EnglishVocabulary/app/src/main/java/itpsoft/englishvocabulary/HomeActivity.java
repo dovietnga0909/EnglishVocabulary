@@ -71,6 +71,7 @@ public class HomeActivity extends Activity {
     private AlarmManager alarmManager;
     private Intent alarmIntent;
     private PendingIntent pendingIntent;
+    private TextView fullName;
     private int intervalTime = 1000 * 60 * 60 * 24;
     private long reminTime = -1;
     private boolean modify = false;
@@ -96,6 +97,13 @@ public class HomeActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_home);
         vocabulary = new Vocabulary();
+
+        //demo data
+        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_LOGIN, true);
+        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_FULLNAME, "Đinh Thế Luân");
+        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_USER_ID, "1");
+        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_USERNAME, "admin");
+
         ///start up
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmIntent = new Intent(HomeActivity.this, AlarmReceiver.class);
@@ -165,8 +173,11 @@ public class HomeActivity extends Activity {
         createDataMenu();
         View menuHeader = LayoutInflater.from(HomeActivity.this).inflate(R.layout.menu_header, null);
         listMenu.addHeaderView(menuHeader);
+        fullName = (TextView) menuHeader.findViewById(R.id.name);
+        fullName.setText(SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_FULLNAME, ""));
         menuAdapter = new MenuAdapter(HomeActivity.this, arrMenu);
         listMenu.setAdapter(menuAdapter);
+
         listMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -177,27 +188,32 @@ public class HomeActivity extends Activity {
                         drawer.closeDrawer(START);
                     }
                 } else if (i == 2) {
+<<<<<<< HEAD
                     Log.d("NgaDV",i+"");
 
                     dateTimeSync();
                     String time = "" + s_hours + ":" + s_minute + " " + s_day + "/" + s_months + "/" + years_now;
+=======
+                    boolean isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, false);
+                    if(isLogin) {
+                        dateTimeSync();
+                        String time = "" + s_hours + ":" + s_minute + " " + s_day + "/" + s_months + "/" + years_now;
+>>>>>>> origin/master
 
-                    //set is sync
-                    SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_SYNC, true);
+                        //set is sync
+                        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_SYNC, true);
 
-                    //set time sync last
-                    SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_TIME_LAST_SYNC, time);
+                        //set time sync last
+                        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_TIME_LAST_SYNC, time);
 
-                    //update ui
-                    ((MenuItem) arrMenu.get(1)).setValue(time);
-                    menuAdapter.notifyDataSetChanged();
+                        //update ui
+                        ((MenuItem) arrMenu.get(1)).setValue(time);
+                        menuAdapter.notifyDataSetChanged();
 
-                    String updateCate = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_CATE_UPDATE, "");
-                    String updateVoca = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_VOCA_UPDATE, "");
+                        String updateCate = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_CATE_UPDATE, "");
+                        String updateVoca = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_VOCA_UPDATE, "");
 
-                    syncAddDataToDatabase();
-
-//                    if(!updateCate.equals("") || !updateVoca.equals("")){
+                        syncAddDataToDatabase();
 //                        syncUpdate();
 //                        syncInsert();
 //                        try {
@@ -205,12 +221,21 @@ public class HomeActivity extends Activity {
 //                        } catch (JSONException e) {
 //                            e.printStackTrace();
 //                        }
-//                    }
+//
+//                        if(!updateCate.equals("") || !updateVoca.equals("")){
+//
+//                        }
+                    } else {
+                        Intent intent = new Intent();
+                        intent.setClass(HomeActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
 
                 } else if (i == 3) {
                     Log.d("NgaDV",i+"");
 
                     createDialogRemind();
+<<<<<<< HEAD
                 }else if (i == 5) {
                     if(isLogin.equals("true")){
                         android.util.Log.d("NgaDV", isLogin + "1");
@@ -249,6 +274,28 @@ public class HomeActivity extends Activity {
                     }
 
 
+=======
+                } else if (i == 5) {
+                    boolean isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, false);
+                    if(isLogin) {
+                        dbController.deleteAllDataTable();
+                        dateSetChange();
+                        SPUtil.instance(HomeActivity.this).logout();
+                        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_AGREE_RUN, true);
+
+                        fullName.setText("");
+
+                        ((MenuItem) arrMenu.get(1)).setValue(resources.getString(R.string.off));
+//                        arrMenu.set(5, new MenuItem("#03A9F4", R.drawable.ic_login, resources.getString(R.string.login), ""));
+                        ((MenuItem) arrMenu.get(4)).setTitle(resources.getString(R.string.login));
+                        ((MenuItem) arrMenu.get(4)).setIcon(R.drawable.ic_login);
+                        menuAdapter.notifyDataSetChanged();
+                    } else {
+                        Intent intent = new Intent();
+                        intent.setClass(HomeActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
+>>>>>>> origin/master
                 }
             }
         });
@@ -799,12 +846,14 @@ public class HomeActivity extends Activity {
 
             @Override
             public void onSuccess() {
+                progressDialog.dismiss();
 
             }
 
             @Override
             public void onFailure() {
-//                progressDialog.dismiss();
+                progressDialog.dismiss();
+                Log.d("LuanDT", "onFailure syncInsert");
             }
         });
     }
@@ -819,12 +868,13 @@ public class HomeActivity extends Activity {
 
             @Override
             public void onSuccess() {
-
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure() {
-//                progressDialog.dismiss();
+                progressDialog.dismiss();
+                Log.d("LuanDT", "onFailure syncUpdate");
             }
         });
     }
@@ -839,12 +889,13 @@ public class HomeActivity extends Activity {
 
             @Override
             public void onSuccess() {
-
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure() {
-//                progressDialog.dismiss();
+                progressDialog.dismiss();
+                Log.d("LuanDT", "onFailure syncDelete");
             }
         });
     }
@@ -859,12 +910,14 @@ public class HomeActivity extends Activity {
 
             @Override
             public void onSuccess() {
-                progressDialog.show();
+                progressDialog.dismiss();
+                dateSetChange();
             }
 
             @Override
             public void onFailure() {
                 progressDialog.dismiss();
+                Log.d("LuanDT", "onFailure syncAddDataToDatabase");
             }
         });
     }
