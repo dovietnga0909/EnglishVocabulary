@@ -183,7 +183,6 @@ public class HomeActivity extends Activity {
                         dateTimeSync();
                         String time = "" + s_hours + ":" + s_minute + " " + s_day + "/" + s_months + "/" + years_now;
 
-
                         //set is sync
                         SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_SYNC, true);
 
@@ -219,7 +218,7 @@ public class HomeActivity extends Activity {
                     createDialogRemind();
                 } else if (i == 5) {
                     boolean isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, false);
-                    if (isLogin) {
+                    if(isLogin) {
                         dbController.deleteAllDataTable();
                         dateSetChange();
                         SPUtil.instance(HomeActivity.this).logout();
