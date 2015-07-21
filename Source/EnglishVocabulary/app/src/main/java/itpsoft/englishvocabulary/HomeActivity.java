@@ -92,6 +92,13 @@ public class HomeActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_home);
         vocabulary = new Vocabulary();
+
+        //demo data
+        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_LOGIN, true);
+        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_FULLNAME, "Đinh Thế Luân");
+        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_USER_ID, "1");
+        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_USERNAME, "admin");
+
         ///start up
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmIntent = new Intent(HomeActivity.this, AlarmReceiver.class);
@@ -157,8 +164,11 @@ public class HomeActivity extends Activity {
         createDataMenu();
         View menuHeader = LayoutInflater.from(HomeActivity.this).inflate(R.layout.menu_header, null);
         listMenu.addHeaderView(menuHeader);
+        TextView fullName = (TextView) menuHeader.findViewById(R.id.name);
+        fullName.setText(SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_FULLNAME, ""));
         menuAdapter = new MenuAdapter(HomeActivity.this, arrMenu);
         listMenu.setAdapter(menuAdapter);
+
         listMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -198,8 +208,15 @@ public class HomeActivity extends Activity {
                 } else if (i == 3) {
                     createDialogRemind();
                 } else if (i == 5) {
-                    dbController.deleteAllDataTable();
-                    dateSetChange();
+                    boolean isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, false);
+                    if(isLogin) {
+                        dbController.deleteAllDataTable();
+                        dateSetChange();
+                    } else {
+                        Intent intent = new Intent();
+                        intent.setClass(HomeActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
                 }
             }
         });
@@ -750,12 +767,12 @@ public class HomeActivity extends Activity {
 
             @Override
             public void onSuccess() {
-
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure() {
-//                progressDialog.dismiss();
+                progressDialog.dismiss();
             }
         });
     }
@@ -770,12 +787,12 @@ public class HomeActivity extends Activity {
 
             @Override
             public void onSuccess() {
-
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure() {
-//                progressDialog.dismiss();
+                progressDialog.dismiss();
             }
         });
     }
@@ -790,12 +807,12 @@ public class HomeActivity extends Activity {
 
             @Override
             public void onSuccess() {
-
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure() {
-//                progressDialog.dismiss();
+                progressDialog.dismiss();
             }
         });
     }
@@ -810,7 +827,8 @@ public class HomeActivity extends Activity {
 
             @Override
             public void onSuccess() {
-                progressDialog.show();
+                progressDialog.dismiss();
+                dateSetChange();
             }
 
             @Override

@@ -68,8 +68,8 @@ public class DbController extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_VOCABULARY);
         Log.d("LuanDT", "create database");
 
-        insertDefaultCategories(db);
-        insertDefaultVocabulary(db);
+//        insertDefaultCategories(db);
+//        insertDefaultVocabulary(db);
     }
 
     @Override

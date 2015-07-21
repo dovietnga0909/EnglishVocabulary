@@ -407,10 +407,8 @@ public class Vocabulary{
         onLoadListener.onStart();
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-//        params.add("userId", SPUtil.instance(context).get(SPUtil.KEY_USER_ID, "-1"));
-//        params.add("username", SPUtil.instance(context).get(SPUtil.KEY_USERNAME, "-1"));
-        params.add("userId", "1");
-        params.add("username", "admin");
+        params.add("userId", SPUtil.instance(context).get(SPUtil.KEY_USER_ID, "-1"));
+        params.add("username", SPUtil.instance(context).get(SPUtil.KEY_USERNAME, "-1"));
 
         Log.d("LuanDT", "params----excuteAddDataToDatabase: " + params);
 
