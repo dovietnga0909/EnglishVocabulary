@@ -101,7 +101,10 @@
     <string name="english">Nhập từ tiếng anh</string>
     <string name="vn">Nghĩa tiếng việt</string>
     <string name="waiting">Đang đồng bộ...</string>
+    <string name="sync_success">Đồng bộ thành công</string>
+    <string name="load_data">Đang tải dữ liệu</string>
     <string name="cancel_sync">Đang đồng bộ bạn có thực sự muốn hủy?</string>
+    <string name="internet_false">Không kết nối được tới server do server đang bảo trì hoặc điện thoại của bạn không bật kết nối gprs/3g/wifi.</string>
     
     <!--link api-->
     <string name="api_push_insert">http://myapp.freezoy.com/Vocabulary/insert.php</string>

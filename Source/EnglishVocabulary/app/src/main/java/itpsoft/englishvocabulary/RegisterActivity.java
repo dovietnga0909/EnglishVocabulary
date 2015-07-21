@@ -3,7 +3,6 @@ package itpsoft.englishvocabulary;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
@@ -17,6 +16,8 @@ import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
+
+import itpsoft.englishvocabulary.ultils.Log;
 
 /**
  * Created by Do on 20/07/2015.
@@ -65,7 +66,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
         confirmPassword = edtConfirmPassword.getText().toString().trim();
 
         if(fullname.equals("")){
-            Log.d("NgaDV",fullname);
+            Log.d("NgaDV", fullname);
             edtFullname.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
             Toast.makeText(this, getResources().getString(R.string.alert_empty), Toast.LENGTH_SHORT).show();
             edtFullname.setFocusable(true);
@@ -110,16 +111,16 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
         params.add("fullname",fullname);
         params.add("password",password);
 
-        Log.d("NgaDV", fullname);
-        Log.d("NgaDV", username);
-        Log.d("NgaDV", password);
+        Log.d("NgaDV", "fullname: " + fullname);
+        Log.d("NgaDV", "username " + username);
+        Log.d("NgaDV", "password: " + password);
 
         client.post(this, getResources().getString(R.string.api_register), params, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
-                super.onStart();
                 Log.d("NgaDV", "http onstart");
                 progressDialog.show();
+                super.onStart();
             }
 
             @Override
@@ -129,7 +130,8 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
                 try {
                     JSONObject json = new JSONObject(response.toString());
                     if (json.getString("error").equals("1")) {
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.alert_error_try_again), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.alert_error_try_again), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), json.getString("error_msg"), Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.alert_success), Toast.LENGTH_SHORT).show();
                         finish();
@@ -137,15 +139,16 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                progressDialog.cancel();
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers,
                                   Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
                 Log.d("NgaDV", "http onFailure");
-                progressDialog.cancel();
+                progressDialog.dismiss();
+                Toast.makeText(RegisterActivity.this, getResources().getString(R.string.internet_false), Toast.LENGTH_SHORT).show();
+                super.onFailure(statusCode, headers, throwable, errorResponse);
             }
         });
     }

@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +17,8 @@ import com.loopj.android.http.RequestParams;
 import org.apache.http.Header;
 import org.json.JSONObject;
 
+import itpsoft.englishvocabulary.models.Vocabulary;
+import itpsoft.englishvocabulary.ultils.Log;
 import itpsoft.englishvocabulary.ultils.SPUtil;
 
 /**
@@ -36,13 +36,10 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     private String userId;
     private String fullname;
     private ProgressDialog progressDialog;
+    private Vocabulary vocabulary;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //hide keyboard firstTime
-        getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
-        );
         setContentView(R.layout.activity_login);
         init();
 
@@ -59,21 +56,19 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         btnRegister.setOnClickListener(this);
     }
     private void login(){
-        Log.d("NgaDV","login onclick");
+        Log.d("NgaDV", "login onclick");
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        params.add("username",username);
-        params.add("password",password);
-
-        progressDialog.show();
+        params.add("username", username);
+        params.add("password", password);
 
         client.post(this, getResources().getString(R.string.api_login), params, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
-                super.onStart();
                 Log.d("NgaDV", "http onstart");
                 progressDialog.show();
+                super.onStart();
             }
 
             @Override
@@ -89,29 +84,36 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                         userId = json.getString("user_id");
                         fullname = json.getString("fullname");
 
-                        Log.d("NgaDV", userId + "userID");
-                        Log.d("NgaDV", fullname + "fullname");
-                        SPUtil.instance(LoginActivity.this).set(SPUtil.KEY_LOGIN, "true");
+                        Log.d("NgaDV", "userId: " + userId);
+                        Log.d("NgaDV", "fullname: " + fullname);
+                        Log.d("NgaDV", "username: " + edtUsername.getText().toString());
+
+                        SPUtil.instance(LoginActivity.this).set(SPUtil.KEY_LOGIN, true);
                         SPUtil.instance(LoginActivity.this).set(SPUtil.KEY_FULLNAME, fullname);
                         SPUtil.instance(LoginActivity.this).set(SPUtil.KEY_USER_ID, userId);
+                        SPUtil.instance(LoginActivity.this).set(SPUtil.KEY_USERNAME, edtUsername.getText().toString());
+
+                        //get all data
+                        syncAddDataToDatabase();
+
+//                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+//                        startActivity(intent);
 
                         finish();
-
-                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                        startActivity(intent);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                progressDialog.cancel();
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers,
                                   Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
                 Log.d("NgaDV", "http onFailure");
-                progressDialog.cancel();
+                progressDialog.dismiss();
+                Toast.makeText(LoginActivity.this, getResources().getString(R.string.internet_false), Toast.LENGTH_SHORT).show();
+                super.onFailure(statusCode, headers, throwable, errorResponse);
             }
         });
 
@@ -156,5 +158,30 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 Intent  intent = new Intent(LoginActivity.this,RegisterActivity.class);
                 startActivity(intent);
         }
+    }
+
+    private void syncAddDataToDatabase(){
+        vocabulary = new Vocabulary();
+        progressDialog.setMessage(getResources().getString(R.string.load_data));
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+        vocabulary.excuteAddDataToDatabase(LoginActivity.this, new Vocabulary.OnLoadListener() {
+            @Override
+            public void onStart() {
+                progressDialog.show();
+            }
+
+            @Override
+            public void onSuccess() {
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure() {
+                progressDialog.dismiss();
+                Toast.makeText(LoginActivity.this, getResources().getString(R.string.internet_false), Toast.LENGTH_SHORT).show();
+                Log.d("LuanDT", "onFailure syncAddDataToDatabase");
+            }
+        });
     }
 }

@@ -4,8 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.WindowManager;
+
+import itpsoft.englishvocabulary.ultils.Log;
 
 /**
  * Created by Do on 17/07/2015.
@@ -27,7 +28,7 @@ public class SplashActivity extends Activity{
             @Override
             public void onFinish() {
 
-                Log.d("NgaDV","onFinish()");
+                Log.d("NgaDV", "onFinish()");
                 Intent intent = new Intent(SplashActivity.this,HomeActivity.class);
                 startActivity(intent);
 

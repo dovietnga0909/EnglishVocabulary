@@ -2,6 +2,7 @@ package itpsoft.englishvocabulary.models;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -400,7 +401,7 @@ public class Vocabulary{
     //--------------------excute---------------------//
 
     //add database
-    public void excuteAddDataToDatabase(Context context, OnLoadListener OnLoadListener){
+    public void excuteAddDataToDatabase(final Context context, OnLoadListener OnLoadListener){
         this.onLoadListener = OnLoadListener;
         onLoadListener.onStart();
         AsyncHttpClient client = new AsyncHttpClient();
@@ -450,6 +451,9 @@ public class Vocabulary{
 
                             addVoca(id_clien, id_server, cate_id, english, vietnamese);
                         }
+
+                        Intent intent = new Intent(context, HomeActivity.class);
+                        context.startActivity(intent);
 
                     } catch (Exception e) {
                         e.printStackTrace();

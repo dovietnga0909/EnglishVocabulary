@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +22,7 @@ import itpsoft.englishvocabulary.R;
 import itpsoft.englishvocabulary.TestActivity;
 import itpsoft.englishvocabulary.models.Vocabulary;
 import itpsoft.englishvocabulary.ultils.Keyboard;
+import itpsoft.englishvocabulary.ultils.Log;
 
 /**
  * Created by Do on 05/06/2015.

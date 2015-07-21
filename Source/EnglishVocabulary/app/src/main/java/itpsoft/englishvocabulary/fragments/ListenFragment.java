@@ -7,7 +7,6 @@ import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +28,7 @@ import itpsoft.englishvocabulary.R;
 import itpsoft.englishvocabulary.TestActivity;
 import itpsoft.englishvocabulary.models.Vocabulary;
 import itpsoft.englishvocabulary.ultils.Keyboard;
+import itpsoft.englishvocabulary.ultils.Log;
 import itpsoft.englishvocabulary.ultils.SpeakEnglish;
 
 
@@ -215,7 +215,7 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
                             }
 
 
-                            Log.d("NgaDV","LISTEN_POS_VOCABULARY  =  "+LISTEN_POS_VOCABULARY);
+                            Log.d("NgaDV", "LISTEN_POS_VOCABULARY  =  " + LISTEN_POS_VOCABULARY);
 
 
                             Log.d("NgaDV", "LISTEN_POS_VOCABULARY = " + LISTEN_POS_VOCABULARY);

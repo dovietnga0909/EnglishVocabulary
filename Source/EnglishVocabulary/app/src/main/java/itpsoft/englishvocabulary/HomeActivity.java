@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -14,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -86,6 +88,7 @@ public class HomeActivity extends Activity {
     private int date;
     private int months;
     private int years_now;
+    private AlertDialog aDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,12 +96,6 @@ public class HomeActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_home);
         vocabulary = new Vocabulary();
-
-        //demo data
-        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_LOGIN, true);
-        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_FULLNAME, "Đinh Thế Luân");
-        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_USER_ID, "1");
-        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_USERNAME, "admin");
 
         ///start up
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -155,6 +152,7 @@ public class HomeActivity extends Activity {
     protected void onResume() {
         dateSetChange();
         testSyncVoca();
+        Log.d("LuanDT", "onResume Home");
         super.onResume();
     }
 
@@ -193,21 +191,9 @@ public class HomeActivity extends Activity {
                         ((MenuItem) arrMenu.get(1)).setValue(time);
                         menuAdapter.notifyDataSetChanged();
 
-                        String updateCate = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_CATE_UPDATE, "");
-                        String updateVoca = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_VOCA_UPDATE, "");
+                        //goi method sync
+                        syncInsert();
 
-                        syncAddDataToDatabase();
-//                        syncUpdate();
-//                        syncInsert();
-//                        try {
-//                            syncDelete();
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                        if(!updateCate.equals("") || !updateVoca.equals("")){
-//
-//                        }
                     } else {
                         Intent intent = new Intent();
                         intent.setClass(HomeActivity.this, LoginActivity.class);
@@ -219,6 +205,9 @@ public class HomeActivity extends Activity {
                 } else if (i == 5) {
                     boolean isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, false);
                     if(isLogin) {
+                        //goi method sync
+                        syncInsert();
+
                         dbController.deleteAllDataTable();
                         dateSetChange();
                         SPUtil.instance(HomeActivity.this).logout();
@@ -227,7 +216,6 @@ public class HomeActivity extends Activity {
                         fullName.setText("");
 
                         ((MenuItem) arrMenu.get(1)).setValue(resources.getString(R.string.off));
-//                        arrMenu.set(5, new MenuItem("#03A9F4", R.drawable.ic_login, resources.getString(R.string.login), ""));
                         ((MenuItem) arrMenu.get(4)).setTitle(resources.getString(R.string.login));
                         ((MenuItem) arrMenu.get(4)).setIcon(R.drawable.ic_login);
                         menuAdapter.notifyDataSetChanged();
@@ -786,78 +774,66 @@ public class HomeActivity extends Activity {
 
             @Override
             public void onSuccess() {
-                progressDialog.dismiss();
+//                progressDialog.dismiss();
+                syncUpdate();
 
             }
 
             @Override
             public void onFailure() {
                 progressDialog.dismiss();
+                Toast.makeText(HomeActivity.this, resources.getString(R.string.internet_false), Toast.LENGTH_SHORT).show();
                 Log.d("LuanDT", "onFailure syncInsert");
             }
         });
     }
 
     private void syncUpdate(){
-        progressDialog();
+//        progressDialog();
         vocabulary.excuteUpdate(HomeActivity.this, vocabulary.listVocabularyUpdate(), new Vocabulary.OnLoadListener() {
             @Override
             public void onStart() {
-                progressDialog.show();
+//                progressDialog.show();
             }
 
             @Override
             public void onSuccess() {
-                progressDialog.dismiss();
+//                progressDialog.dismiss();
+                try {
+                    syncDelete();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void onFailure() {
                 progressDialog.dismiss();
+                Toast.makeText(HomeActivity.this, resources.getString(R.string.internet_false), Toast.LENGTH_SHORT).show();
                 Log.d("LuanDT", "onFailure syncUpdate");
             }
         });
     }
 
     private void syncDelete() throws JSONException{
-        progressDialog();
+//        progressDialog();
         vocabulary.excuteDelete(HomeActivity.this, listVocabularyDelete(), new Vocabulary.OnLoadListener() {
             @Override
             public void onStart() {
-                progressDialog.show();
+//                progressDialog.show();
             }
 
             @Override
             public void onSuccess() {
                 progressDialog.dismiss();
+                Toast.makeText(HomeActivity.this, resources.getString(R.string.sync_success), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure() {
                 progressDialog.dismiss();
+                Toast.makeText(HomeActivity.this, resources.getString(R.string.internet_false), Toast.LENGTH_SHORT).show();
                 Log.d("LuanDT", "onFailure syncDelete");
-            }
-        });
-    }
-
-    private void syncAddDataToDatabase(){
-        progressDialog();
-        vocabulary.excuteAddDataToDatabase(HomeActivity.this, new Vocabulary.OnLoadListener() {
-            @Override
-            public void onStart() {
-                progressDialog.show();
-            }
-
-            @Override
-            public void onSuccess() {
-                progressDialog.dismiss();
-                dateSetChange();
-            }
-
-            @Override
-            public void onFailure() {
-                progressDialog.dismiss();
-                Log.d("LuanDT", "onFailure syncAddDataToDatabase");
             }
         });
     }
@@ -890,6 +866,15 @@ public class HomeActivity extends Activity {
         progressDialog = new ProgressDialog(HomeActivity.this);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setMessage(getResources().getString(R.string.waiting));
+        progressDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent) {
+                if(i == KeyEvent.KEYCODE_BACK){
+                    showDialogConfirmCancel();
+                }
+                return false;
+            }
+        });
         return progressDialog;
     }
 
@@ -928,6 +913,31 @@ public class HomeActivity extends Activity {
             s_day = "" + date;
         }
 
+    }
+
+    private void showDialogConfirmCancel() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(
+                HomeActivity.this);
+        builder.setMessage(getResources().getString(R.string.cancel_sync));
+        builder.setPositiveButton(getResources().getString(R.string.txt_ok),
+                new AlertDialog.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                aDialog.dismiss();
+            }
+        });
+        builder.setNegativeButton(getResources().getString(R.string.txt_no),
+                new AlertDialog.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        aDialog.dismiss();
+                    }
+                });
+        aDialog = builder.create();
+        aDialog.show();
     }
 
 }
