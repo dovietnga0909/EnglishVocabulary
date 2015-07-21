@@ -45,6 +45,20 @@
 
     <string name="txt_copyright">Created by ITPSoft</string>
 
+    <string name="hint_fullname">Tên đầy đủ</string>
+    <string name="hint_username">Tên đăng nhập</string>
+    <string name="hint_confirm_password">Nhập lại mật khẩu</string>
+
+    <string name="password">Mật khẩu</string>
+
+    <string name="alert_empty">Trường này không được trống</string>
+    <string name="alert_pass_username_wrong">Sai tài khoản hoặc mật khẩu</string>
+    <string name="alert_pass_unequal_confirm">Xác nhận mật khẩu chưa trùng</string>
+    <string name="alert_error_try_again">Có lỗi xảy ra, vui lòng thử lại</string>
+
+    <string name="alert_success">Thành công</string>
+    <string name="please_wait">Vui lòng đợi ...</string>
+
     <!-- TuNT-->
     <string name="ev">Từ vựng tiếng Anh</string>
     <string name="sync">Đồng bộ</string>

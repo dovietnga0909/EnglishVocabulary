@@ -15,10 +15,11 @@ public class SPUtil {
     public static final String KEY_CATE_DELETE = "id_cate_delete";
     public static final String KEY_CATE_UPDATE = "id_cate_update";
     public static final String KEY_USER_ID = "user_id";
+    public static final String KEY_FULLNAME = "fullname";
     public static final String KEY_USERNAME = "username";
     public static final String KEY_TIME_LAST_SYNC = "time_last_sync";
     public static final String KEY_SYNC = "sync";
-    public static final String KEY_LOGIN = "login";
+    public static final String KEY_LOGIN = "false";
     private SharedPreferences pref;
 
     private SPUtil(Context context) {

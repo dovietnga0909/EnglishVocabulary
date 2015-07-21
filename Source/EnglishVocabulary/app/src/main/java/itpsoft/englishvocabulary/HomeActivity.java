@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -86,6 +87,9 @@ public class HomeActivity extends Activity {
     private int months;
     private int years_now;
 
+    private boolean isSync;
+    private String isLogin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +101,10 @@ public class HomeActivity extends Activity {
         alarmIntent = new Intent(HomeActivity.this, AlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0, alarmIntent, 0);
         reminTime = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_REMIN_TIME, (long) -1);
+        isSync = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_SYNC, false);
+        isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, "false");
+
+        Log.d("NgaDV","trang thai login : "+isLogin);
 
         displayRectangle = new Rect();
         Window window = getWindow();
@@ -163,10 +171,14 @@ public class HomeActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 1) {
+                    Log.d("NgaDV",i+"");
+
                     if (drawer.isDrawerVisible(START)) {
                         drawer.closeDrawer(START);
                     }
                 } else if (i == 2) {
+                    Log.d("NgaDV",i+"");
+
                     dateTimeSync();
                     String time = "" + s_hours + ":" + s_minute + " " + s_day + "/" + s_months + "/" + years_now;
 
@@ -196,10 +208,47 @@ public class HomeActivity extends Activity {
 //                    }
 
                 } else if (i == 3) {
+                    Log.d("NgaDV",i+"");
+
                     createDialogRemind();
-                } else if (i == 5) {
-                    dbController.deleteAllDataTable();
-                    dateSetChange();
+                }else if (i == 5) {
+                    if(isLogin.equals("true")){
+                        android.util.Log.d("NgaDV", isLogin + "1");
+                        // sua o day
+
+//                            dbController.deleteAllDataTable();
+//                            dateSetChange();
+//                            SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_FULLNAME, "fullname");
+//                            SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_LOGIN,"false");
+//                            SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_USER_ID, "user_id");
+//                            SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_USERNAME, "username");
+
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeActivity.this,AlertDialog.THEME_HOLO_LIGHT);
+                        alertDialog.setTitle("ban co muon dang xuat");
+                        alertDialog.setNegativeButton("ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(getApplicationContext(), "ok", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        alertDialog.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(getApplicationContext(), "cancel", Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
+                        alertDialog.setCancelable(false);
+                        alertDialog.show();
+
+                    } else {
+                        android.util.Log.d("NgaDV",isLogin+"2");
+                        Intent intent = new Intent(HomeActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+
                 }
             }
         });
@@ -244,8 +293,6 @@ public class HomeActivity extends Activity {
     }
 
     private void createDataMenu() {
-        boolean isSync = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_SYNC, false);
-        boolean isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, false);
         arrMenu = new ArrayList<Object>();
         arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_home, resources.getString(R.string.ev), ""));
         if(isSync){
@@ -255,9 +302,11 @@ public class HomeActivity extends Activity {
         }
         arrMenu.add(new MenuItem("#ff6f00", R.drawable.ic_clock, resources.getString(R.string.reminds_study_time), resources.getString(R.string.off)));
         arrMenu.add("");
-        if(isLogin){
+        if(isLogin.equals("true")){
+            Log.d("NgaDV",isLogin+"createdata");
             arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_logout, resources.getString(R.string.logout), ""));
         } else {
+
             arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_login, resources.getString(R.string.login), ""));
         }
     }
