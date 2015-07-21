@@ -82,4 +82,10 @@ public class SPUtil {
         ret = pref.getLong(key, defaultValue);
         return ret;
     }
+
+    public void logout(){
+        Editor editor = pref.edit();
+        editor.clear();
+        editor.commit();
+    }
 }

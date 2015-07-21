@@ -70,6 +70,7 @@ public class HomeActivity extends Activity {
     private AlarmManager alarmManager;
     private Intent alarmIntent;
     private PendingIntent pendingIntent;
+    private TextView fullName;
     private int intervalTime = 1000 * 60 * 60 * 24;
     private long reminTime = -1;
     private boolean modify = false;
@@ -164,7 +165,7 @@ public class HomeActivity extends Activity {
         createDataMenu();
         View menuHeader = LayoutInflater.from(HomeActivity.this).inflate(R.layout.menu_header, null);
         listMenu.addHeaderView(menuHeader);
-        TextView fullName = (TextView) menuHeader.findViewById(R.id.name);
+        fullName = (TextView) menuHeader.findViewById(R.id.name);
         fullName.setText(SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_FULLNAME, ""));
         menuAdapter = new MenuAdapter(HomeActivity.this, arrMenu);
         listMenu.setAdapter(menuAdapter);
@@ -194,15 +195,16 @@ public class HomeActivity extends Activity {
                     String updateVoca = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_VOCA_UPDATE, "");
 
                     syncAddDataToDatabase();
+//                    syncUpdate();
+//                    syncInsert();
+//                    try {
+//                        syncDelete();
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
 
 //                    if(!updateCate.equals("") || !updateVoca.equals("")){
-//                        syncUpdate();
-//                        syncInsert();
-//                        try {
-//                            syncDelete();
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
+
 //                    }
 
                 } else if (i == 3) {
@@ -212,6 +214,16 @@ public class HomeActivity extends Activity {
                     if(isLogin) {
                         dbController.deleteAllDataTable();
                         dateSetChange();
+                        SPUtil.instance(HomeActivity.this).logout();
+                        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_AGREE_RUN, true);
+
+                        fullName.setText("");
+
+                        ((MenuItem) arrMenu.get(1)).setValue(resources.getString(R.string.off));
+//                        arrMenu.set(5, new MenuItem("#03A9F4", R.drawable.ic_login, resources.getString(R.string.login), ""));
+                        ((MenuItem) arrMenu.get(4)).setTitle(resources.getString(R.string.login));
+                        ((MenuItem) arrMenu.get(4)).setIcon(R.drawable.ic_login);
+                        menuAdapter.notifyDataSetChanged();
                     } else {
                         Intent intent = new Intent();
                         intent.setClass(HomeActivity.this, LoginActivity.class);
@@ -273,8 +285,10 @@ public class HomeActivity extends Activity {
         arrMenu.add(new MenuItem("#ff6f00", R.drawable.ic_clock, resources.getString(R.string.reminds_study_time), resources.getString(R.string.off)));
         arrMenu.add("");
         if(isLogin){
+            Log.d("LuanDT", "isLogin: " + isLogin);
             arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_logout, resources.getString(R.string.logout), ""));
         } else {
+            Log.d("LuanDT", "isLogin: " + isLogin);
             arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_login, resources.getString(R.string.login), ""));
         }
     }
@@ -768,11 +782,13 @@ public class HomeActivity extends Activity {
             @Override
             public void onSuccess() {
                 progressDialog.dismiss();
+
             }
 
             @Override
             public void onFailure() {
                 progressDialog.dismiss();
+                Log.d("LuanDT", "onFailure syncInsert");
             }
         });
     }
@@ -793,6 +809,7 @@ public class HomeActivity extends Activity {
             @Override
             public void onFailure() {
                 progressDialog.dismiss();
+                Log.d("LuanDT", "onFailure syncUpdate");
             }
         });
     }
@@ -813,6 +830,7 @@ public class HomeActivity extends Activity {
             @Override
             public void onFailure() {
                 progressDialog.dismiss();
+                Log.d("LuanDT", "onFailure syncDelete");
             }
         });
     }
@@ -834,6 +852,7 @@ public class HomeActivity extends Activity {
             @Override
             public void onFailure() {
                 progressDialog.dismiss();
+                Log.d("LuanDT", "onFailure syncAddDataToDatabase");
             }
         });
     }

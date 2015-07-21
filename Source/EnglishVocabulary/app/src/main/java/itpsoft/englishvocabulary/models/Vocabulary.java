@@ -203,7 +203,7 @@ public class Vocabulary{
                 values.put(DbController.ENGLISH, en.trim());
                 values.put(DbController.VIETNAMESE, vi.trim());
 //                values.put(DbController.VOCABULARY_STATUS, "0");
-                dbController.updateVocabylary(DbController.TABLE_CATEGORIES, values, DbController.CATEGORIES_NAME, new String[]{Long.toString(idVoca)});
+                dbController.updateVocabylary(DbController.TABLE_CATEGORIES, values, null, new String[]{Long.toString(idVoca)});
                 result = EDIT_SUCCESS;
             }
         } catch (Exception e) {
@@ -255,7 +255,7 @@ public class Vocabulary{
 
                     voca.put("table", "vocabularies");
                     //voca_id, id_clien, cate_id, english, vietnamese, user_id
-                    voca.put("sql", "null,'" + id + "','" + cateId  + "','" + english  + "','" + vietnamese  + "','" + 1 + "'" );
+                    voca.put("sql", "null,'" + id + "','" + cateId  + "','" + english  + "','" + vietnamese  + "','" + SPUtil.instance(context).get(SPUtil.KEY_USER_ID, "-1") + "'" );
 
 
                     array.put(voca);
@@ -280,7 +280,7 @@ public class Vocabulary{
 
                     voca.put("table", "categories");
                     //cate_id, id_clien, name, user_id
-                    voca.put("sql", "null,'" + id + "','" + name  + "','" + 1 + "'" );
+                    voca.put("sql", "null,'" + id + "','" + name  + "','" + SPUtil.instance(context).get(SPUtil.KEY_USER_ID, "-1") + "'" );
 
 
                     array.put(voca);
@@ -354,7 +354,6 @@ public class Vocabulary{
 
                     voca.put("table", "vocabularies");
                     voca.put("voca_id", idServer);
-                    //voca_id, id_clien, cate_id, english, vietnamese, user_id
                     voca.put("sql", "english='" + english  + "', vietnamese='" + vietnamese  + "'" );
 
 
@@ -368,7 +367,7 @@ public class Vocabulary{
         }
 
 
-        //list topic add sync
+        //list topic update sync
         try {
             String sql = "Select * from " + DbController.TABLE_CATEGORIES + " Where " + DbController.ID_SERVER_CATE + " IN (" + SPUtil.instance(context).get(SPUtil.KEY_CATE_UPDATE, "") + ");";
 //            Log.d("LuanDT", "SQL: " + sql);
@@ -382,7 +381,6 @@ public class Vocabulary{
 
                     voca.put("table", "categories");
                     voca.put("cate_id", cate_id);
-                    //cate_id, id_clien, name, user_id
                     voca.put("sql", "name='" + name + "'" );
 
 
@@ -412,13 +410,13 @@ public class Vocabulary{
 
         Log.d("LuanDT", "params----excuteAddDataToDatabase: " + params);
 
-        client.post(context.getResources().getString(R.string.api_get_all_data), params, new JsonHttpResponseHandler(){
+        client.post(context.getResources().getString(R.string.api_get_all_data), params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 String result = response.toString();
                 Log.d("LuanDT", "excuteAddDataToDatabase: " + result);
 
-                if(!result.isEmpty()){
+                if (!result.isEmpty()) {
                     try {
                         JSONObject object = new JSONObject(result);
                         JSONObject data = object.getJSONObject("data");
@@ -426,7 +424,7 @@ public class Vocabulary{
                         //get data categories
                         JSONArray categories = data.getJSONArray("categories");
 
-                        for (int i = 0; i < categories.length(); i++){
+                        for (int i = 0; i < categories.length(); i++) {
                             JSONObject rows = categories.getJSONObject(i);
 
                             String id_server = rows.getString("cate_id");
@@ -439,7 +437,7 @@ public class Vocabulary{
 
                         //get data vocabularies
                         JSONArray vocabularies = data.getJSONArray("vocabularies");
-                        for (int i = 0; i < vocabularies.length(); i++){
+                        for (int i = 0; i < vocabularies.length(); i++) {
                             JSONObject rows = vocabularies.getJSONObject(i);
 
                             String id_server = rows.getString("voca_id");
@@ -453,7 +451,7 @@ public class Vocabulary{
                             addVoca(id_clien, id_server, cate_id, english, vietnamese);
                         }
 
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -512,6 +510,33 @@ public class Vocabulary{
                 String result = response.toString();
                 Log.d("LuanDT", "excuteInsert: " + result);
 
+                if (!result.isEmpty()) {
+                    try {
+                        JSONObject object = new JSONObject(result);
+                        //get data categories
+                        JSONArray rows = object.getJSONArray("row");
+
+                        for (int i = 0; i < rows.length(); i++) {
+                            JSONObject row = rows.getJSONObject(i);
+
+                            String table = row.getString("table");
+                            String id_client = row.getString("id_client");
+                            String id_server = row.getString("id_server");
+
+                            if (table.equals("categories")) {
+                                updateTableCategories(id_client, id_server);
+                                Log.d("LuanDT", "update table categories befor sync insert");
+                            } else {
+                                updateTableVocabulary(id_client, id_server);
+                                Log.d("LuanDT", "update table vocabularies befor sync insert");
+                            }
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 onLoadListener.onSuccess();
                 super.onSuccess(statusCode, headers, response);
             }
@@ -524,8 +549,24 @@ public class Vocabulary{
         });
     }
 
+    public void updateTableCategories(String id_client, String id_server) {
+        DbController dbController = DbController.getInstance(context);
+        ContentValues values = new ContentValues();
+        values.put(DbController.ID_SERVER_CATE, id_server);
+        values.put(DbController.CATEGORIES_STATUS, "1");
+        dbController.updateCategories(DbController.TABLE_CATEGORIES, values, null, new String[]{id_client});
+    }
+
+    public void updateTableVocabulary(String id_client, String id_server) {
+        DbController dbController = DbController.getInstance(context);
+        ContentValues values = new ContentValues();
+        values.put(DbController.ID_SERVER_VOCA, id_server);
+        values.put(DbController.VOCABULARY_STATUS, "1");
+        dbController.updateVocabylary(DbController.TABLE_VOCABULARY, values, null, new String[]{id_client});
+    }
+
     //sync update
-    public void excuteUpdate(Context context, JSONArray json, OnLoadListener OnLoadListener){
+    public void excuteUpdate(final Context context, JSONArray json, OnLoadListener OnLoadListener){
         this.onLoadListener = OnLoadListener;
         onLoadListener.onStart();
         AsyncHttpClient client = new AsyncHttpClient();
@@ -542,6 +583,21 @@ public class Vocabulary{
                 String result = response.toString();
                 Log.d("LuanDT", "excuteUpdate: " + result);
 
+                if (!result.isEmpty()) {
+                    try {
+                        JSONObject object = new JSONObject(result);
+                        int success = object.getInt("success");
+                        Log.d("LuanDT", "value success excuteUpdate: " + success);
+                        if(success == 1){
+                            SPUtil.instance(context).set(SPUtil.KEY_VOCA_UPDATE, "");
+                            SPUtil.instance(context).set(SPUtil.KEY_CATE_UPDATE, "");
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 onLoadListener.onSuccess();
                 super.onSuccess(statusCode, headers, response);
             }
@@ -555,7 +611,7 @@ public class Vocabulary{
     }
 
     //sync delete
-    public void excuteDelete(Context context, JSONArray json, OnLoadListener OnLoadListener){
+    public void excuteDelete(final Context context, JSONArray json, OnLoadListener OnLoadListener){
         this.onLoadListener = OnLoadListener;
         onLoadListener.onStart();
         AsyncHttpClient client = new AsyncHttpClient();
@@ -571,6 +627,21 @@ public class Vocabulary{
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 String result = response.toString();
                 Log.d("LuanDT", "excuteDelete: " + result);
+
+                if (!result.isEmpty()) {
+                    try {
+                        JSONObject object = new JSONObject(result);
+                        int success = object.getInt("success");
+                        Log.d("LuanDT", "value success excuteDelete: " + success);
+                        if(success == 1){
+                            SPUtil.instance(context).set(SPUtil.KEY_VOCA_DELETE, "");
+                            SPUtil.instance(context).set(SPUtil.KEY_CATE_DELETE, "");
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
 
                 onLoadListener.onSuccess();
                 super.onSuccess(statusCode, headers, response);
