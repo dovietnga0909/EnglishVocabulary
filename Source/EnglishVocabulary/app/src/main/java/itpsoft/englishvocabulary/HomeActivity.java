@@ -178,34 +178,41 @@ public class HomeActivity extends Activity {
                         drawer.closeDrawer(START);
                     }
                 } else if (i == 2) {
-                    dateTimeSync();
-                    String time = "" + s_hours + ":" + s_minute + " " + s_day + "/" + s_months + "/" + years_now;
+                    boolean isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, false);
+                    if(isLogin) {
+                        dateTimeSync();
+                        String time = "" + s_hours + ":" + s_minute + " " + s_day + "/" + s_months + "/" + years_now;
 
-                    //set is sync
-                    SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_SYNC, true);
+                        //set is sync
+                        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_SYNC, true);
 
-                    //set time sync last
-                    SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_TIME_LAST_SYNC, time);
+                        //set time sync last
+                        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_TIME_LAST_SYNC, time);
 
-                    //update ui
-                    ((MenuItem) arrMenu.get(1)).setValue(time);
-                    menuAdapter.notifyDataSetChanged();
+                        //update ui
+                        ((MenuItem) arrMenu.get(1)).setValue(time);
+                        menuAdapter.notifyDataSetChanged();
 
-                    String updateCate = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_CATE_UPDATE, "");
-                    String updateVoca = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_VOCA_UPDATE, "");
+                        String updateCate = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_CATE_UPDATE, "");
+                        String updateVoca = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_VOCA_UPDATE, "");
 
-                    syncAddDataToDatabase();
-//                    syncUpdate();
-//                    syncInsert();
-//                    try {
-//                        syncDelete();
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-
-//                    if(!updateCate.equals("") || !updateVoca.equals("")){
-
-//                    }
+                        syncAddDataToDatabase();
+//                        syncUpdate();
+//                        syncInsert();
+//                        try {
+//                            syncDelete();
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                        if(!updateCate.equals("") || !updateVoca.equals("")){
+//
+//                        }
+                    } else {
+                        Intent intent = new Intent();
+                        intent.setClass(HomeActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
 
                 } else if (i == 3) {
                     createDialogRemind();
@@ -285,10 +292,8 @@ public class HomeActivity extends Activity {
         arrMenu.add(new MenuItem("#ff6f00", R.drawable.ic_clock, resources.getString(R.string.reminds_study_time), resources.getString(R.string.off)));
         arrMenu.add("");
         if(isLogin){
-            Log.d("LuanDT", "isLogin: " + isLogin);
             arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_logout, resources.getString(R.string.logout), ""));
         } else {
-            Log.d("LuanDT", "isLogin: " + isLogin);
             arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_login, resources.getString(R.string.login), ""));
         }
     }
