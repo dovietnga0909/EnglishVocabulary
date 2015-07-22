@@ -127,12 +127,12 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         if (username.equals("")){
             edtUsername.startAnimation(AnimationUtils.loadAnimation(this,R.anim.shake));
             Toast.makeText(this,getResources().getString(R.string.alert_empty),Toast.LENGTH_SHORT).show();
-            edtUsername.setFocusable(true);
+            edtUsername.requestFocus();
             validate = false;
         }else if (password.equals("")){
             edtPassword.startAnimation(AnimationUtils.loadAnimation(this,R.anim.shake));
             Toast.makeText(this,getResources().getString(R.string.alert_empty),Toast.LENGTH_SHORT).show();
-            edtPassword.setFocusable(true);
+            edtPassword.requestFocus();
             validate = false;
         }else {
             validate = true;

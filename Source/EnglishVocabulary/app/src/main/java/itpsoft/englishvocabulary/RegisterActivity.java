@@ -38,10 +38,6 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //hide keyboard firstTime
-        getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
-        );
         setContentView(R.layout.activity_register);
         init();
     }
@@ -69,31 +65,31 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
             Log.d("NgaDV", fullname);
             edtFullname.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
             Toast.makeText(this, getResources().getString(R.string.alert_empty), Toast.LENGTH_SHORT).show();
-            edtFullname.setFocusable(true);
+            edtFullname.requestFocus();
             validate = false;
         }else if (username.equals("")){
             Log.d("NgaDV",username);
             edtUsername.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
             Toast.makeText(this, getResources().getString(R.string.alert_empty), Toast.LENGTH_SHORT).show();
-            edtUsername.setFocusable(true);
+            edtUsername.requestFocus();
             validate = false;
         }else if (password.equals("")){
             Log.d("NgaDV",password);
             edtPassword.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
             Toast.makeText(this, getResources().getString(R.string.alert_empty), Toast.LENGTH_SHORT).show();
-            edtPassword.setFocusable(true);
+            edtPassword.requestFocus();
             validate = false;
         }else if (confirmPassword.equals("")){
             Log.d("NgaDV",confirmPassword);
             edtConfirmPassword.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
             Toast.makeText(this, getResources().getString(R.string.alert_empty), Toast.LENGTH_SHORT).show();
-            edtConfirmPassword.setFocusable(true);
+            edtConfirmPassword.requestFocus();;
             validate = false;
         }else if (!confirmPassword.equals(password)){
             Log.d("NgaDV",confirmPassword);
             edtConfirmPassword.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
             Toast.makeText(this, getResources().getString(R.string.alert_pass_unequal_confirm), Toast.LENGTH_SHORT).show();
-            edtConfirmPassword.setFocusable(true);
+            edtConfirmPassword.requestFocus();
             validate = false;
         }else {
             validate = true;
