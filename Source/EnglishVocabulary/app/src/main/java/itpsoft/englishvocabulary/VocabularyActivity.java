@@ -128,11 +128,6 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
         adapter = new VocabularyAdapter(VocabularyActivity.this, listVocabulary);
         listView.setAdapter(adapter);
 
-//        Topic topic = new Topic(VocabularyActivity.this);
-//        vocabulary.listVocabularyAdd();
-//        Log.d("LuanDT", "MaxID: " + vocabulary.maxId());
-//        Log.d("LuanDT", "MaxID Topic: " + topic.maxId());
-
         //click
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -182,7 +177,8 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
                         listView.setSelection(adapter.getCount() - 1);
                         Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.added), Toast.LENGTH_SHORT).show();
                     } else if (result == Vocabulary.INSERT_EXITS) {
-                        Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.exits_voca), Toast.LENGTH_SHORT).show();
+                        String topicName = vocabulary.getNameTopicByEnVi(en, vi);
+                        Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.exits_vocabulary) + "\"" + topicName + "\"", Toast.LENGTH_SHORT).show();
                     } else if (result == Vocabulary.INSERT_FALSE) {
                         Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.error), Toast.LENGTH_SHORT).show();
                     }
@@ -219,7 +215,8 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
                         listView.setSelection(positionItemSelected);
                         Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.edited), Toast.LENGTH_SHORT).show();
                     } else if (result == Vocabulary.EDIT_EXITS) {
-                        Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.exits_voca), Toast.LENGTH_SHORT).show();
+                        String topicName = vocabulary.getNameTopicByEnVi(en, vi);
+                        Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.exits_vocabulary) + "\"" + topicName + "\"", Toast.LENGTH_SHORT).show();
                     } else if (result == Vocabulary.EDIT_FALSE) {
                         Toast.makeText(VocabularyActivity.this, getResources().getString(R.string.error), Toast.LENGTH_SHORT).show();
                     }

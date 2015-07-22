@@ -96,7 +96,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                         //get all data
                         syncAddDataToDatabase();
 
-                        finish();
+//                        finish();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -159,6 +159,10 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
     private void syncAddDataToDatabase(){
         vocabulary = new Vocabulary();
+        if(progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }
+        progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setMessage(getResources().getString(R.string.load_data));
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
@@ -171,6 +175,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             @Override
             public void onSuccess() {
                 progressDialog.dismiss();
+                finish();
             }
 
             @Override

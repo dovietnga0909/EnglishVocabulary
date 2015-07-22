@@ -774,11 +774,13 @@ public class HomeActivity extends Activity {
             @Override
             public void onSuccess() {
                 progressDialog.dismiss();
-                Toast.makeText(HomeActivity.this, resources.getString(R.string.sync_success), Toast.LENGTH_SHORT).show();
 
                 //check logout
                 if(logout){
                     logout();
+                    Toast.makeText(HomeActivity.this, resources.getString(R.string.logout_success), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(HomeActivity.this, resources.getString(R.string.sync_success), Toast.LENGTH_SHORT).show();
                 }
             }
 

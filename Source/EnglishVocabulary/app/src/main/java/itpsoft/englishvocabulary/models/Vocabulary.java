@@ -581,7 +581,7 @@ public class Vocabulary{
 
         Log.d("LuanDT", "params----excuteUpdate: " + params);
 
-        client.post(context.getResources().getString(R.string.api_push_update), params, new JsonHttpResponseHandler(){
+        client.post(context.getResources().getString(R.string.api_push_update), params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 String result = response.toString();
@@ -592,7 +592,7 @@ public class Vocabulary{
                         JSONObject object = new JSONObject(result);
                         int success = object.getInt("success");
                         Log.d("LuanDT", "value success excuteUpdate: " + success);
-                        if(success == 1){
+                        if (success == 1) {
                             SPUtil.instance(context).set(SPUtil.KEY_VOCA_UPDATE, "");
                             SPUtil.instance(context).set(SPUtil.KEY_CATE_UPDATE, "");
                         }
@@ -657,6 +657,24 @@ public class Vocabulary{
                 super.onFailure(statusCode, headers, throwable, errorResponse);
             }
         });
+    }
+
+    public String getNameTopicByEnVi(String en, String vi){
+        DbController dbController = DbController.getInstance(context);
+        String name = null;
+        try {
+            String sql = "SELECT cate.name FROM " + DbController.TABLE_CATEGORIES + " cate, " + DbController.TABLE_VOCABULARY + " voca WHERE cate.cate_id = voca.cate_id and voca.english = '" + en + "' and voca.vietnamese = '" + vi + "'";
+            Cursor cursor = dbController.rawQuery(sql, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    name = cursor.getString(cursor.getColumnIndex(DbController.CATEGORIES_NAME));
+                } while (cursor.moveToNext());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return name;
     }
 
     private OnLoadListener onLoadListener;

@@ -91,6 +91,7 @@
     <!-- End - TuNT -->
 
     <!--LuanDT-->
+    <string name="exits_vocabulary">Từ này đã tồn tại ở chủ đề: "</string>
     <string name="warning">(Nếu bạn xóa thì toàn bộ từ trong chủ đề này cũng bị xóa)</string>
     <string name="add_vocabulary">Thêm</string>
     <string name="add">Thêm</string>
@@ -102,6 +103,7 @@
     <string name="vn">Nghĩa tiếng việt</string>
     <string name="waiting">Đang đồng bộ...</string>
     <string name="sync_success">Đồng bộ thành công</string>
+    <string name="logout_success">Đăng xuất thành công</string>
     <string name="load_data">Đang tải dữ liệu</string>
     <string name="cancel_sync">Đang đồng bộ bạn có thực sự muốn hủy?</string>
     <string name="internet_false">Không kết nối được tới server do server đang bảo trì hoặc điện thoại của bạn không bật kết nối gprs/3g/wifi.</string>
