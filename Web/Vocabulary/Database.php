@@ -1,9 +1,9 @@
 <?php 
 	class Database{
-		private $hostname = "localhost";
-		private $username = "root";
-		private $password = "";
-		private $dbname = "english_vocabulary";
+		private $hostname = "sql103.freezoy.com";
+		private $username = "frzoy_16166932";
+		private $password = "nguyentuu";
+		private $dbname = "frzoy_16166932_vocabulary";
 		private $connect = NULL;
 		private $result = NULL;
 		
@@ -68,6 +68,35 @@
 					$arr['id_server'] = "".$this->insert_id();
 					array_push($result, $arr);
 				}
+			}
+			return $result;
+		}
+
+                public function insertLuan($json, $userID){
+			$newarr = json_decode($json, true, 512);
+			$result = array();
+			for($i=0; $i<count($newarr); $i++){
+				$item = $newarr[$i];
+                                $check = $this->query("SELECT count(*) as 'count' FROM ".$item['table']." WHERE id_clien = '".$item['id_clien']."' and user_id = '".$userID."';");
+                                //echo "SELECT count(*) as 'count' FROM ".$item['table']." WHERE id_clien = '".$item['id_clien']."' and user_id = '".$userID."';<br/>";
+                                if($check){
+                                        $row = $this->fetch_array();
+				        $count = $row['count'];
+                                        //echo $count."<br/>";
+				        if($count == 0){
+                                                $r = $this->query("INSERT INTO ".$item['table']." VALUES(".$item['sql'].");");
+				                //echo "INSERT INTO ".$item['table']." VALUES(".$item['sql'].");<br/>";
+				                if($r){
+					                $str = explode(",",$item['sql']);
+					                $idClient = str_replace(array("'"), "", $str[1]);
+					                $arr = array();
+					                $arr['table'] = $item['table'];
+					                $arr['id_client'] = $idClient;
+					                $arr['id_server'] = "".$this->insert_id();
+					                array_push($result, $arr);
+				                }
+                                        }
+                                }
 			}
 			return $result;
 		}

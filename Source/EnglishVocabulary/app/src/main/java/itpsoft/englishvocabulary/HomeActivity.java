@@ -869,13 +869,38 @@ public class HomeActivity extends Activity {
         progressDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent) {
-                if(i == KeyEvent.KEYCODE_BACK){
-                    showDialogConfirmCancel();
+                if (i == KeyEvent.KEYCODE_BACK) {
+//                    showDialogConfirmCancel();
                 }
                 return false;
             }
         });
         return progressDialog;
+    }
+
+    private void showDialogConfirmCancel() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(
+                HomeActivity.this);
+        builder.setMessage(getResources().getString(R.string.cancel_sync));
+        builder.setPositiveButton(getResources().getString(R.string.txt_ok),
+                new AlertDialog.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        aDialog.dismiss();
+                    }
+                });
+        builder.setNegativeButton(getResources().getString(R.string.txt_no),
+                new AlertDialog.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        aDialog.dismiss();
+                    }
+                });
+        aDialog = builder.create();
+        aDialog.show();
     }
 
     //date time sync
@@ -913,31 +938,6 @@ public class HomeActivity extends Activity {
             s_day = "" + date;
         }
 
-    }
-
-    private void showDialogConfirmCancel() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(
-                HomeActivity.this);
-        builder.setMessage(getResources().getString(R.string.cancel_sync));
-        builder.setPositiveButton(getResources().getString(R.string.txt_ok),
-                new AlertDialog.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                aDialog.dismiss();
-            }
-        });
-        builder.setNegativeButton(getResources().getString(R.string.txt_no),
-                new AlertDialog.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        aDialog.dismiss();
-                    }
-                });
-        aDialog = builder.create();
-        aDialog.show();
     }
 
 }

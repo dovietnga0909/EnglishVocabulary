@@ -7,7 +7,8 @@
 		$db = new Database();
 		$check = $db->checkUser($userId, $username);
 		if($check){
-			$result = $db->insert($json);
+			//$result = $db->insert($json);
+                        $result = $db->insertLuan($json, $userId);
 			if(count($result)>0){
 				$response = array();
 				$response["error"] = 0;

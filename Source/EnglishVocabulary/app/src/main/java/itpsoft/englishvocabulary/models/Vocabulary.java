@@ -255,6 +255,7 @@ public class Vocabulary{
                     JSONObject voca = new JSONObject();
 
                     voca.put("table", "vocabularies");
+                    voca.put("id_clien", id);
                     //voca_id, id_clien, cate_id, english, vietnamese, user_id
                     voca.put("sql", "null,'" + id + "','" + cateId  + "','" + english  + "','" + vietnamese  + "','" + SPUtil.instance(context).get(SPUtil.KEY_USER_ID, "-1") + "'" );
 
@@ -280,6 +281,7 @@ public class Vocabulary{
                     JSONObject voca = new JSONObject();
 
                     voca.put("table", "categories");
+                    voca.put("id_clien", id);
                     //cate_id, id_clien, name, user_id
                     voca.put("sql", "null,'" + id + "','" + name  + "','" + SPUtil.instance(context).get(SPUtil.KEY_USER_ID, "-1") + "'" );
 
