@@ -89,6 +89,7 @@ public class HomeActivity extends Activity {
     private int months;
     private int years_now;
     private AlertDialog aDialog;
+    private boolean logout = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,20 +206,10 @@ public class HomeActivity extends Activity {
                 } else if (i == 5) {
                     boolean isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, false);
                     if(isLogin) {
+                        logout = true;
+
                         //goi method sync
                         syncInsert();
-
-                        dbController.deleteAllDataTable();
-                        dateSetChange();
-                        SPUtil.instance(HomeActivity.this).logout();
-                        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_AGREE_RUN, true);
-
-                        fullName.setText("");
-
-                        ((MenuItem) arrMenu.get(1)).setValue(resources.getString(R.string.off));
-                        ((MenuItem) arrMenu.get(4)).setTitle(resources.getString(R.string.login));
-                        ((MenuItem) arrMenu.get(4)).setIcon(R.drawable.ic_login);
-                        menuAdapter.notifyDataSetChanged();
                     } else {
                         Intent intent = new Intent();
                         intent.setClass(HomeActivity.this, LoginActivity.class);
@@ -827,6 +818,11 @@ public class HomeActivity extends Activity {
             public void onSuccess() {
                 progressDialog.dismiss();
                 Toast.makeText(HomeActivity.this, resources.getString(R.string.sync_success), Toast.LENGTH_SHORT).show();
+
+                //check logout
+                if(logout){
+                    logout();
+                }
             }
 
             @Override
@@ -938,6 +934,20 @@ public class HomeActivity extends Activity {
             s_day = "" + date;
         }
 
+    }
+
+    private void logout(){
+        dbController.deleteAllDataTable();
+        dateSetChange();
+        SPUtil.instance(HomeActivity.this).logout();
+        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_AGREE_RUN, true);
+
+        fullName.setText("");
+
+        ((MenuItem) arrMenu.get(1)).setValue(resources.getString(R.string.off));
+        ((MenuItem) arrMenu.get(4)).setTitle(resources.getString(R.string.login));
+        ((MenuItem) arrMenu.get(4)).setIcon(R.drawable.ic_login);
+        menuAdapter.notifyDataSetChanged();
     }
 
 }

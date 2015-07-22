@@ -642,6 +642,8 @@ public class Vocabulary{
                         if(success == 1){
                             SPUtil.instance(context).set(SPUtil.KEY_VOCA_DELETE, "");
                             SPUtil.instance(context).set(SPUtil.KEY_CATE_DELETE, "");
+
+                            onLoadListener.onSuccess();
                         }
 
                     } catch (Exception e) {
@@ -649,7 +651,7 @@ public class Vocabulary{
                     }
                 }
 
-                onLoadListener.onSuccess();
+//                onLoadListener.onSuccess();
                 super.onSuccess(statusCode, headers, response);
             }
 
