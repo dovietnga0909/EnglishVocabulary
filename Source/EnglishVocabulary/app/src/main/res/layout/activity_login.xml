@@ -35,7 +35,7 @@
             android:layout_marginRight="24dp"
             android:ems="10"
             android:hint="@string/hint_username"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:typeface="serif"
             android:background="@color/transparent" >
         </EditText>
@@ -57,7 +57,7 @@
             android:ems="10"
             android:hint="@string/password"
             android:inputType="textPassword"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:typeface="serif"
             android:background="@color/transparent" />
         <View
@@ -79,7 +79,7 @@
             android:layout_marginTop="24dp"
             android:text="@string/login"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:typeface="serif"
 
@@ -100,7 +100,7 @@
             android:layout_marginRight="24dp"
             android:text="@string/register"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:typeface="serif"
 

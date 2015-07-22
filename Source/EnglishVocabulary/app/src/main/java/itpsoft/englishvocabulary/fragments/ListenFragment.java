@@ -234,7 +234,7 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
                     @Override
                     public void onClick(View v) {
 
-
+                        edtAnswers.setText("");
                         if(LISTEN_POS_VOCABULARY == listVocabularys.size()-1){
 
                             final AlertDialog.Builder mDialog =  new AlertDialog.Builder(getActivity());
