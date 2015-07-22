@@ -193,7 +193,11 @@ public class HomeActivity extends Activity {
                         menuAdapter.notifyDataSetChanged();
 
                         //goi method sync
-                        syncInsert();
+                        try {
+                            syncDelete();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                     } else {
                         Intent intent = new Intent();
@@ -209,7 +213,11 @@ public class HomeActivity extends Activity {
                         logout = true;
 
                         //goi method sync
-                        syncInsert();
+                        try {
+                            syncDelete();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     } else {
                         Intent intent = new Intent();
                         intent.setClass(HomeActivity.this, LoginActivity.class);
@@ -756,18 +764,22 @@ public class HomeActivity extends Activity {
     //////////////excute///////////////////////////
 
     private void syncInsert(){
-        progressDialog();
+//        progressDialog();
         vocabulary.excuteInsert(HomeActivity.this, vocabulary.listVocabularyAdd(), new Vocabulary.OnLoadListener() {
             @Override
             public void onStart() {
-                progressDialog.show();
+//                progressDialog.show();
             }
 
             @Override
             public void onSuccess() {
-//                progressDialog.dismiss();
-                syncUpdate();
+                progressDialog.dismiss();
+                Toast.makeText(HomeActivity.this, resources.getString(R.string.sync_success), Toast.LENGTH_SHORT).show();
 
+                //check logout
+                if(logout){
+                    logout();
+                }
             }
 
             @Override
@@ -790,11 +802,7 @@ public class HomeActivity extends Activity {
             @Override
             public void onSuccess() {
 //                progressDialog.dismiss();
-                try {
-                    syncDelete();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                syncInsert();
             }
 
             @Override
@@ -807,22 +815,16 @@ public class HomeActivity extends Activity {
     }
 
     private void syncDelete() throws JSONException{
-//        progressDialog();
+        progressDialog();
         vocabulary.excuteDelete(HomeActivity.this, listVocabularyDelete(), new Vocabulary.OnLoadListener() {
             @Override
             public void onStart() {
-//                progressDialog.show();
+                progressDialog.show();
             }
 
             @Override
             public void onSuccess() {
-                progressDialog.dismiss();
-                Toast.makeText(HomeActivity.this, resources.getString(R.string.sync_success), Toast.LENGTH_SHORT).show();
-
-                //check logout
-                if(logout){
-                    logout();
-                }
+                syncUpdate();
             }
 
             @Override

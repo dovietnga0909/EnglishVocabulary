@@ -99,12 +99,12 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 //                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
 //                        startActivity(intent);
 
+                        progressDialog.dismiss();
                         finish();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                progressDialog.dismiss();
             }
 
             @Override
