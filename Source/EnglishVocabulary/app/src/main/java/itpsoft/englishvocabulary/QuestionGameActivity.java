@@ -83,8 +83,6 @@ public class QuestionGameActivity extends Activity implements View.OnClickListen
 
     private void newQuestion() {
         if(questions.size()-1>pQuestion){
-            english.setText(questions.get(pQuestion).getEnglish());
-            vietnamese.setText(questions.get(pQuestion).getVietnamese());
             if(handler!=null && runnable!= null)
                 handler.removeCallbacks(runnable);
             time.setMax(100);
@@ -107,8 +105,8 @@ public class QuestionGameActivity extends Activity implements View.OnClickListen
         }else{
             gameOver();
             gameTitle.setTextColor(getResources().getColor(R.color.finish));
-            gameTitle.setText("GOOD!");
-            Toast.makeText(QuestionGameActivity.this, "Het cau hoi", Toast.LENGTH_SHORT).show();
+            gameTitle.setText(getResources().getString(R.string.finish));
+            Toast.makeText(QuestionGameActivity.this, getResources().getString(R.string.het_cau_hoi), Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -120,6 +118,8 @@ public class QuestionGameActivity extends Activity implements View.OnClickListen
         pQuestion = 0;
         pScore = 0;
         playScore.setText(Integer.toString(pScore));
+        english.setText(questions.get(pQuestion).getEnglish());
+        vietnamese.setText(questions.get(pQuestion).getVietnamese());
         newQuestion();
     }
 
@@ -130,12 +130,12 @@ public class QuestionGameActivity extends Activity implements View.OnClickListen
         hScore = SPUtil.instance(QuestionGameActivity.this).get("HIGHT_SCORE_GAME_QUESTTION", 0);
         if(pScore>hScore){
             gameTitle.setTextColor(getResources().getColor(R.color.newscore));
-            gameTitle.setText("NEW SCORE");
+            gameTitle.setText(getResources().getString(R.string.new_score));
             hightScore.setText(Integer.toString(pScore));
             SPUtil.instance(QuestionGameActivity.this).set("HIGHT_SCORE_GAME_QUESTTION", pScore);
         }else {
             gameTitle.setTextColor(getResources().getColor(R.color.gameover));
-            gameTitle.setText("GAME OVER");
+            gameTitle.setText(getResources().getString(R.string.gameover));
             hightScore.setText(Integer.toString(hScore));
         }
         score.setText(Integer.toString(pScore));
@@ -150,6 +150,10 @@ public class QuestionGameActivity extends Activity implements View.OnClickListen
             playScore.setText(Integer.toString(pScore));
             newQuestion();
             pQuestion = pQuestion+1;
+            if(pQuestion<questions.size()) {
+                english.setText(questions.get(pQuestion).getEnglish());
+                vietnamese.setText(questions.get(pQuestion).getVietnamese());
+            }
         }else{
             gameOver();
         }

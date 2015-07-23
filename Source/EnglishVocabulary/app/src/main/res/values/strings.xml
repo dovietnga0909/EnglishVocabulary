@@ -88,6 +88,19 @@
     <string name="stop">Dừng</string>
     <string name="start_app">Mở ứng dụng</string>
     <string name="note">Đã đến giờ học nhấn vào "Mở ứng dụng" để bắt đầu.</string>
+    <string name="quick_question">QUICK QUESTION</string>
+    <string name="gameover">GAME OVER!</string>
+    <string name="new_score">NEW SCORE!</string>
+    <string name="replay">Chơi lại</string>
+    <string name="start">Bắt đầu</string>
+    <string name="yes">Đúng</string>
+    <string name="no">Sai</string>
+    <string name="score">Điểm</string>
+    <string name="hight_score">Điểm cao</string>
+    <string name="meant_to_be">có nghĩa là</string>
+    <string name="guide">Game đơn giản với các câu hỏi trả lời nhanh, dữ liệu lấy từ kho từ của bạn. </string>
+    <string name="finish">GOOD!</string>
+    <string name="het_cau_hoi">Hết câu hỏi</string>
     <!-- End - TuNT -->
 
     <!--LuanDT-->
