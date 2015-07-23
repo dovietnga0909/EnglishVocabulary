@@ -178,7 +178,7 @@ public class HomeActivity extends Activity {
                     }
                 } else if (i == 2) {
                     boolean isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, false);
-                    if(isLogin) {
+                    if (isLogin) {
                         dateTimeSync();
                         String time = "" + s_hours + ":" + s_minute + " " + s_day + "/" + s_months + "/" + years_now;
 
@@ -209,7 +209,7 @@ public class HomeActivity extends Activity {
                     createDialogRemind();
                 } else if (i == 5) {
                     boolean isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, false);
-                    if(isLogin) {
+                    if (isLogin) {
                         logout = true;
 
                         //goi method sync
@@ -223,6 +223,10 @@ public class HomeActivity extends Activity {
                         intent.setClass(HomeActivity.this, LoginActivity.class);
                         startActivity(intent);
                     }
+                } else if (i == 6) {
+                    Intent intent = new Intent();
+                    intent.setClass(HomeActivity.this, QuestionGameActivity.class);
+                    startActivity(intent);
                 }
             }
         });
@@ -271,18 +275,19 @@ public class HomeActivity extends Activity {
         boolean isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, false);
         arrMenu = new ArrayList<Object>();
         arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_home, resources.getString(R.string.ev), ""));
-        if(isSync){
+        if (isSync) {
             arrMenu.add(new MenuItem("#53dd00", R.drawable.ic_refesh, resources.getString(R.string.sync), SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_TIME_LAST_SYNC, "-1")));
-        }else {
+        } else {
             arrMenu.add(new MenuItem("#53dd00", R.drawable.ic_refesh, resources.getString(R.string.sync), resources.getString(R.string.off)));
         }
         arrMenu.add(new MenuItem("#ff6f00", R.drawable.ic_clock, resources.getString(R.string.reminds_study_time), resources.getString(R.string.off)));
         arrMenu.add("");
-        if(isLogin){
+        if (isLogin) {
             arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_logout, resources.getString(R.string.logout), ""));
         } else {
             arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_login, resources.getString(R.string.login), ""));
         }
+        arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_login, "Tro choi", ""));
     }
 
     private void createDialogRemind() {
@@ -671,7 +676,7 @@ public class HomeActivity extends Activity {
         ((MenuItem) arrMenu.get(2)).setValue(hour + ":" + minute);
     }
 
-    private void testSyncVoca(){
+    private void testSyncVoca() {
 
         Log.d("LuanDT", "testSyncVoca");
         String[] id_delete = new String[0];
@@ -679,23 +684,23 @@ public class HomeActivity extends Activity {
         String idDelete = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_VOCA_DELETE, "");
         String idUpdate = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_VOCA_UPDATE, "");
 
-        if(!idDelete.equals("")){
+        if (!idDelete.equals("")) {
             id_delete = idDelete.split(",");
         }
 
-        if(!idUpdate.equals("")){
+        if (!idUpdate.equals("")) {
             id_update = idUpdate.split(",");
         }
 
         ArrayList<String> listIdDelete = new ArrayList<String>(Arrays.asList(id_delete));
         ArrayList<String> listIdUpdate = new ArrayList<String>(Arrays.asList(id_update));
 
-        if(listIdDelete.size() > 0){
-            for(int i = 0; i < listIdDelete.size(); i++){
+        if (listIdDelete.size() > 0) {
+            for (int i = 0; i < listIdDelete.size(); i++) {
                 Log.d("LuanDT", "id_delete: " + listIdDelete.get(i));
-                for(int j = 0; j < listIdUpdate.size(); j++){
+                for (int j = 0; j < listIdUpdate.size(); j++) {
                     Log.d("LuanDT", "id_update: " + listIdUpdate.get(j));
-                    if(listIdDelete.get(i).equals(listIdUpdate.get(j))){
+                    if (listIdDelete.get(i).equals(listIdUpdate.get(j))) {
                         listIdUpdate.remove(j);
                     }
                 }
@@ -704,10 +709,10 @@ public class HomeActivity extends Activity {
         }
 
         StringBuffer newIdUpdate = new StringBuffer();
-        for (int i = 0; i < listIdUpdate.size(); i++){
-            if(i == 0){
+        for (int i = 0; i < listIdUpdate.size(); i++) {
+            if (i == 0) {
                 newIdUpdate = newIdUpdate.append(listIdUpdate.get(i));
-            }else {
+            } else {
                 newIdUpdate = newIdUpdate.append("," + listIdUpdate.get(i));
             }
         }
@@ -716,7 +721,7 @@ public class HomeActivity extends Activity {
 
     }
 
-    private void testSyncCate(){
+    private void testSyncCate() {
 
         Log.d("LuanDT", "testSyncCate");
         String[] id_delete = new String[0];
@@ -724,23 +729,23 @@ public class HomeActivity extends Activity {
         String idDelete = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_CATE_DELETE, "");
         String idUpdate = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_CATE_UPDATE, "");
 
-        if(!idDelete.equals("")){
+        if (!idDelete.equals("")) {
             id_delete = idDelete.split(",");
         }
 
-        if(!idUpdate.equals("")){
+        if (!idUpdate.equals("")) {
             id_update = idUpdate.split(",");
         }
 
         ArrayList<String> listIdDelete = new ArrayList<String>(Arrays.asList(id_delete));
         ArrayList<String> listIdUpdate = new ArrayList<String>(Arrays.asList(id_update));
 
-        if(listIdDelete.size() > 0){
-            for(int i = 0; i < listIdDelete.size(); i++){
+        if (listIdDelete.size() > 0) {
+            for (int i = 0; i < listIdDelete.size(); i++) {
                 Log.d("LuanDT", "id_delete_cate: " + listIdDelete.get(i));
-                for(int j = 0; j < listIdUpdate.size(); j++){
+                for (int j = 0; j < listIdUpdate.size(); j++) {
                     Log.d("LuanDT", "id_update_cate: " + listIdUpdate.get(j));
-                    if(listIdDelete.get(i).equals(listIdUpdate.get(j))){
+                    if (listIdDelete.get(i).equals(listIdUpdate.get(j))) {
                         listIdUpdate.remove(j);
                     }
                 }
@@ -749,10 +754,10 @@ public class HomeActivity extends Activity {
         }
 
         StringBuffer newIdUpdate = new StringBuffer();
-        for (int i = 0; i < listIdUpdate.size(); i++){
-            if(i == 0){
+        for (int i = 0; i < listIdUpdate.size(); i++) {
+            if (i == 0) {
                 newIdUpdate = newIdUpdate.append(listIdUpdate.get(i));
-            }else {
+            } else {
                 newIdUpdate = newIdUpdate.append("," + listIdUpdate.get(i));
             }
         }
@@ -763,7 +768,7 @@ public class HomeActivity extends Activity {
 
     //////////////excute///////////////////////////
 
-    private void syncInsert(){
+    private void syncInsert() {
 //        progressDialog();
         vocabulary.excuteInsert(HomeActivity.this, vocabulary.listVocabularyAdd(), new Vocabulary.OnLoadListener() {
             @Override
@@ -776,7 +781,7 @@ public class HomeActivity extends Activity {
                 progressDialog.dismiss();
 
                 //check logout
-                if(logout){
+                if (logout) {
                     logout();
                     Toast.makeText(HomeActivity.this, resources.getString(R.string.logout_success), Toast.LENGTH_SHORT).show();
                 } else {
@@ -793,7 +798,7 @@ public class HomeActivity extends Activity {
         });
     }
 
-    private void syncUpdate(){
+    private void syncUpdate() {
 //        progressDialog();
         vocabulary.excuteUpdate(HomeActivity.this, vocabulary.listVocabularyUpdate(), new Vocabulary.OnLoadListener() {
             @Override
@@ -816,7 +821,7 @@ public class HomeActivity extends Activity {
         });
     }
 
-    private void syncDelete() throws JSONException{
+    private void syncDelete() throws JSONException {
         progressDialog();
         vocabulary.excuteDelete(HomeActivity.this, listVocabularyDelete(), new Vocabulary.OnLoadListener() {
             @Override
@@ -904,7 +909,7 @@ public class HomeActivity extends Activity {
     }
 
     //date time sync
-    public void dateTimeSync(){
+    public void dateTimeSync() {
         final Calendar c = Calendar.getInstance();
         minute = c.get(Calendar.MINUTE);
         hours = c.get(Calendar.HOUR_OF_DAY);
@@ -912,35 +917,35 @@ public class HomeActivity extends Activity {
         months = c.get(Calendar.MONTH);
         years_now = c.get(Calendar.YEAR);
 
-        if(hours < 10){
+        if (hours < 10) {
             s_hours = "0" + hours;
         } else {
             s_hours = "" + hours;
         }
 
-        if(minute < 10){
+        if (minute < 10) {
             s_minute = "0" + minute;
-        }else {
+        } else {
             s_minute = "" + minute;
         }
 
         months = months + 1;
 
-        if(months < 10){
+        if (months < 10) {
             s_months = "0" + months;
-        }else {
+        } else {
             s_months = "" + months;
         }
 
-        if(date < 10){
+        if (date < 10) {
             s_day = "0" + date;
-        }else {
+        } else {
             s_day = "" + date;
         }
 
     }
 
-    private void logout(){
+    private void logout() {
         dbController.deleteAllDataTable();
         dateSetChange();
         SPUtil.instance(HomeActivity.this).logout();

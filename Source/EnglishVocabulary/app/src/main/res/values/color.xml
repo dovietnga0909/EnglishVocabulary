@@ -17,4 +17,7 @@
     <color name="splash">#ffffff</color>
 
     <color name="transparent">#00ffffff</color>
+    <color name="finish">#00FF00</color>
+    <color name="gameover">#ff8c0009</color>
+    <color name="newscore">#ffffb300</color>
 </resources>

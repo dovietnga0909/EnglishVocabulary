@@ -45,6 +45,9 @@
             android:screenOrientation="portrait"
             android:excludeFromRecents="true"/>
         <receiver android:name=".alarm.AlarmReceiver"></receiver>
+        <activity
+            android:name=".QuestionGameActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
