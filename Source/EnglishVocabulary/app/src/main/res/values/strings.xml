@@ -101,6 +101,8 @@
     <string name="guide">Game đơn giản với các câu hỏi trả lời nhanh, dữ liệu lấy từ kho từ của bạn. </string>
     <string name="finish">GOOD!</string>
     <string name="het_cau_hoi">Hết câu hỏi</string>
+    <string name="kho_tu_rong">Kho từ vựng rỗng.</string>
+    <string name="game">Trò chơi</string>
     <!-- End - TuNT -->
 
     <!--LuanDT-->

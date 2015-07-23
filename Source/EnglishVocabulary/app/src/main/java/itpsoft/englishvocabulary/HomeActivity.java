@@ -287,7 +287,7 @@ public class HomeActivity extends Activity {
         } else {
             arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_login, resources.getString(R.string.login), ""));
         }
-        arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_login, "Tro choi", ""));
+        arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_login, resources.getString(R.string.game), ""));
     }
 
     private void createDialogRemind() {
