@@ -179,4 +179,11 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+        startActivity(intent);
+        super.onBackPressed();
+    }
 }
