@@ -52,6 +52,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         btnRegister = (Button)findViewById(R.id.btnRegister);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(getResources().getString(R.string.please_wait));
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
         btnLogin.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
     }
@@ -96,12 +98,10 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                         //get all data
                         syncAddDataToDatabase();
 
-//                        finish();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                progressDialog.dismiss();
             }
 
             @Override
@@ -159,17 +159,10 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
     private void syncAddDataToDatabase(){
         vocabulary = new Vocabulary();
-        if(progressDialog.isShowing()){
-            progressDialog.dismiss();
-        }
-        progressDialog = new ProgressDialog(LoginActivity.this);
-        progressDialog.setMessage(getResources().getString(R.string.load_data));
-        progressDialog.setCancelable(false);
-        progressDialog.setCanceledOnTouchOutside(false);
         vocabulary.excuteAddDataToDatabase(LoginActivity.this, new Vocabulary.OnLoadListener() {
             @Override
             public void onStart() {
-                progressDialog.show();
+
             }
 
             @Override

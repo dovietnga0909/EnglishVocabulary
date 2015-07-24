@@ -203,11 +203,16 @@ public class HomeActivity extends Activity {
                         Intent intent = new Intent();
                         intent.setClass(HomeActivity.this, LoginActivity.class);
                         startActivity(intent);
+                        finish();
                     }
 
                 } else if (i == 3) {
                     createDialogRemind();
-                } else if (i == 5) {
+                } else if (i == 4) {
+                    Intent intent = new Intent();
+                    intent.setClass(HomeActivity.this, QuestionGameActivity.class);
+                    startActivity(intent);
+                } else if (i == 6) {
                     boolean isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, false);
                     if (isLogin) {
                         logout = true;
@@ -222,11 +227,8 @@ public class HomeActivity extends Activity {
                         Intent intent = new Intent();
                         intent.setClass(HomeActivity.this, LoginActivity.class);
                         startActivity(intent);
+                        finish();
                     }
-                } else if (i == 6) {
-                    Intent intent = new Intent();
-                    intent.setClass(HomeActivity.this, QuestionGameActivity.class);
-                    startActivity(intent);
                 }
             }
         });
@@ -281,13 +283,13 @@ public class HomeActivity extends Activity {
             arrMenu.add(new MenuItem("#53dd00", R.drawable.ic_refesh, resources.getString(R.string.sync), resources.getString(R.string.off)));
         }
         arrMenu.add(new MenuItem("#ff6f00", R.drawable.ic_clock, resources.getString(R.string.reminds_study_time), resources.getString(R.string.off)));
+        arrMenu.add(new MenuItem("#f50057", R.drawable.game, resources.getString(R.string.game), ""));
         arrMenu.add("");
         if (isLogin) {
             arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_logout, resources.getString(R.string.logout), ""));
         } else {
             arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_login, resources.getString(R.string.login), ""));
         }
-        arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_login, resources.getString(R.string.game), ""));
     }
 
     private void createDialogRemind() {
@@ -954,8 +956,9 @@ public class HomeActivity extends Activity {
         fullName.setText("");
 
         ((MenuItem) arrMenu.get(1)).setValue(resources.getString(R.string.off));
-        ((MenuItem) arrMenu.get(4)).setTitle(resources.getString(R.string.login));
-        ((MenuItem) arrMenu.get(4)).setIcon(R.drawable.ic_login);
+        ((MenuItem) arrMenu.get(2)).setValue(resources.getString(R.string.off));
+        ((MenuItem) arrMenu.get(5)).setTitle(resources.getString(R.string.login));
+        ((MenuItem) arrMenu.get(5)).setIcon(R.drawable.ic_login);
         menuAdapter.notifyDataSetChanged();
     }
 
