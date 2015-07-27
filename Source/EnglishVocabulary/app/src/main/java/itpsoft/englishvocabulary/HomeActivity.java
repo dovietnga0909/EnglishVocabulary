@@ -286,10 +286,15 @@ public class HomeActivity extends Activity {
         arrMenu.add(new MenuItem("#f50057", R.drawable.game, resources.getString(R.string.game), ""));
         arrMenu.add("");
         if (isLogin) {
-            arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_logout, resources.getString(R.string.logout), ""));
+            arrMenu.add(new MenuItem("#9c27b0", R.drawable.ic_logout, resources.getString(R.string.logout), ""));
         } else {
-            arrMenu.add(new MenuItem("#03A9F4", R.drawable.ic_login, resources.getString(R.string.login), ""));
+            arrMenu.add(new MenuItem("#9c27b0", R.drawable.ic_login, resources.getString(R.string.login), ""));
         }
+        arrMenu.add("");
+        arrMenu.add(new MenuItem("#6200ea", R.drawable.about, resources.getString(R.string.about), ""));
+        arrMenu.add(new MenuItem("#1a237e", R.drawable.guide, resources.getString(R.string.guide_detail), ""));
+        arrMenu.add(new MenuItem("#0d47a1", R.drawable.more_app, resources.getString(R.string.more_app), ""));
+
     }
 
     private void createDialogRemind() {
