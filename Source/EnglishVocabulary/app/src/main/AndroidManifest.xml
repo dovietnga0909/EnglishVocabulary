@@ -24,6 +24,9 @@
             android:name=".SplashActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".AboutActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".RegisterActivity"
             android:screenOrientation="portrait" />
         <activity

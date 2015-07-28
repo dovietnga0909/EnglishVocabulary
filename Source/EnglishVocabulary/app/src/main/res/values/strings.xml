@@ -56,6 +56,21 @@
     <string name="alert_success">Thành công</string>
     <string name="please_wait">Vui lòng đợi ...</string>
 
+    <string name="version">Số phiên bản:</string>
+    <string name="current_version">1.0</string>
+    <string name="group_development">Nhóm phát triển:</string>
+    <string name="leader">Nguyễn Thanh Bản</string>
+    <string name="team_leader">Đỗ Viết Ngà</string>
+    <string name="member1">Đinh Thế Luân</string>
+    <string name="member2">Nguyễn Thanh Tú</string>
+
+    <string name="feed_back">Phản hồi</string>
+    <string name="name_company">Viện Công nghệ thông tin - ĐHQGHN</string>
+    <string name="address_company">144 Xuân Thủy, Cầu Giấy, Hà Nội</string>
+    <string name="phone_company">04 3754 6732 Hotline: 0963 72 65 65</string>
+    <string name="website_company">itplus-academy.edu.vn</string>
+    <string name="email_company">info@itplus-academy.edu.vn</string>
+    <string name="copyright_company">Copyright © 2011 All Rights Reserved.</string>
     <!-- TuNT-->
     <string name="ev">Từ vựng tiếng Anh</string>
     <string name="sync">Đồng bộ</string>

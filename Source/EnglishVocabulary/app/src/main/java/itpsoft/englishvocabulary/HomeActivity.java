@@ -229,6 +229,14 @@ public class HomeActivity extends Activity {
                         startActivity(intent);
                         finish();
                     }
+                } else if (i == 8){
+                    Log.d("NgaDV","8");
+                    Intent intent = new Intent(HomeActivity.this,AboutActivity.class);
+                    startActivity(intent);
+                } else if (i == 9){
+                    Log.d("NgaDV","9");
+                } else if (i == 10){
+                    Log.d("NgaDV","10");
                 }
             }
         });
