@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Editable;
@@ -234,9 +235,21 @@ public class HomeActivity extends Activity {
                     Intent intent = new Intent(HomeActivity.this,AboutActivity.class);
                     startActivity(intent);
                 } else if (i == 9){
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+                    startActivity(browserIntent);
                     Log.d("NgaDV","9");
                 } else if (i == 10){
                     Log.d("NgaDV","10");
+
+                    final String nameAccCompany = "Vareco+Mobile"; // getPackageName() from Context or Activity object
+                    try {
+                        Log.d("NgaDV","market://developer?id=Vareco+Mobile");
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://developer?id="+ nameAccCompany)));
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        Log.d("NgaDV","https://play.google.com/store/apps/developer?id=Vareco+Mobile");
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/developer?id=" + nameAccCompany)));
+                    }
+//                    Intent intent = IntentUt
                 }
             }
         });
