@@ -46,6 +46,7 @@ import itpsoft.englishvocabulary.adapter.TopicAdapter;
 import itpsoft.englishvocabulary.alarm.AlarmReceiver;
 import itpsoft.englishvocabulary.databases.DbController;
 import itpsoft.englishvocabulary.models.MenuItem;
+import itpsoft.englishvocabulary.models.Question;
 import itpsoft.englishvocabulary.models.Topic;
 import itpsoft.englishvocabulary.models.Vocabulary;
 import itpsoft.englishvocabulary.ultils.Keyboard;
@@ -210,9 +211,14 @@ public class HomeActivity extends Activity {
                 } else if (i == 3) {
                     createDialogRemind();
                 } else if (i == 4) {
-                    Intent intent = new Intent();
-                    intent.setClass(HomeActivity.this, QuestionGameActivity.class);
-                    startActivity(intent);
+                    Question question = new Question(HomeActivity.this);
+                    if(question.checkData()>=2) {
+                        Intent intent = new Intent();
+                        intent.setClass(HomeActivity.this, QuestionGameActivity.class);
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(HomeActivity.this, "Data khong du de choi tro choi", Toast.LENGTH_SHORT).show();
+                    }
                 } else if (i == 6) {
                     boolean isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, false);
                     if (isLogin) {

@@ -23,7 +23,7 @@ public class Question implements Serializable {
 
     public Question(Context context) {
         db = DbController.getInstance(context);
-        getQuestions();
+//        getQuestions();
     }
 
     public Question(String english, String vietnamese, boolean answer) {
@@ -88,5 +88,15 @@ public class Question implements Serializable {
             return true;
         else
             return false;
+    }
+
+    public int checkData(){
+        int count = 0;
+        String sql = "SELECT count(*) as 'count' FROM " + DbController.TABLE_VOCABULARY;
+        Cursor cursor = db.rawQuery(sql, null);
+        if(cursor.moveToFirst()){
+            count = cursor.getInt(cursor.getColumnIndex("count"));
+        }
+        return count;
     }
 }

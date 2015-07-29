@@ -64,7 +64,7 @@
             <EditText
                 android:id="@+id/edtEnglish"
                 android:maxLines="3"
-                android:maxLength="100"
+                android:maxLength="30"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
@@ -119,7 +119,7 @@
             <EditText
                 android:id="@+id/edtVietnamese"
                 android:maxLines="3"
-                android:maxLength="100"
+                android:maxLength="30"
                 android:hint="@string/vn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
