@@ -80,6 +80,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 try {
                     JSONObject json = new JSONObject(response.toString());
                     if (json.getString("error").equals("1")) {
+                        progressDialog.dismiss();
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.alert_pass_username_wrong), Toast.LENGTH_SHORT).show();
                     } else {
 

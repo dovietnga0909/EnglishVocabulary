@@ -166,8 +166,20 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
                     public void onClick(View v) {
 
                         if(edtAnswers.getText().toString().toLowerCase().trim().equals(listVocabularys.get(LISTEN_POS_VOCABULARY).getEnglish().toString().toLowerCase())){
-                            if(LISTEN_POS_VOCABULARY == listVocabularys.size()-1){
+                            if(LISTEN_POS_VOCABULARY != listVocabularys.size()-1){
+                                LISTEN_POS_VOCABULARY++;
+                                LISTEN_NUM_QUESTION++;
+                                LISTEN_NUM_TRUE++;
 
+                                txtQuestion.setText(Integer.toString(LISTEN_NUM_QUESTION));
+                                txtNumTrue.setText(Integer.toString(LISTEN_NUM_TRUE));
+                                txtVietnamese.setText(listVocabularys.get(LISTEN_POS_VOCABULARY).getVietnamese());
+                                edtAnswers.setText("");
+                                speakEnglish.speakOut(listVocabularys.get(LISTEN_POS_VOCABULARY).getEnglish());
+
+                            }else {
+
+                                LISTEN_NUM_TRUE++;
                                 final AlertDialog.Builder mDialog =  new AlertDialog.Builder(getActivity());
 
                                 mDialog.setTitle(getResources().getString(R.string.txt_completet));
@@ -200,18 +212,7 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
                                 txtVietnamese.setText(listVocabularys.get(LISTEN_POS_VOCABULARY).getVietnamese());
                                 txtNumSkip.setText(Integer.toString(LISTEN_NUM_SKIP));
 
-
-
-                            }else {
-                                LISTEN_POS_VOCABULARY++;
-                                LISTEN_NUM_QUESTION++;
-                                LISTEN_NUM_TRUE++;
-
-                                txtQuestion.setText(Integer.toString(LISTEN_NUM_QUESTION));
-                                txtNumTrue.setText(Integer.toString(LISTEN_NUM_TRUE));
-                                txtVietnamese.setText(listVocabularys.get(LISTEN_POS_VOCABULARY).getVietnamese());
                                 edtAnswers.setText("");
-                                speakEnglish.speakOut(listVocabularys.get(LISTEN_POS_VOCABULARY).getEnglish());
                             }
 
 
@@ -235,10 +236,19 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
                     public void onClick(View v) {
 
                         edtAnswers.setText("");
-                        if(LISTEN_POS_VOCABULARY == listVocabularys.size()-1){
+                        if(LISTEN_POS_VOCABULARY != listVocabularys.size()-1){
+                            LISTEN_POS_VOCABULARY++;
+                            LISTEN_NUM_QUESTION++;
+                            LISTEN_NUM_SKIP++;
+
+                            txtQuestion.setText(Integer.toString(LISTEN_NUM_QUESTION));
+                            txtNumTrue.setText(Integer.toString(LISTEN_NUM_TRUE));
+                            txtNumSkip.setText(Integer.toString(LISTEN_NUM_SKIP));
+                            txtVietnamese.setText(listVocabularys.get(LISTEN_POS_VOCABULARY).getVietnamese());
+                            speakEnglish.speakOut(listVocabularys.get(LISTEN_POS_VOCABULARY).getEnglish());
+                        }else {
 
                             final AlertDialog.Builder mDialog =  new AlertDialog.Builder(getActivity());
-
                             mDialog.setTitle(getResources().getString(R.string.txt_completet));
                             mDialog.setMessage(getResources().getString(R.string.txt_msg_part1)
                                     + LISTEN_NUM_TRUE + getResources().getString(R.string.txt_msg_part2)
@@ -269,17 +279,7 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
                             txtVietnamese.setText(listVocabularys.get(LISTEN_POS_VOCABULARY).getVietnamese());
                             txtNumSkip.setText(Integer.toString(LISTEN_NUM_SKIP));
 
-
-                        }else {
-                            LISTEN_POS_VOCABULARY++;
-                            LISTEN_NUM_QUESTION++;
-                            LISTEN_NUM_SKIP++;
-
-                            txtQuestion.setText(Integer.toString(LISTEN_NUM_QUESTION));
-                            txtNumTrue.setText(Integer.toString(LISTEN_NUM_TRUE));
-                            txtNumSkip.setText(Integer.toString(LISTEN_NUM_SKIP));
-                            txtVietnamese.setText(listVocabularys.get(LISTEN_POS_VOCABULARY).getVietnamese());
-                            speakEnglish.speakOut(listVocabularys.get(LISTEN_POS_VOCABULARY).getEnglish());
+                            edtAnswers.setText("");
                         }
                     }
                 });

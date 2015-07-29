@@ -131,7 +131,20 @@ public class RememberFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         if (edtAnswers.getText().toString().trim().toLowerCase().equals(listVocabularys.get(REMEMBER_POS_VOCABULARY).getVietnamese().toLowerCase())) {
-                            if (REMEMBER_POS_VOCABULARY == listVocabularys.size() - 1) {
+                            if (REMEMBER_POS_VOCABULARY != listVocabularys.size() - 1) {
+                                REMEMBER_POS_VOCABULARY++;
+                                REMEMBER_NUM_QUESTION++;
+                                REMEMBER_NUM_TRUE++;
+
+                                txtQuestion.setText(Integer.toString(REMEMBER_NUM_QUESTION));
+                                txtNumTrue.setText(Integer.toString(REMEMBER_NUM_TRUE));
+                                txtEnglish.setText(listVocabularys.get(REMEMBER_POS_VOCABULARY).getEnglish());
+
+                                edtAnswers.setText("");
+                            } else {
+
+
+                                REMEMBER_NUM_TRUE++;
                                 final AlertDialog.Builder mDialog = new AlertDialog.Builder(getActivity());
 
                                 mDialog.setTitle(getResources().getString(R.string.txt_completet));
@@ -164,14 +177,6 @@ public class RememberFragment extends Fragment {
                                 txtNumTrue.setText(Integer.toString(REMEMBER_NUM_TRUE));
                                 txtEnglish.setText(listVocabularys.get(REMEMBER_POS_VOCABULARY).getEnglish());
                                 txtNumSkip.setText(Integer.toString(REMEMBER_NUM_SKIP));
-                            } else {
-                                REMEMBER_POS_VOCABULARY++;
-                                REMEMBER_NUM_QUESTION++;
-                                REMEMBER_NUM_TRUE++;
-
-                                txtQuestion.setText(Integer.toString(REMEMBER_NUM_QUESTION));
-                                txtNumTrue.setText(Integer.toString(REMEMBER_NUM_TRUE));
-                                txtEnglish.setText(listVocabularys.get(REMEMBER_POS_VOCABULARY).getEnglish());
 
                                 edtAnswers.setText("");
                             }
@@ -189,7 +194,20 @@ public class RememberFragment extends Fragment {
                 btnSkip.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (REMEMBER_POS_VOCABULARY == listVocabularys.size()-1) {
+                        if (REMEMBER_POS_VOCABULARY != listVocabularys.size()-1) {
+
+                            REMEMBER_POS_VOCABULARY++;
+                            REMEMBER_NUM_QUESTION++;
+                            REMEMBER_NUM_SKIP++;
+
+                            txtQuestion.setText(Integer.toString(REMEMBER_NUM_QUESTION));
+                            txtNumSkip.setText(Integer.toString(REMEMBER_NUM_SKIP));
+                            txtEnglish.setText(listVocabularys.get(REMEMBER_POS_VOCABULARY).getEnglish());
+
+                            edtAnswers.setText("");
+
+                        }else {
+
 
                             final AlertDialog.Builder mDialog = new AlertDialog.Builder(getActivity());
 
@@ -223,14 +241,6 @@ public class RememberFragment extends Fragment {
                             txtNumTrue.setText(Integer.toString(REMEMBER_NUM_TRUE));
                             txtEnglish.setText(listVocabularys.get(REMEMBER_POS_VOCABULARY).getEnglish());
                             txtNumSkip.setText(Integer.toString(REMEMBER_NUM_SKIP));
-                        }else {
-                            REMEMBER_POS_VOCABULARY++;
-                            REMEMBER_NUM_QUESTION++;
-                            REMEMBER_NUM_SKIP++;
-
-                            txtQuestion.setText(Integer.toString(REMEMBER_NUM_QUESTION));
-                            txtNumSkip.setText(Integer.toString(REMEMBER_NUM_SKIP));
-                            txtEnglish.setText(listVocabularys.get(REMEMBER_POS_VOCABULARY).getEnglish());
 
                             edtAnswers.setText("");
                         }
