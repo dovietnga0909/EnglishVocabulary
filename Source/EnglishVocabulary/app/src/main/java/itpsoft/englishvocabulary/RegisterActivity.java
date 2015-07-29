@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +15,8 @@ import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
+
+import java.util.regex.Pattern;
 
 import itpsoft.englishvocabulary.ultils.Log;
 
@@ -60,11 +61,24 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
         username        = edtUsername.getText().toString().trim();
         password        = edtPassword.getText().toString().trim();
         confirmPassword = edtConfirmPassword.getText().toString().trim();
+        boolean ptUsername = Pattern.compile("^[a-z0-9]{6,30}$").matcher(username).matches();
+        boolean ptPassword = Pattern.compile("^[A-Za-z0-9]{6,30}$").matcher(password).matches();
+        boolean ptFullname = Pattern.compile("^[\\sA-Za-z0-9]{2,30}$").matcher(fullname).matches();
+
+        Log.d("NgaDV","ptUsername" + ptUsername);
+        Log.d("NgaDV","ptPassword" + ptPassword);
+        Log.d("NgaDV","ptFullname" + ptFullname);
 
         if(fullname.equals("")){
             Log.d("NgaDV", fullname);
             edtFullname.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
             Toast.makeText(this, getResources().getString(R.string.alert_empty), Toast.LENGTH_SHORT).show();
+            edtFullname.requestFocus();
+            validate = false;
+        }else if(!ptFullname){
+            Log.d("NgaDV", fullname);
+            edtFullname.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
+            Toast.makeText(this, getResources().getString(R.string.alert_format), Toast.LENGTH_SHORT).show();
             edtFullname.requestFocus();
             validate = false;
         }else if (username.equals("")){
@@ -73,11 +87,23 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
             Toast.makeText(this, getResources().getString(R.string.alert_empty), Toast.LENGTH_SHORT).show();
             edtUsername.requestFocus();
             validate = false;
+        }else if(!ptUsername){
+            Log.d("NgaDV", fullname);
+            edtFullname.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
+            Toast.makeText(this, getResources().getString(R.string.alert_format), Toast.LENGTH_SHORT).show();
+            edtFullname.requestFocus();
+            validate = false;
         }else if (password.equals("")){
             Log.d("NgaDV",password);
             edtPassword.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
             Toast.makeText(this, getResources().getString(R.string.alert_empty), Toast.LENGTH_SHORT).show();
             edtPassword.requestFocus();
+            validate = false;
+        }else if(!ptPassword){
+            Log.d("NgaDV", fullname);
+            edtFullname.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
+            Toast.makeText(this, getResources().getString(R.string.alert_format), Toast.LENGTH_SHORT).show();
+            edtFullname.requestFocus();
             validate = false;
         }else if (confirmPassword.equals("")){
             Log.d("NgaDV",confirmPassword);

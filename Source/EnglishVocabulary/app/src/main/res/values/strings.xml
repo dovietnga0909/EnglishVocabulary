@@ -50,6 +50,7 @@
     <string name="hint_confirm_password">Nhập lại mật khẩu</string>
     <string name="password">Mật khẩu</string>
     <string name="alert_empty">Trường này không được trống</string>
+    <string name="alert_format">Nội dung không được ít hơn 6 hoặc quá 30 ký tự. Không được chứa ký tự đặc biệt</string>
     <string name="alert_pass_username_wrong">Sai tài khoản hoặc mật khẩu</string>
     <string name="alert_pass_unequal_confirm">Xác nhận mật khẩu chưa trùng</string>
     <string name="alert_error_try_again">Có lỗi xảy ra, vui lòng thử lại</string>
