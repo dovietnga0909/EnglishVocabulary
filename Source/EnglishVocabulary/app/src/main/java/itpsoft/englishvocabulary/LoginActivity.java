@@ -79,6 +79,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 Log.d("NgaDV", "http onsuccess");
                 try {
                     JSONObject json = new JSONObject(response.toString());
+                    Log.d("NgaDV","json : " + json);
                     if (json.getString("error").equals("1")) {
                         progressDialog.dismiss();
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.alert_pass_username_wrong), Toast.LENGTH_SHORT).show();

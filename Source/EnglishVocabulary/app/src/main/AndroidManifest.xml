@@ -27,6 +27,9 @@
             android:name=".AboutActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".FeedBackActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".RegisterActivity"
             android:screenOrientation="portrait" />
         <activity

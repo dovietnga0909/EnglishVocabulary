@@ -61,13 +61,11 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
         username        = edtUsername.getText().toString().trim();
         password        = edtPassword.getText().toString().trim();
         confirmPassword = edtConfirmPassword.getText().toString().trim();
-        boolean ptUsername = Pattern.compile("^[a-z0-9]{6,30}$").matcher(username).matches();
+        boolean ptUsername = Pattern.compile("^[A-Za-z0-9]{6,30}$").matcher(username).matches();
         boolean ptPassword = Pattern.compile("^[A-Za-z0-9]{6,30}$").matcher(password).matches();
-        boolean ptFullname = Pattern.compile("^[\\sA-Za-z0-9]{2,30}$").matcher(fullname).matches();
 
-        Log.d("NgaDV","ptUsername" + ptUsername);
-        Log.d("NgaDV","ptPassword" + ptPassword);
-        Log.d("NgaDV","ptFullname" + ptFullname);
+//        Log.d("NgaDV","ptUsername" + ptUsername);
+//        Log.d("NgaDV","ptPassword" + ptPassword);
 
         if(fullname.equals("")){
             Log.d("NgaDV", fullname);
@@ -75,10 +73,10 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
             Toast.makeText(this, getResources().getString(R.string.alert_empty), Toast.LENGTH_SHORT).show();
             edtFullname.requestFocus();
             validate = false;
-        }else if(!ptFullname){
+        }else if(fullname.length() > 30){
             Log.d("NgaDV", fullname);
             edtFullname.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
-            Toast.makeText(this, getResources().getString(R.string.alert_format), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.alert_fullname), Toast.LENGTH_SHORT).show();
             edtFullname.requestFocus();
             validate = false;
         }else if (username.equals("")){
@@ -88,10 +86,10 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
             edtUsername.requestFocus();
             validate = false;
         }else if(!ptUsername){
-            Log.d("NgaDV", fullname);
-            edtFullname.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
+            Log.d("NgaDV", "ptUsername: "+ptUsername);
+            edtUsername.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
             Toast.makeText(this, getResources().getString(R.string.alert_format), Toast.LENGTH_SHORT).show();
-            edtFullname.requestFocus();
+            edtUsername.requestFocus();
             validate = false;
         }else if (password.equals("")){
             Log.d("NgaDV",password);
@@ -100,10 +98,10 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
             edtPassword.requestFocus();
             validate = false;
         }else if(!ptPassword){
-            Log.d("NgaDV", fullname);
-            edtFullname.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
+            Log.d("NgaDV", "ptPassword: "+ptPassword);
+            edtPassword.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
             Toast.makeText(this, getResources().getString(R.string.alert_format), Toast.LENGTH_SHORT).show();
-            edtFullname.requestFocus();
+            edtPassword.requestFocus();
             validate = false;
         }else if (confirmPassword.equals("")){
             Log.d("NgaDV",confirmPassword);

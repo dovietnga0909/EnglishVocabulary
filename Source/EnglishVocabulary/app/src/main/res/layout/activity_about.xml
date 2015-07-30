@@ -152,7 +152,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="@string/feed_back"
-            android:textColor="@color/white"
+            android:textColor="@color/actionBar"
             android:textSize="16sp"
             android:textStyle="bold"
             android:typeface="serif"

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/edtContentFeedBack"
+        android:background="@color/white"
+        android:padding="10dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/send"
+        android:id="@+id/btnSendFeedBack"
+        android:background="@drawable/btn_login_selector"
+        android:textColor="@color/logo"
+        android:layout_marginTop="20dp"
+        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView"
+        android:paddingTop="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cong hoa xa hoi chu nghia viet nam Cong hoa xa hoi chu nghia viet nam Cong hoa xa hoi chu nghia viet nam Cong hoa xa hoi chu nghia viet nam Cong hoa xa hoi chu nghia viet nam"/>
+    </ScrollView>
+</LinearLayout>

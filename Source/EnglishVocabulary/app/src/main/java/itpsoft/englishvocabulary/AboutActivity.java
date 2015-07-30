@@ -1,10 +1,10 @@
 package itpsoft.englishvocabulary;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 /**
  * Created by Do on 28/07/2015.
@@ -21,7 +21,8 @@ public class AboutActivity extends Activity {
         btnFeedBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"chuc nang dang cap nhat",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(AboutActivity.this,FeedBackActivity.class);
+                startActivity(intent);
             }
         });
     }

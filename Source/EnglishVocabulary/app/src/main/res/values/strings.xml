@@ -50,6 +50,7 @@
     <string name="hint_confirm_password">Nhập lại mật khẩu</string>
     <string name="password">Mật khẩu</string>
     <string name="alert_empty">Trường này không được trống</string>
+    <string name="alert_fullname">Nội dung không được 30 ký tự</string>
     <string name="alert_format">Nội dung không được ít hơn 6 hoặc quá 30 ký tự. Không được chứa ký tự đặc biệt</string>
     <string name="alert_pass_username_wrong">Sai tài khoản hoặc mật khẩu</string>
     <string name="alert_pass_unequal_confirm">Xác nhận mật khẩu chưa trùng</string>
@@ -72,6 +73,8 @@
     <string name="website_company">itplus-academy.edu.vn</string>
     <string name="email_company">info@itplus-academy.edu.vn</string>
     <string name="copyright_company">Copyright © 2011 All Rights Reserved.</string>
+
+    <string name="send">Góp ý</string>
     <!-- TuNT-->
     <string name="ev">Từ vựng tiếng Anh</string>
     <string name="sync">Đồng bộ</string>
@@ -149,6 +152,7 @@
     <string name="api_get_all_data">http://myapp.freezoy.com/Vocabulary/alldata.php</string>
     <string name="api_register">http://myapp.freezoy.com/Vocabulary/register.php</string>
     <string name="api_login">http://myapp.freezoy.com/Vocabulary/login.php</string>
+    <string name="api_feedback">http://myapp.freezoy.com/Vocabulary/feedback.php</string>
 
     <!-- AcctentRemover -->
     <string-array name="special_characters">
