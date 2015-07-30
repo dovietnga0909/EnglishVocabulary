@@ -43,7 +43,7 @@ public class FeedBackActivity extends Activity implements View.OnClickListener {
 
         btnSend.setOnClickListener(this);
 
-        progressDialog.setMessage(getResources().getString(R.string.waiting));
+        progressDialog.setMessage(getResources().getString(R.string.please_wait));
     }
 
     public void sendFeedBack(){
