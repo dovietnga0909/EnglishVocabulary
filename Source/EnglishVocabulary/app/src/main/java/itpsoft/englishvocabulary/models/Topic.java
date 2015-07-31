@@ -85,6 +85,7 @@ public class Topic {
                 do {
                     int id = cursor.getInt(cursor.getColumnIndex(DbController.ID_CATE));
                     String name = cursor.getString(cursor.getColumnIndex(DbController.CATEGORIES_NAME));
+                    name = name.replace("\"", "'");
                     //
                     String sql2 = "Select count(*) as 'count' from " + DbController.TABLE_VOCABULARY + " Where " + DbController.ID_CATE + " = " + id;
                     Cursor cursor2 = dbController.rawQuery(sql2, null);

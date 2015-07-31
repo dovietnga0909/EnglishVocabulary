@@ -255,7 +255,6 @@ public class HomeActivity extends Activity {
                         Log.d("NgaDV","https://play.google.com/store/apps/developer?id=Vareco+Mobile");
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/developer?id=" + nameAccCompany)));
                     }
-//                    Intent intent = IntentUt
                 }
             }
         });
@@ -449,7 +448,9 @@ public class HomeActivity extends Activity {
                         break;
                     case R.id.add:
                         if (dText.getText().toString().trim().length() > 0) {
-                            int result = topic.insert(topic.maxId() + 1, dText.getText().toString());
+                            String name = dText.getText().toString();
+                            name = name.replace("'", "\"");
+                            int result = topic.insert(topic.maxId() + 1, name);
                             if (result == Topic.INSERT_SUCCESS) {
                                 if (alertDialog.isShowing())
                                     alertDialog.dismiss();
@@ -575,7 +576,9 @@ public class HomeActivity extends Activity {
                         break;
                     case R.id.add:
                         if (dText.getText().toString().trim().length() > 0) {
-                            int result = topic.rename(t, dText.getText().toString());
+                            String name = dText.getText().toString();
+                            name = name.replace("'", "\"");
+                            int result = topic.rename(t, name);
                             if (result == Topic.EDIT_SUCCESS) {
                                 testSyncCate();
                                 testSyncVoca();

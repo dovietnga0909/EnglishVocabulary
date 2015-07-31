@@ -28,6 +28,7 @@ import itpsoft.englishvocabulary.adapter.VocabularyAdapter;
 import itpsoft.englishvocabulary.models.Vocabulary;
 import itpsoft.englishvocabulary.ultils.AccentRemover;
 import itpsoft.englishvocabulary.ultils.Keyboard;
+import itpsoft.englishvocabulary.ultils.Log;
 import itpsoft.englishvocabulary.ultils.SpeakEnglish;
 
 
@@ -167,6 +168,8 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
 
                 String en = edtEnglish.getText().toString();
                 String vi = edtVietnamese.getText().toString();
+                en = en.replace("'", "\"");
+                vi = vi.replace("'", "\"");
 
                 if (validate()) {
                     int result = vocabulary.addVocabulary(vocabulary.maxId() + 1, idTopic, en, vi);
@@ -204,6 +207,8 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
             public void onClick(View view) {
                 String en = edtEnglish.getText().toString();
                 String vi = edtVietnamese.getText().toString();
+                en = en.replace("'", "\"");
+                vi = vi.replace("'", "\"");
                 if(validate()){
                     int result = vocabulary.updateVocabulary(idVoca, en, vi);
                     newAction = true;

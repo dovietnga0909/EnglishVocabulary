@@ -131,6 +131,9 @@ public class Vocabulary{
                     String vietnamese = cursor.getString(cursor.getColumnIndex(DbController.VIETNAMESE));
                     String status_sync = cursor.getString(cursor.getColumnIndex(DbController.VOCABULARY_STATUS));
 
+                    english = english.replace("\"", "'");
+                    vietnamese = vietnamese.replace("\"", "'");
+
                     listVocabulary.add(new Vocabulary(id, cateId, english, vietnamese, status_sync));
                 } while (cursor.moveToNext());
             }
