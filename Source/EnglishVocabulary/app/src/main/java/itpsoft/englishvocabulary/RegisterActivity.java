@@ -61,8 +61,8 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
         username        = edtUsername.getText().toString().trim();
         password        = edtPassword.getText().toString().trim();
         confirmPassword = edtConfirmPassword.getText().toString().trim();
-        boolean ptUsername = Pattern.compile("^[A-Za-z0-9]{6,30}$").matcher(username).matches();
-        boolean ptPassword = Pattern.compile("^[A-Za-z0-9]{6,30}$").matcher(password).matches();
+        boolean ptUsername = Pattern.compile("^[A-Za-z0-9]{4,30}$").matcher(username).matches();
+        boolean ptPassword = Pattern.compile("^[A-Za-z0-9]{4,30}$").matcher(password).matches();
 
 //        Log.d("NgaDV","ptUsername" + ptUsername);
 //        Log.d("NgaDV","ptPassword" + ptPassword);
@@ -70,49 +70,57 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
         if(fullname.equals("")){
             Log.d("NgaDV", fullname);
             edtFullname.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
-            Toast.makeText(this, getResources().getString(R.string.alert_empty), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, getResources().getString(R.string.alert_empty), Toast.LENGTH_SHORT).show();
             edtFullname.requestFocus();
             validate = false;
+            edtFullname.setError(getResources().getString(R.string.alert_empty));
         }else if(fullname.length() > 30){
             Log.d("NgaDV", fullname);
             edtFullname.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
-            Toast.makeText(this, getResources().getString(R.string.alert_fullname), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, getResources().getString(R.string.alert_fullname), Toast.LENGTH_SHORT).show();
+            edtFullname.setError(getResources().getString(R.string.alert_fullname));
             edtFullname.requestFocus();
             validate = false;
         }else if (username.equals("")){
             Log.d("NgaDV",username);
             edtUsername.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
-            Toast.makeText(this, getResources().getString(R.string.alert_empty), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, getResources().getString(R.string.alert_empty), Toast.LENGTH_SHORT).show();
             edtUsername.requestFocus();
             validate = false;
+            edtUsername.setError(getResources().getString(R.string.alert_empty));
         }else if(!ptUsername){
             Log.d("NgaDV", "ptUsername: "+ptUsername);
             edtUsername.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
-            Toast.makeText(this, getResources().getString(R.string.alert_format), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, getResources().getString(R.string.alert_format), Toast.LENGTH_SHORT).show();
             edtUsername.requestFocus();
+            edtUsername.setError(getResources().getString(R.string.alert_format));
             validate = false;
         }else if (password.equals("")){
-            Log.d("NgaDV",password);
+            Log.d("NgaDV", password);
             edtPassword.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
-            Toast.makeText(this, getResources().getString(R.string.alert_empty), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, getResources().getString(R.string.alert_empty), Toast.LENGTH_SHORT).show();
             edtPassword.requestFocus();
             validate = false;
+            edtPassword.setError(getResources().getString(R.string.alert_empty));
         }else if(!ptPassword){
             Log.d("NgaDV", "ptPassword: "+ptPassword);
             edtPassword.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
-            Toast.makeText(this, getResources().getString(R.string.alert_format), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, getResources().getString(R.string.alert_format), Toast.LENGTH_SHORT).show();
             edtPassword.requestFocus();
+            edtPassword.setError(getResources().getString(R.string.alert_format));
             validate = false;
         }else if (confirmPassword.equals("")){
-            Log.d("NgaDV",confirmPassword);
+            Log.d("NgaDV", confirmPassword);
             edtConfirmPassword.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
-            Toast.makeText(this, getResources().getString(R.string.alert_empty), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, getResources().getString(R.string.alert_empty), Toast.LENGTH_SHORT).show();
             edtConfirmPassword.requestFocus();;
             validate = false;
+            edtConfirmPassword.setError(getResources().getString(R.string.alert_empty));
         }else if (!confirmPassword.equals(password)){
             Log.d("NgaDV",confirmPassword);
             edtConfirmPassword.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
-            Toast.makeText(this, getResources().getString(R.string.alert_pass_unequal_confirm), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, getResources().getString(R.string.alert_pass_unequal_confirm), Toast.LENGTH_SHORT).show();
+            edtConfirmPassword.setError(getResources().getString(R.string.alert_pass_unequal_confirm));
             edtConfirmPassword.requestFocus();
             validate = false;
         }else {

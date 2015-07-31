@@ -125,13 +125,15 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         password = edtPassword.getText().toString().trim();
         if (username.equals("")){
             edtUsername.startAnimation(AnimationUtils.loadAnimation(this,R.anim.shake));
-            Toast.makeText(this,getResources().getString(R.string.alert_empty),Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this,getResources().getString(R.string.alert_empty),Toast.LENGTH_SHORT).show();
             edtUsername.requestFocus();
             validate = false;
+            edtUsername.setError(getResources().getString(R.string.alert_empty));
         }else if (password.equals("")){
             edtPassword.startAnimation(AnimationUtils.loadAnimation(this,R.anim.shake));
-            Toast.makeText(this,getResources().getString(R.string.alert_empty),Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this,getResources().getString(R.string.alert_empty),Toast.LENGTH_SHORT).show();
             edtPassword.requestFocus();
+            edtPassword.setError(getResources().getString(R.string.alert_empty));
             validate = false;
         }else {
             validate = true;

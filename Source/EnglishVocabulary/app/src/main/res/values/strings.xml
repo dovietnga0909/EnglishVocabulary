@@ -67,10 +67,10 @@
     <string name="member2">Nguyễn Thanh Tú</string>
 
     <string name="feed_back">Phản hồi</string>
-    <string name="name_company">Viện Công nghệ thông tin - ĐHQGHN</string>
+    <string name="name_company">Trung tâm phát triển phần mềm ITPSOFT</string>
     <string name="address_company">144 Xuân Thủy, Cầu Giấy, Hà Nội</string>
     <string name="phone_company">04 3754 6732 Hotline: 0963 72 65 65</string>
-    <string name="website_company">itplus-academy.edu.vn</string>
+    <string name="website_company"><u>itplus-academy.edu.vn</u></string>
     <string name="email_company">info@itplus-academy.edu.vn</string>
     <string name="copyright_company">Copyright © 2011 All Rights Reserved.</string>
 

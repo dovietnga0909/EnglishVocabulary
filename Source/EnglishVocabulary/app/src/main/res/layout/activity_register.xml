@@ -116,10 +116,8 @@
             android:text="@string/register"
             android:textColor="@color/logo"
             android:textSize="16sp"
-            android:textStyle="bold"
             android:typeface="serif"
             android:background="@drawable/btn_register_selector"
-
             android:layout_marginTop="30dp"
             android:layout_marginBottom="20dp"/>
 

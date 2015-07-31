@@ -111,8 +111,9 @@ public class FeedBackActivity extends Activity implements View.OnClickListener {
                 sendFeedBack();
             }else {
                 edtContentFeedBack.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
-                Toast.makeText(this, getResources().getString(R.string.alert_empty), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, getResources().getString(R.string.alert_empty), Toast.LENGTH_SHORT).show();
                 edtContentFeedBack.requestFocus();
+                edtContentFeedBack.setError(getResources().getString(R.string.alert_empty));
             }
         }
     }
