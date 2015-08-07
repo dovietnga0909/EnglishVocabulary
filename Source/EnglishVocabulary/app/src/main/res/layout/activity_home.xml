@@ -34,7 +34,7 @@
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:singleLine="true"
-            android:text="@string/ev"
+            android:text="@string/list_topic"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -69,7 +69,15 @@
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:divider="@null"
-                android:dividerHeight="0dp" />
+                android:dividerHeight="0dp"
+                android:visibility="gone"/>
+            <GridView
+                android:id="@+id/gvTopic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:numColumns="2"></GridView>
         </LinearLayout>
 
         <LinearLayout

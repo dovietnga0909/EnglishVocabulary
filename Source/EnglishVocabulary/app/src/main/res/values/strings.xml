@@ -75,8 +75,11 @@
     <string name="copyright_company">Copyright © 2011 All Rights Reserved.</string>
 
     <string name="send">Góp ý</string>
+    <string name="fail">Thất bại</string>
+    <string name="test">Luyện tập</string>
     <!-- TuNT-->
     <string name="ev">Từ vựng tiếng Anh</string>
+    <string name="list_topic">Danh sách chủ đề</string>
     <string name="sync">Đồng bộ</string>
     <string name="reminds_study_time">Nhắc nhở t.g học</string>
     <string name="register">Đăng ký</string>
@@ -153,6 +156,7 @@
     <string name="api_register">http://myapp.freezoy.com/Vocabulary/register.php</string>
     <string name="api_login">http://myapp.freezoy.com/Vocabulary/login.php</string>
     <string name="api_feedback">http://myapp.freezoy.com/Vocabulary/feedback.php</string>
+    <string name="number_vocabulary">Số từ vựng: "</string>
 
     <!-- AcctentRemover -->
     <string-array name="special_characters">

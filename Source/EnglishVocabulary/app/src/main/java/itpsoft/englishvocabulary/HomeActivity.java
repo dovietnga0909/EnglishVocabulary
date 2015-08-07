@@ -14,17 +14,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -42,7 +42,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import itpsoft.englishvocabulary.adapter.MenuAdapter;
-import itpsoft.englishvocabulary.adapter.TopicAdapter;
+import itpsoft.englishvocabulary.adapter.TopicGridAdapter;
 import itpsoft.englishvocabulary.alarm.AlarmReceiver;
 import itpsoft.englishvocabulary.databases.DbController;
 import itpsoft.englishvocabulary.models.MenuItem;
@@ -63,10 +63,9 @@ public class HomeActivity extends Activity {
     private Resources resources;
     private float offset;
     private boolean flipped;
-    private ListView listMenu, listTopic;
+    private ListView listMenu;
     private ArrayList<Object> arrMenu;
     private MenuAdapter menuAdapter;
-    private TopicAdapter topicAdapter;
     private ImageView add;
     private AlertDialog alertDialog;
     private Rect displayRectangle;
@@ -92,6 +91,10 @@ public class HomeActivity extends Activity {
     private int years_now;
     private AlertDialog aDialog;
     private boolean logout = false;
+
+    private TopicGridAdapter topicGridAdapter;
+    private GridView itemTopic;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -259,32 +262,34 @@ public class HomeActivity extends Activity {
             }
         });
         //End menu
-        //Topic
-        listTopic = (ListView) findViewById(R.id.listTopic);
-        topicAdapter = new TopicAdapter(HomeActivity.this, topic);
-        listTopic.setAdapter(topicAdapter);
-        listTopic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // get height and width one item
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+
+
+        //GridTopic
+        topicGridAdapter = new TopicGridAdapter(HomeActivity.this,topic);
+        itemTopic = (GridView)findViewById(R.id.gvTopic);
+        if ((metrics.widthPixels / metrics.scaledDensity) < 400) {
+            itemTopic.setNumColumns(2);
+        } else if ((metrics.widthPixels / metrics.scaledDensity) > 600) {
+            itemTopic.setNumColumns(4);
+        } else {
+            itemTopic.setNumColumns(3);
+        }
+        itemTopic.setAdapter(topicGridAdapter);
+        itemTopic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Topic itemSelect = (Topic) adapterView.getAdapter().getItem(i);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Topic topic = (Topic) parent.getAdapter().getItem(position);
                 Intent intent = new Intent();
-                intent.setClass(getApplicationContext(), VocabularyActivity.class);
-                intent.putExtra("topic_id", itemSelect.getId());
-                intent.putExtra("topic_name", itemSelect.getName());
-                startActivity(intent);
-                overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+                intent.setClass(HomeActivity.this, VocabularyActivity.class);
+                intent.putExtra("topic_id", topic.getId());
+                intent.putExtra("topic_name", topic.getName());
+                HomeActivity.this.startActivity(intent);
+                ((Activity) HomeActivity.this).overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
 
             }
         });
-        listTopic.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Topic topic = (Topic) adapterView.getAdapter().getItem(i);
-                createDialogTopic(topic);
-                return true;
-            }
-        });
-        //End topic
         //Button Add
         add = (ImageView) findViewById(R.id.add);
         add.setOnClickListener(new View.OnClickListener() {
@@ -454,8 +459,9 @@ public class HomeActivity extends Activity {
                             if (result == Topic.INSERT_SUCCESS) {
                                 if (alertDialog.isShowing())
                                     alertDialog.dismiss();
-                                topicAdapter.notifyDataSetChanged();
-                                listTopic.setSelection(topicAdapter.getCount() - 1);
+                                topicGridAdapter.notifyDataSetChanged();
+//                                listTopic.setSelection(topicAdapter.getCount() - 1);
+                                itemTopic.setSelection(topicGridAdapter.getCount() - 1);
                                 Toast.makeText(HomeActivity.this, resources.getString(R.string.added), Toast.LENGTH_SHORT).show();
                             } else if (result == Topic.INSERT_EXITS) {
                                 Toast.makeText(HomeActivity.this, resources.getString(R.string.exits), Toast.LENGTH_SHORT).show();
@@ -496,180 +502,50 @@ public class HomeActivity extends Activity {
     }
 
     private void createDialogTopic(final Topic t) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-        builder.setCancelable(true);
-        View dialogView = LayoutInflater.from(HomeActivity.this).inflate(R.layout.dialog_menu, null, false);
-        dialogView.setMinimumWidth((int) (displayRectangle.width() * 0.9f));
-
-        builder.setView(dialogView);
-        alertDialog = builder.create();
-        alertDialog.setCancelable(true);
-        alertDialog.setCanceledOnTouchOutside(false);
-        alertDialog.show();
-
-        ListView dList = (ListView) dialogView.findViewById(R.id.menu);
-        ImageView dBack = (ImageView) dialogView.findViewById(R.id.back);
-        TextView dTitle = (TextView) dialogView.findViewById(R.id.title);
-
-        dTitle.setText(t.getName());
-        dBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (alertDialog.isShowing())
-                    alertDialog.dismiss();
-            }
-        });
-        String arr[] = {resources.getString(R.string.rename), resources.getString(R.string.delete)};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(HomeActivity.this, android.R.layout.simple_list_item_1, arr);
-        dList.setAdapter(adapter);
-        dList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (alertDialog.isShowing())
-                    alertDialog.dismiss();
-                switch (i) {
-                    case 0:
-                        createDialogRenameTopic(t);
-                        break;
-                    case 1:
-                        createDialogDeleteTopic(t);
-                        break;
-                }
-            }
-        });
+//        PopupMenu popupMenu = new PopupMenu(HomeActivity.this,)
+//        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+//        builder.setCancelable(true);
+//        View dialogView = LayoutInflater.from(HomeActivity.this).inflate(R.layout.dialog_menu, null, false);
+//        dialogView.setMinimumWidth((int) (displayRectangle.width() * 0.9f));
+//
+//        builder.setView(dialogView);
+//        alertDialog = builder.create();
+//        alertDialog.setCancelable(true);
+//        alertDialog.setCanceledOnTouchOutside(false);
+//        alertDialog.show();
+//
+//        ListView dList = (ListView) dialogView.findViewById(R.id.menu);
+//        ImageView dBack = (ImageView) dialogView.findViewById(R.id.back);
+//        TextView dTitle = (TextView) dialogView.findViewById(R.id.title);
+//
+//        dTitle.setText(t.getName());
+//        dBack.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (alertDialog.isShowing())
+//                    alertDialog.dismiss();
+//            }
+//        });
+//        String arr[] = {resources.getString(R.string.rename), resources.getString(R.string.delete)};
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(HomeActivity.this, android.R.layout.simple_list_item_1, arr);
+//        dList.setAdapter(adapter);
+//        dList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                if (alertDialog.isShowing())
+//                    alertDialog.dismiss();
+//                switch (i) {
+//                    case 0:
+//                        createDialogRenameTopic(t);
+//                        break;
+//                    case 1:
+//                        createDialogDeleteTopic(t);
+//                        break;
+//                }
+//            }
+//        });
     }
 
-    private void createDialogRenameTopic(final Topic t) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-        builder.setCancelable(true);
-        View dialogView = LayoutInflater.from(HomeActivity.this).inflate(R.layout.dialog_add_topic, null, false);
-        dialogView.setMinimumWidth((int) (displayRectangle.width() * 0.9f));
-//                    dialogView.setMinimumHeight((int) (displayRectangle.height() * 0.9f));
-        builder.setView(dialogView);
-        alertDialog = builder.create();
-        alertDialog.setCancelable(true);
-        alertDialog.setCanceledOnTouchOutside(false);
-        alertDialog.show();
-
-        ImageView dBack = (ImageView) dialogView.findViewById(R.id.back);
-        TextView dTitle = (TextView) dialogView.findViewById(R.id.title);
-        final EditText dText = (EditText) dialogView.findViewById(R.id.text);
-        final ImageView dDelete = (ImageView) dialogView.findViewById(R.id.delete);
-        Button dEdit = (Button) dialogView.findViewById(R.id.add);
-
-        dTitle.setText(resources.getString(R.string.rename));
-        dEdit.setText(resources.getString(R.string.save));
-        dText.setHint(resources.getString(R.string.insert_new_name));
-        dText.append(t.getName());
-        dText.setEllipsize(TextUtils.TruncateAt.END);
-        View.OnClickListener dOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int id = view.getId();
-                switch (id) {
-                    case R.id.delete:
-                        dText.setText("");
-                        break;
-                    case R.id.back:
-                        if (alertDialog.isShowing())
-                            alertDialog.dismiss();
-                        break;
-                    case R.id.add:
-                        if (dText.getText().toString().trim().length() > 0) {
-                            String name = dText.getText().toString();
-                            name = name.replace("'", "\"");
-                            int result = topic.rename(t, name);
-                            if (result == Topic.EDIT_SUCCESS) {
-                                testSyncCate();
-                                testSyncVoca();
-                                if (alertDialog.isShowing())
-                                    alertDialog.dismiss();
-                                topicAdapter.notifyDataSetChanged();
-                                Toast.makeText(HomeActivity.this, resources.getString(R.string.edited), Toast.LENGTH_SHORT).show();
-                            } else if (result == Topic.EDIT_SAME) {
-                                Toast.makeText(HomeActivity.this, resources.getString(R.string.same), Toast.LENGTH_SHORT).show();
-                            } else if (result == Topic.EDIT_EXITS) {
-                                Toast.makeText(HomeActivity.this, resources.getString(R.string.exits), Toast.LENGTH_SHORT).show();
-                            } else if (result == Topic.EDIT_FALSE) {
-                                Toast.makeText(HomeActivity.this, resources.getString(R.string.error), Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Toast.makeText(HomeActivity.this, resources.getString(R.string.name_empty), Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                }
-            }
-        };
-        dDelete.setOnClickListener(dOnClickListener);
-        dBack.setOnClickListener(dOnClickListener);
-        dEdit.setOnClickListener(dOnClickListener);
-        Keyboard.showKeyboardDialog(alertDialog);
-        dText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!dText.getText().toString().trim().equals("")) {
-                    dDelete.setVisibility(View.VISIBLE);
-                } else {
-                    dDelete.setVisibility(View.INVISIBLE);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-    }
-
-    private void createDialogDeleteTopic(final Topic t) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-        builder.setCancelable(true);
-        View dialogView = LayoutInflater.from(HomeActivity.this).inflate(R.layout.dialog_confirm_delete, null, false);
-        dialogView.setMinimumWidth((int) (displayRectangle.width() * 0.9f));
-        builder.setView(dialogView);
-        alertDialog = builder.create();
-        alertDialog.setCancelable(true);
-        alertDialog.setCanceledOnTouchOutside(false);
-        alertDialog.show();
-
-        ImageView dBack = (ImageView) dialogView.findViewById(R.id.back);
-        TextView dContent = (TextView) dialogView.findViewById(R.id.content);
-        Button dDelete = (Button) dialogView.findViewById(R.id.delete);
-
-        View.OnClickListener dOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int id = view.getId();
-                switch (id) {
-                    case R.id.back:
-                        if (alertDialog.isShowing())
-                            alertDialog.dismiss();
-                        break;
-                    case R.id.delete:
-                        if (alertDialog.isShowing())
-                            alertDialog.dismiss();
-                        int result = topic.delete(t);
-                        if (result == Topic.DELETE_SUCCESS) {
-                            topicAdapter.notifyDataSetChanged();
-                            testSyncCate();
-                            testSyncVoca();
-                            Toast.makeText(HomeActivity.this, resources.getString(R.string.deleted), Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(HomeActivity.this, resources.getString(R.string.error), Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                }
-            }
-        };
-        dDelete.setOnClickListener(dOnClickListener);
-        dBack.setOnClickListener(dOnClickListener);
-        dContent.setText(resources.getString(R.string.really_delete) + " " + t.getName() + " " + resources.getString(R.string.warning));
-    }
 
     private void startAlarm(long time) {
         SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_REMIN_TIME, time);
@@ -683,7 +559,7 @@ public class HomeActivity extends Activity {
     }
 
     private void dateSetChange() {
-        topicAdapter.notifyDataSetChanged();
+        topicGridAdapter.notifyDataSetChanged();
         long reminTime = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_REMIN_TIME, (long) -1);
         if (reminTime != -1) {
             // lay gio
@@ -713,7 +589,7 @@ public class HomeActivity extends Activity {
         ((MenuItem) arrMenu.get(2)).setValue(hour + ":" + minute);
     }
 
-    private void testSyncVoca() {
+    public void testSyncVoca() {
 
         Log.d("LuanDT", "testSyncVoca");
         String[] id_delete = new String[0];
@@ -728,7 +604,6 @@ public class HomeActivity extends Activity {
         if (!idUpdate.equals("")) {
             id_update = idUpdate.split(",");
         }
-
         ArrayList<String> listIdDelete = new ArrayList<String>(Arrays.asList(id_delete));
         ArrayList<String> listIdUpdate = new ArrayList<String>(Arrays.asList(id_update));
 
@@ -758,7 +633,7 @@ public class HomeActivity extends Activity {
 
     }
 
-    private void testSyncCate() {
+    public void testSyncCate() {
 
         Log.d("LuanDT", "testSyncCate");
         String[] id_delete = new String[0];

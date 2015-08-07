@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:layout_margin="5dp"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/book1"
+            android:orientation="vertical" >
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_weight="1"
+                    />
+
+                <ImageView
+                    android:id="@+id/imgOption"
+                    android:layout_width="43dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_more_vert_white_48dp"
+                    android:layout_gravity="right"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/txtNameTopic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Story Note"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:layout_weight="1"
+                    android:padding="10dp"/>
+
+                <ImageView
+                    android:id="@+id/imgTest"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_paractice"
+                    android:visibility="gone"/>
+
+
+                <TextView
+                    android:id="@+id/txtNumberVocabulary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:text="@string/number_vocabulary"
+                    android:textColor="@android:color/white"
+                    android:gravity="right"
+                    android:textSize="10sp"
+                    android:paddingRight="8dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>
