@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="250dp"
     android:layout_margin="5dp"
     android:orientation="vertical" >
 
@@ -33,14 +33,16 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:layout_weight="1"
-                    />
+                    android:layout_weight="1" />
 
                 <ImageView
                     android:id="@+id/imgOption"
-                    android:layout_width="43dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="5dp"
                     android:src="@drawable/ic_more_vert_white_48dp"
                     android:layout_gravity="right"/>
             </LinearLayout>
@@ -54,14 +56,22 @@
                 android:gravity="center">
 
                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/topic_name"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:paddingLeft="6dp"/>
+
+                <TextView
                     android:id="@+id/txtNameTopic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Story Note"
+                    android:text="story note"
                     android:textColor="@android:color/white"
                     android:textSize="18sp"
                     android:layout_weight="1"
-                    android:padding="10dp"/>
+                    android:padding="6dp"/>
 
                 <ImageView
                     android:id="@+id/imgTest"

@@ -240,22 +240,16 @@ public class HomeActivity extends Activity {
                         finish();
                     }
                 } else if (i == 8){
-                    Log.d("NgaDV","8");
                     Intent intent = new Intent(HomeActivity.this,AboutActivity.class);
                     startActivity(intent);
                 } else if (i == 9){
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com"));
                     startActivity(browserIntent);
-                    Log.d("NgaDV","9");
                 } else if (i == 10){
-                    Log.d("NgaDV","10");
-
                     final String nameAccCompany = "Vareco+Mobile"; // getPackageName() from Context or Activity object
                     try {
-                        Log.d("NgaDV","market://developer?id=Vareco+Mobile");
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://developer?id="+ nameAccCompany)));
                     } catch (android.content.ActivityNotFoundException anfe) {
-                        Log.d("NgaDV","https://play.google.com/store/apps/developer?id=Vareco+Mobile");
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/developer?id=" + nameAccCompany)));
                     }
                 }
@@ -264,7 +258,6 @@ public class HomeActivity extends Activity {
         //End menu
         // get height and width one item
         DisplayMetrics metrics = getResources().getDisplayMetrics();
-
 
         //GridTopic
         topicGridAdapter = new TopicGridAdapter(HomeActivity.this,topic);
@@ -500,52 +493,6 @@ public class HomeActivity extends Activity {
             }
         });
     }
-
-    private void createDialogTopic(final Topic t) {
-//        PopupMenu popupMenu = new PopupMenu(HomeActivity.this,)
-//        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-//        builder.setCancelable(true);
-//        View dialogView = LayoutInflater.from(HomeActivity.this).inflate(R.layout.dialog_menu, null, false);
-//        dialogView.setMinimumWidth((int) (displayRectangle.width() * 0.9f));
-//
-//        builder.setView(dialogView);
-//        alertDialog = builder.create();
-//        alertDialog.setCancelable(true);
-//        alertDialog.setCanceledOnTouchOutside(false);
-//        alertDialog.show();
-//
-//        ListView dList = (ListView) dialogView.findViewById(R.id.menu);
-//        ImageView dBack = (ImageView) dialogView.findViewById(R.id.back);
-//        TextView dTitle = (TextView) dialogView.findViewById(R.id.title);
-//
-//        dTitle.setText(t.getName());
-//        dBack.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (alertDialog.isShowing())
-//                    alertDialog.dismiss();
-//            }
-//        });
-//        String arr[] = {resources.getString(R.string.rename), resources.getString(R.string.delete)};
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(HomeActivity.this, android.R.layout.simple_list_item_1, arr);
-//        dList.setAdapter(adapter);
-//        dList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                if (alertDialog.isShowing())
-//                    alertDialog.dismiss();
-//                switch (i) {
-//                    case 0:
-//                        createDialogRenameTopic(t);
-//                        break;
-//                    case 1:
-//                        createDialogDeleteTopic(t);
-//                        break;
-//                }
-//            }
-//        });
-    }
-
 
     private void startAlarm(long time) {
         SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_REMIN_TIME, time);

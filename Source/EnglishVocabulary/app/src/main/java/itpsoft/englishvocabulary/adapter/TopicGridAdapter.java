@@ -106,7 +106,7 @@ public class TopicGridAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 final PopupMenu popupMenu = new PopupMenu(context,viewHolder.imgOption);
-                popupMenu.getMenuInflater().inflate(R.menu.item_option,popupMenu.getMenu());
+                popupMenu.getMenuInflater().inflate(R.menu.item_option, popupMenu.getMenu());
                 popupMenu.show();
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
@@ -114,7 +114,6 @@ public class TopicGridAdapter extends BaseAdapter {
                         switch (itemMenu.getItemId()){
                             case R.id.action_test:
                                 if (item.getNumber() > 0) {
-                                    popupMenu.dismiss();
                                     Intent intent = new Intent();
                                     intent.setClass(context, TestActivity.class);
                                     intent.putExtra("topic_id", item.getId());
@@ -124,6 +123,7 @@ public class TopicGridAdapter extends BaseAdapter {
                                 } else {
                                     Toast.makeText(context, context.getResources().getString(R.string.topic_empty), Toast.LENGTH_SHORT).show();
                                 }
+                                break;
                             case R.id.action_update:
                                 createDialogRenameTopic(getItem(i));
                                 break;

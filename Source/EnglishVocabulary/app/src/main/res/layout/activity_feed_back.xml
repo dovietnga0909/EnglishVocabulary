@@ -29,9 +29,9 @@
         android:layout_height="match_parent"
         android:id="@+id/scrollView"
         android:paddingTop="10dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Cong hoa xa hoi chu nghia viet nam Cong hoa xa hoi chu nghia viet nam Cong hoa xa hoi chu nghia viet nam Cong hoa xa hoi chu nghia viet nam Cong hoa xa hoi chu nghia viet nam"/>
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Cong hoa xa hoi chu nghia viet nam Cong hoa xa hoi chu nghia viet nam Cong hoa xa hoi chu nghia viet nam Cong hoa xa hoi chu nghia viet nam Cong hoa xa hoi chu nghia viet nam"/>-->
     </ScrollView>
 </LinearLayout>

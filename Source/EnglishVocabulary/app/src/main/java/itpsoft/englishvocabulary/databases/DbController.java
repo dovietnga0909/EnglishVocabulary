@@ -68,7 +68,7 @@ public class DbController extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_VOCABULARY);
         Log.d("LuanDT", "create database");
 
-//        insertDefaultCategories(db);
+        insertDefaultCategories(db);
 //        insertDefaultVocabulary(db);
     }
 
@@ -90,26 +90,7 @@ public class DbController extends SQLiteOpenHelper {
         if (db != null) {
             ContentValues values = new ContentValues();
             values.put(ID_CATE, 1);
-            values.put(ID_SERVER_CATE, 1);
-            values.put(CATEGORIES_NAME, "Animals");
-            values.put(CATEGORIES_STATUS, "1");
-            db.insert(TABLE_CATEGORIES, null, values);
-
-            values.put(ID_CATE, 2);
-            values.put(ID_SERVER_CATE, 2);
-            values.put(CATEGORIES_NAME, "Mnimals 2");
-            values.put(CATEGORIES_STATUS, "1");
-            db.insert(TABLE_CATEGORIES, null, values);
-
-            values.put(ID_CATE, 3);
-            values.put(ID_SERVER_CATE, 3);
-            values.put(CATEGORIES_NAME, "Animals");
-            values.put(CATEGORIES_STATUS, "1");
-            db.insert(TABLE_CATEGORIES, null, values);
-
-            values.put(ID_CATE, 4);
-            values.put(ID_SERVER_CATE, "");
-            values.put(CATEGORIES_NAME, "Mnimals 2");
+            values.put(CATEGORIES_NAME, "Family");
             values.put(CATEGORIES_STATUS, "0");
             db.insert(TABLE_CATEGORIES, null, values);
 

@@ -95,8 +95,12 @@ public class Topic {
                             number = cursor2.getInt(cursor2.getColumnIndex("count"));
                         } while (cursor2.moveToNext());
                     }
+                    String nameconvert = "";
+                    String kytudau = name.substring(0, 1);
+                    String kytuconlai = name.substring(1);
+                    nameconvert += kytudau.toUpperCase() + kytuconlai + " ";
 
-                    data.add(new Topic(color.getColor(name), id, name, number));
+                    data.add(new Topic(color.getColor(name), id, nameconvert, number));
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
