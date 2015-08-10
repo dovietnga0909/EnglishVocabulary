@@ -46,6 +46,7 @@
             android:layout_gravity="right"
             android:padding="18dp"
             android:src="@drawable/ic_add"
+            android:visibility="invisible"
             android:background="@drawable/drawer_selector"
             android:scaleType="centerInside" />
     </LinearLayout>

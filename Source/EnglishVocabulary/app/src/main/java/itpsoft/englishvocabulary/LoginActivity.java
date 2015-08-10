@@ -65,6 +65,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         params.add("username", username);
         params.add("password", password);
 
+        Log.d("LuanDT", "params: " + params);
+
         client.post(this, getResources().getString(R.string.api_login), params, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
@@ -76,7 +78,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.d("NgaDV", "http onsuccess");
+                Log.d("LuanDT", "response.toString(): " + response.toString());
                 try {
                     JSONObject json = new JSONObject(response.toString());
                     Log.d("NgaDV","json : " + json);
@@ -103,17 +105,22 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.d("NgaDV","login to catch");
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers,
                                   Throwable throwable, JSONObject errorResponse) {
-                Log.d("NgaDV", "http onFailure");
+                Log.d("LuanDT", "http onFailure");
                 progressDialog.dismiss();
                 Toast.makeText(LoginActivity.this, getResources().getString(R.string.internet_false), Toast.LENGTH_SHORT).show();
                 super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.d("LuanDT", "http onFailure Throwable: " + responseString);
+                super.onFailure(statusCode, headers, responseString, throwable);
             }
         });
 
