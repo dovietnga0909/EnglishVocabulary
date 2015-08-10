@@ -275,7 +275,7 @@ public class TopicGridAdapter extends BaseAdapter {
         };
         dDelete.setOnClickListener(dOnClickListener);
         dBack.setOnClickListener(dOnClickListener);
-        dContent.setText(context.getString(R.string.really_delete) + " " + t.getName() + " " + context.getString(R.string.warning));
+        dContent.setText(context.getString(R.string.really_delete) + " " +t.getName() + " " + context.getString(R.string.warning));
     }
 
     private class ViewHolder {

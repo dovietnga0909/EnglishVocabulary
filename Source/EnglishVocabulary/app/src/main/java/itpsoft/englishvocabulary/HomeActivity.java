@@ -284,7 +284,7 @@ public class HomeActivity extends Activity {
             }
         });
         //Button Add
-        add = (ImageView) findViewById(R.id.add);
+        add = (ImageView) findViewById(R.id.imgAddVoca);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

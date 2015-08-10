@@ -103,6 +103,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Log.d("NgaDV","login to catch");
                 }
             }
 
