@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-import java.util.Objects;
+import itpsoft.englishvocabulary.ultils.AdmodBanner;
 
 /**
  * Created by Do on 28/07/2015.
@@ -19,15 +19,17 @@ import java.util.Objects;
 public class AboutActivity extends Activity implements View.OnClickListener {
     private Button btnFeedBack;
     private TextView txtWebsite;
+    private AdView adView;
+    private AdmodBanner admodBanner;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        AdView adView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+        adView = (AdView) findViewById(R.id.adView);
+        admodBanner = new AdmodBanner(adView);
 
         btnFeedBack = (Button) findViewById(R.id.btnFeedBack);
         txtWebsite = (TextView) findViewById(R.id.tvWebsite);

@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import itpsoft.englishvocabulary.adapter.VocabularyAdapter;
 import itpsoft.englishvocabulary.models.Vocabulary;
 import itpsoft.englishvocabulary.ultils.AccentRemover;
+import itpsoft.englishvocabulary.ultils.AdmodBanner;
 import itpsoft.englishvocabulary.ultils.Keyboard;
 import itpsoft.englishvocabulary.ultils.SpeakEnglish;
 
@@ -56,7 +57,8 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
     private boolean newAction = false;
 
     private AdView adView;
-    private AdRequest adRequest;
+    private AdmodBanner admodBanner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +66,7 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
 
         //Admod
         adView = (AdView) findViewById(R.id.adView);
-        adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+        admodBanner = new AdmodBanner(adView);
 
         textToSpeech = new TextToSpeech(VocabularyActivity.this, this);
         speakEnglish = new SpeakEnglish(VocabularyActivity.this, textToSpeech);

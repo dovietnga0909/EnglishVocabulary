@@ -32,6 +32,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.google.ads.AdSize;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -54,6 +55,7 @@ import itpsoft.englishvocabulary.models.MenuItem;
 import itpsoft.englishvocabulary.models.Question;
 import itpsoft.englishvocabulary.models.Topic;
 import itpsoft.englishvocabulary.models.Vocabulary;
+import itpsoft.englishvocabulary.ultils.AdmodBanner;
 import itpsoft.englishvocabulary.ultils.Keyboard;
 import itpsoft.englishvocabulary.ultils.Log;
 import itpsoft.englishvocabulary.ultils.SPUtil;
@@ -107,7 +109,7 @@ public class HomeActivity extends Activity {
     private boolean startedVocabulary = false;
 
     private AdView adView;
-    private AdRequest adRequest;
+    private AdmodBanner admodBanner;
     private InterstitialAd mInterstitialAd;
 
 
@@ -146,8 +148,7 @@ public class HomeActivity extends Activity {
 
         //Admod
         adView = (AdView) findViewById(R.id.adView);
-        adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+        admodBanner = new AdmodBanner(adView);
 
         ///start up
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);

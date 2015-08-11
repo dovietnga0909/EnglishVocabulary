@@ -18,6 +18,7 @@ import com.loopj.android.http.RequestParams;
 import org.apache.http.Header;
 import org.json.JSONObject;
 
+import itpsoft.englishvocabulary.ultils.AdmodBanner;
 import itpsoft.englishvocabulary.ultils.Log;
 
 /**
@@ -31,7 +32,7 @@ public class FeedBackActivity extends Activity implements View.OnClickListener {
     private String content;
 
     private AdView adView;
-    private AdRequest adRequest;
+    private AdmodBanner admodBanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +41,7 @@ public class FeedBackActivity extends Activity implements View.OnClickListener {
 
         //Admod
         adView = (AdView) findViewById(R.id.adView);
-        adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+        admodBanner = new AdmodBanner(adView);
         init();
     }
 
