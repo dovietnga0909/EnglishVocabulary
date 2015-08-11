@@ -22,13 +22,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import java.util.ArrayList;
 
 import itpsoft.englishvocabulary.adapter.VocabularyAdapter;
 import itpsoft.englishvocabulary.models.Vocabulary;
 import itpsoft.englishvocabulary.ultils.AccentRemover;
 import itpsoft.englishvocabulary.ultils.Keyboard;
-import itpsoft.englishvocabulary.ultils.Log;
 import itpsoft.englishvocabulary.ultils.SpeakEnglish;
 
 
@@ -53,10 +55,17 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
     private TextView txtTitle;
     private boolean newAction = false;
 
+    private AdView adView;
+    private AdRequest adRequest;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vocabulary);
+
+        //Admod
+        adView = (AdView) findViewById(R.id.adView);
+        adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        adView.loadAd(adRequest);
 
         textToSpeech = new TextToSpeech(VocabularyActivity.this, this);
         speakEnglish = new SpeakEnglish(VocabularyActivity.this, textToSpeech);

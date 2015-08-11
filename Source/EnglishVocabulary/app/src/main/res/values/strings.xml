@@ -417,4 +417,16 @@
         <item>U</item>
         <item>u</item>
     </string-array>
+
+    <string name="content_donate">Cảm ơn bạn đã sử dụng ứng dụng của chúng tôi!\n
+Nếu bạn có bất cứ thắc mắc hay ý kiến xây dựng nào, hãy chia sẻ nó với chúng tôi.\n
+Chúng tôi sẽ biến mọi ý kiến đó thành sự thật. :D\n
+        \n
+
+Nếu bạn thấy ứng dụng hay, hữu ích hãy chia sẻ nó vì nó miễn phí.\n
+
+Và vì là ứng dụng là miễn phí nên chúng tôi rất cảm ơn nếu thi thoảng bạn click quảng cáo,
+đó là tiền đề và động lực để chúng tôi phát triển những ứng dụng hay hơn nữa trong tương lai.\n
+Xin cảm ơn bạn.</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 </resources>

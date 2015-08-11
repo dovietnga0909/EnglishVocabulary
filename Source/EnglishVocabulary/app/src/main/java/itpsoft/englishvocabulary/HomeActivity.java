@@ -32,6 +32,9 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -95,6 +98,9 @@ public class HomeActivity extends Activity {
     private TopicGridAdapter topicGridAdapter;
     private GridView itemTopic;
 
+    private AdView adView;
+    private AdRequest adRequest;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +108,11 @@ public class HomeActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_home);
         vocabulary = new Vocabulary();
+
+        //Admod
+        adView = (AdView) findViewById(R.id.adView);
+        adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        adView.loadAd(adRequest);
 
         ///start up
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
