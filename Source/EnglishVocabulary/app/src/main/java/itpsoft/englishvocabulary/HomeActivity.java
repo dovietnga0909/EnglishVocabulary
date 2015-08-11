@@ -102,6 +102,9 @@ public class HomeActivity extends Activity {
 
     private AdapterView adapterView;
     private int positionItem = -1;
+    private int clickItemTopic = 1;
+    private boolean remind = false;
+    private boolean startedVocabulary = false;
 
     private AdView adView;
     private AdRequest adRequest;
@@ -128,8 +131,14 @@ public class HomeActivity extends Activity {
             public void onAdClosed() {
                 Log.d("LuanDT", "close popub---->load popbub khac");
                 requestNewInterstitial();
-                //start Vocabulary
-                startVocabulary(adapterView, positionItem);
+                if(remind){
+                    Log.d("LuanDT", "close popub createDialogRemind");
+                    createDialogRemind();
+                } else if (startedVocabulary) {
+                    //start Vocabulary
+                    Log.d("LuanDT", "close popub startVocabulary");
+                    startVocabulary(adapterView, positionItem);
+                }
                 super.onAdClosed();
             }
         });
@@ -256,7 +265,13 @@ public class HomeActivity extends Activity {
                     }
 
                 } else if (i == 3) {
-                    createDialogRemind();
+                    if(mInterstitialAd.isLoaded()){
+                        Log.d("LuanDT", "show popub");
+                        mInterstitialAd.show();
+                        remind = true;
+                    } else {
+                        createDialogRemind();
+                    }
                 } else if (i == 4) {
                     Question question = new Question(HomeActivity.this);
                     if(question.checkData()>=2) {
@@ -320,14 +335,22 @@ public class HomeActivity extends Activity {
                 adapterView = parent;
                 positionItem = position;
 
-                if(mInterstitialAd.isLoaded()){
-                    mInterstitialAd.show();
-                    Log.d("LuanDT", "show popub");
+                if(clickItemTopic == 2) {
+                    clickItemTopic = 1;
+                    if (mInterstitialAd.isLoaded()) {
+                        mInterstitialAd.show();
+                        startedVocabulary = true;
+                        Log.d("LuanDT", "show popub");
+                    } else {
+                        Log.d("LuanDT", "chua load xong ---> goi load lai");
+                        startVocabulary(parent, position);
+                    }
+
                 } else {
-                    Log.d("LuanDT", "chua load xong ---> goi load lai");
+                    Log.d("LuanDT", "chua duoc show popub");
+                    clickItemTopic = clickItemTopic + 1;
                     startVocabulary(parent, position);
                 }
-
             }
         });
         //Button Add
@@ -344,6 +367,7 @@ public class HomeActivity extends Activity {
     }
 
     private void startVocabulary(AdapterView adapterView, int position){
+        startedVocabulary = false;
         Topic topic = (Topic) adapterView.getAdapter().getItem(position);
         Intent intent = new Intent();
         intent.setClass(HomeActivity.this, VocabularyActivity.class);
@@ -379,6 +403,7 @@ public class HomeActivity extends Activity {
     }
 
     private void createDialogRemind() {
+        remind = false;
         reminTime = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_REMIN_TIME, (long) -1);
         AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
         builder.setCancelable(true);
