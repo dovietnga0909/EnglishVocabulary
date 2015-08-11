@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/FrameLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LogInActivity"
-    android:background="@color/white">
+    android:background="@color/white"
+    tools:context=".LogInActivity">
 
 
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-    </ScrollView>
+        android:layout_height="match_parent"></ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal|center_vertical"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <ImageView
+            android:id="@+id/imageView2"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:id="@+id/imageView2"
-            android:src="@drawable/ic_logo_itplus"
-            android:layout_marginBottom="25dp" />
+            android:layout_marginBottom="25dp"
+            android:src="@drawable/ic_logo_itplus" />
 
         <EditText
             android:id="@+id/edtUsername"
@@ -33,12 +33,11 @@
             android:layout_height="46dp"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
+            android:background="@color/transparent"
             android:ems="10"
             android:hint="@string/hint_username"
             android:textSize="16sp"
-            android:typeface="serif"
-            android:background="@color/transparent" >
-        </EditText>
+            android:typeface="serif"></EditText>
 
         <View
             android:id="@+id/v_sep1"
@@ -54,21 +53,12 @@
             android:layout_height="46dp"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
+            android:background="@color/transparent"
             android:ems="10"
             android:hint="@string/password"
             android:inputType="textPassword"
             android:textSize="16sp"
-            android:typeface="serif"
-            android:background="@color/transparent" />
-        <!--<View-->
-            <!--android:id="@+id/v_sep2"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1px"-->
-            <!--android:layout_marginLeft="26dp"-->
-            <!--android:layout_marginRight="26dp"-->
-            <!--android:background="@android:color/darker_gray"/>-->
-
-
+            android:typeface="serif" />
 
         <Button
             android:id="@+id/btnLogin"
@@ -77,20 +67,13 @@
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
             android:layout_marginTop="24dp"
+            android:background="@drawable/btn_login_selector"
             android:text="@string/login"
-            android:typeface="serif"
             android:textColor="@color/actionBar"
             android:textSize="16sp"
 
-            android:background="@drawable/btn_login_selector"
-            />
-        <!--<View-->
-            <!--android:id="@+id/v_sep3"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:layout_marginLeft="26dp"-->
-            <!--android:layout_marginRight="26dp"-->
-            <!--android:background="@android:color/darker_gray"/>-->
+            android:typeface="serif" />
+
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="200dp"
@@ -98,13 +81,20 @@
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
             android:layout_marginTop="8dp"
+            android:background="@drawable/btn_register_selector"
             android:text="@string/register"
-            android:typeface="serif"
             android:textColor="@color/logo"
             android:textSize="16sp"
-
-            android:background="@drawable/btn_register_selector"
-            />
+            android:typeface="serif" />
     </LinearLayout>
+
+    <!--<com.google.android.gms.ads.AdView-->
+        <!--android:id="@+id/adView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--ads:adSize="BANNER"-->
+        <!--ads:adUnitId="@string/banner_ad_unit_id"-->
+        <!--android:layout_gravity="bottom">-->
+    <!--</com.google.android.gms.ads.AdView>-->
 
 </FrameLayout>

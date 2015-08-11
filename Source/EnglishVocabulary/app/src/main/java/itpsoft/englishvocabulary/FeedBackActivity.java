@@ -36,11 +36,11 @@ public class FeedBackActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_feed_back);
+
         //Admod
         adView = (AdView) findViewById(R.id.adView);
-        adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
         init();
     }

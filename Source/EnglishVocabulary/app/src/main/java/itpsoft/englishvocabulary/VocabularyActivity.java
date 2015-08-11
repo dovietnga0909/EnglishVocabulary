@@ -64,7 +64,7 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
 
         //Admod
         adView = (AdView) findViewById(R.id.adView);
-        adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 
         textToSpeech = new TextToSpeech(VocabularyActivity.this, this);
