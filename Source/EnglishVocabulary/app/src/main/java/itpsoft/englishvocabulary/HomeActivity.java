@@ -32,8 +32,10 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -98,8 +100,12 @@ public class HomeActivity extends Activity {
     private TopicGridAdapter topicGridAdapter;
     private GridView itemTopic;
 
+    private AdapterView adapterView;
+    private int positionItem = -1;
+
     private AdView adView;
     private AdRequest adRequest;
+    private InterstitialAd mInterstitialAd;
 
 
     @Override
@@ -108,6 +114,26 @@ public class HomeActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_home);
         vocabulary = new Vocabulary();
+
+        //Admod popub
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getResources().getString(R.string.popub_ad_unit_id));
+
+        //goi method load qc
+        requestNewInterstitial();
+
+        //click close popub
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                Log.d("LuanDT", "close popub---->load popbub khac");
+                requestNewInterstitial();
+                //start Vocabulary
+                startVocabulary(adapterView, positionItem);
+                super.onAdClosed();
+            }
+        });
+        //End Admod popub
 
         //Admod
         adView = (AdView) findViewById(R.id.adView);
@@ -163,6 +189,13 @@ public class HomeActivity extends Activity {
         });
 
         initView();
+    }
+
+    //load popub
+    private void requestNewInterstitial(){
+        Log.d("LuanDT", "load popub");
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mInterstitialAd.loadAd(adRequest);
     }
 
     @Override
@@ -284,13 +317,16 @@ public class HomeActivity extends Activity {
         itemTopic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Topic topic = (Topic) parent.getAdapter().getItem(position);
-                Intent intent = new Intent();
-                intent.setClass(HomeActivity.this, VocabularyActivity.class);
-                intent.putExtra("topic_id", topic.getId());
-                intent.putExtra("topic_name", topic.getName());
-                HomeActivity.this.startActivity(intent);
-                ((Activity) HomeActivity.this).overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+                adapterView = parent;
+                positionItem = position;
+
+                if(mInterstitialAd.isLoaded()){
+                    mInterstitialAd.show();
+                    Log.d("LuanDT", "show popub");
+                } else {
+                    Log.d("LuanDT", "chua load xong ---> goi load lai");
+                    startVocabulary(parent, position);
+                }
 
             }
         });
@@ -305,6 +341,16 @@ public class HomeActivity extends Activity {
                 createDialogAddTopic();
             }
         });
+    }
+
+    private void startVocabulary(AdapterView adapterView, int position){
+        Topic topic = (Topic) adapterView.getAdapter().getItem(position);
+        Intent intent = new Intent();
+        intent.setClass(HomeActivity.this, VocabularyActivity.class);
+        intent.putExtra("topic_id", topic.getId());
+        intent.putExtra("topic_name", topic.getName());
+        HomeActivity.this.startActivity(intent);
+        ((Activity) HomeActivity.this).overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
     }
 
     private void createDataMenu() {
