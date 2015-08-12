@@ -1,21 +1,21 @@
 package itpsoft.englishvocabulary.google.gcm;
 
 
-import itpsoft.englishvocabulary.google.adapter.NotificationListAdapter;
-import itpsoft.englishvocabulary.google.database.NotificationDBController;
-import itpsoft.englishvocabulary.google.model.Notification;
-
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+
+import java.util.ArrayList;
+
 import itpsoft.englishvocabulary.R;
+import itpsoft.englishvocabulary.google.adapter.NotificationListAdapter;
+import itpsoft.englishvocabulary.google.database.NotificationDBController;
+import itpsoft.englishvocabulary.google.model.Notification;
+import itpsoft.englishvocabulary.ultils.Log;
 
 public class NotificationListActivity extends Activity {
 

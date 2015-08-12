@@ -12,11 +12,11 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.android.gcm.GCMRegistrar;
 
 import itpsoft.englishvocabulary.google.utils.CommonUtilities;
+import itpsoft.englishvocabulary.ultils.Log;
 
 public final class ServerUtilities {
 	private static final int MAX_ATTEMPTS = 5;

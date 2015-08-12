@@ -5,7 +5,6 @@ import itpsoft.englishvocabulary.google.model.Notification;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import itpsoft.englishvocabulary.R;
+import itpsoft.englishvocabulary.ultils.Log;
 
 public class NotificationListAdapter extends BaseAdapter {
 	private Context context;
