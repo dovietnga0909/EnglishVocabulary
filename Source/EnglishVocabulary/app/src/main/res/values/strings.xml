@@ -131,6 +131,7 @@
     <!-- End - TuNT -->
 
     <!--LuanDT-->
+    <string name="null_data">Không đủ từ để chơi trò chơi</string>
     <string name="exits_vocabulary">Từ này đã tồn tại ở chủ đề: "</string>
     <string name="warning">(Nếu bạn xóa thì toàn bộ từ trong chủ đề này cũng bị xóa)</string>
     <string name="add_vocabulary">Thêm</string>
@@ -151,13 +152,14 @@
     <string name="internet_false">Không kết nối được tới server do server đang bảo trì hoặc điện thoại của bạn không bật kết nối gprs/3g/wifi.</string>
     
     <!--link api-->
-    <string name="api_push_insert">http://myapp.freezoy.com/Vocabulary/insert.php</string>
-    <string name="api_push_update">http://myapp.freezoy.com/Vocabulary/update.php</string>
-    <string name="api_push_delete">http://myapp.freezoy.com/Vocabulary/delete.php</string>
-    <string name="api_get_all_data">http://myapp.freezoy.com/Vocabulary/alldata.php</string>
-    <string name="api_register">http://myapp.freezoy.com/Vocabulary/register.php</string>
-    <string name="api_login">http://myapp.freezoy.com/Vocabulary/login.php</string>
-    <string name="api_feedback">http://myapp.freezoy.com/Vocabulary/feedback.php</string>
+    <string name="api_push_insert">http://tunt.grn.cc/Vocabulary/insert.php</string>
+    <string name="api_push_update">http://tunt.grn.cc/Vocabulary/update.php</string>
+    <string name="api_push_delete">http://tunt.grn.cc/Vocabulary/delete.php</string>
+    <string name="api_get_all_data">http://tunt.grn.cc/Vocabulary/alldata.php</string>
+    <string name="api_register">http://tunt.grn.cc/Vocabulary/register.php</string>
+    <string name="api_login">http://tunt.grn.cc/Vocabulary/login.php</string>
+    <string name="api_feedback">http://tunt.grn.cc/Vocabulary/feedback.php</string>
+
     <string name="number_vocabulary">Số từ vựng: "</string>
 
     <!-- AcctentRemover -->

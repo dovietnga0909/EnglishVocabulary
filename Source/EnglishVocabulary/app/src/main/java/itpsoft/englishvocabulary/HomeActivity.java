@@ -5,12 +5,15 @@ import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Editable;
@@ -32,7 +35,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.google.ads.AdSize;
+import com.google.android.gcm.GCMRegistrar;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -51,6 +54,9 @@ import itpsoft.englishvocabulary.adapter.MenuAdapter;
 import itpsoft.englishvocabulary.adapter.TopicGridAdapter;
 import itpsoft.englishvocabulary.alarm.AlarmReceiver;
 import itpsoft.englishvocabulary.databases.DbController;
+import itpsoft.englishvocabulary.google.gcm.ServerUtilities;
+import itpsoft.englishvocabulary.google.utils.CommonUtilities;
+import itpsoft.englishvocabulary.google.utils.WakeLocker;
 import itpsoft.englishvocabulary.models.MenuItem;
 import itpsoft.englishvocabulary.models.Question;
 import itpsoft.englishvocabulary.models.Topic;
@@ -119,6 +125,9 @@ public class HomeActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_home);
         vocabulary = new Vocabulary();
+
+        //register gcm
+        registryGCM();
 
         //Admod popub
         mInterstitialAd = new InterstitialAd(this);
@@ -280,7 +289,7 @@ public class HomeActivity extends Activity {
                         intent.setClass(HomeActivity.this, QuestionGameActivity.class);
                         startActivity(intent);
                     }else{
-                        Toast.makeText(HomeActivity.this, "Data khong du de choi tro choi", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeActivity.this, getResources().getString(R.string.null_data), Toast.LENGTH_SHORT).show();
                     }
                 } else if (i == 6) {
                     boolean isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, false);
@@ -306,7 +315,7 @@ public class HomeActivity extends Activity {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com"));
                     startActivity(browserIntent);
                 } else if (i == 10){
-                    final String nameAccCompany = "Vareco+Mobile"; // getPackageName() from Context or Activity object
+                    final String nameAccCompany = "ITPlus+Academy"; // getPackageName() from Context or Activity object
                     try {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://developer?id="+ nameAccCompany)));
                     } catch (android.content.ActivityNotFoundException anfe) {
@@ -900,6 +909,71 @@ public class HomeActivity extends Activity {
         ((MenuItem) arrMenu.get(5)).setTitle(resources.getString(R.string.login));
         ((MenuItem) arrMenu.get(5)).setIcon(R.drawable.ic_login);
         menuAdapter.notifyDataSetChanged();
+    }
+
+    //gcm
+    AsyncTask<Void, Void, Void> mRegisterTask;
+
+    private final BroadcastReceiver mHandleMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            WakeLocker.acquire(getApplicationContext());
+
+            /**
+             * Take appropriate action on this message depending upon your app
+             * requirement For now i am just displaying it on the screen
+             * */
+            WakeLocker.release();
+        }
+    };
+
+    private void registryGCM() {
+        GCMRegistrar.checkDevice(getApplicationContext());
+        GCMRegistrar.checkManifest(getApplicationContext());
+
+        registerReceiver(mHandleMessageReceiver, new IntentFilter(
+                CommonUtilities.DISPLAY_MESSAGE_ACTION));
+
+        final String regId = GCMRegistrar
+                .getRegistrationId(getApplicationContext());
+
+        if (regId.equals("")) {
+            GCMRegistrar.register(getApplicationContext(), CommonUtilities.SENDER_ID);
+        } else {
+            if (GCMRegistrar.isRegisteredOnServer(getApplicationContext())) {
+            } else {
+                mRegisterTask = new AsyncTask<Void, Void, Void>() {
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        ServerUtilities
+                                .register(getApplicationContext(), regId);
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void result) {
+                        mRegisterTask = null;
+                    }
+
+                };
+                mRegisterTask.execute(null, null, null);
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mRegisterTask != null) {
+            mRegisterTask.cancel(true);
+        }
+        try {
+            unregisterReceiver(mHandleMessageReceiver);
+            GCMRegistrar.onDestroy(getApplicationContext());
+        } catch (Exception e) {
+            Log.e("UnRegister Receiver Error", "> " + e.getMessage());
+        }
+        super.onDestroy();
     }
 
 }
