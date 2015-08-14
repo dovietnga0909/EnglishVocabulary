@@ -116,7 +116,7 @@ public class HomeActivity extends Activity {
 
     private AdView adView;
     private AdmodBanner admodBanner;
-    private InterstitialAd mInterstitialAd;
+//    private InterstitialAd mInterstitialAd;
 
 
     @Override
@@ -130,29 +130,29 @@ public class HomeActivity extends Activity {
         registryGCM();
 
         //Admod popub
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getResources().getString(R.string.popub_ad_unit_id));
+//        mInterstitialAd = new InterstitialAd(this);
+//        mInterstitialAd.setAdUnitId(getResources().getString(R.string.popub_ad_unit_id));
 
         //goi method load qc
-        requestNewInterstitial();
-
-        //click close popub
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                Log.d("LuanDT", "close popub---->load popbub khac");
-                requestNewInterstitial();
-                if(remind){
-                    Log.d("LuanDT", "close popub createDialogRemind");
-                    createDialogRemind();
-                } else if (startedVocabulary) {
-                    //start Vocabulary
-                    Log.d("LuanDT", "close popub startVocabulary");
-                    startVocabulary(adapterView, positionItem);
-                }
-                super.onAdClosed();
-            }
-        });
+//        requestNewInterstitial();
+//
+//        //click close popub
+//        mInterstitialAd.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdClosed() {
+//                Log.d("LuanDT", "close popub---->load popbub khac");
+//                requestNewInterstitial();
+//                if(remind){
+//                    Log.d("LuanDT", "close popub createDialogRemind");
+//                    createDialogRemind();
+//                } else if (startedVocabulary) {
+//                    //start Vocabulary
+//                    Log.d("LuanDT", "close popub startVocabulary");
+//                    startVocabulary(adapterView, positionItem);
+//                }
+//                super.onAdClosed();
+//            }
+//        });
         //End Admod popub
 
         //Admod
@@ -211,11 +211,11 @@ public class HomeActivity extends Activity {
     }
 
     //load popub
-    private void requestNewInterstitial(){
-        Log.d("LuanDT", "load popub");
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mInterstitialAd.loadAd(adRequest);
-    }
+//    private void requestNewInterstitial(){
+//        Log.d("LuanDT", "load popub");
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        mInterstitialAd.loadAd(adRequest);
+//    }
 
     @Override
     protected void onResume() {
@@ -275,13 +275,13 @@ public class HomeActivity extends Activity {
                     }
 
                 } else if (i == 3) {
-                    if(mInterstitialAd.isLoaded()){
-                        Log.d("LuanDT", "show popub");
-                        mInterstitialAd.show();
-                        remind = true;
-                    } else {
+//                    if(mInterstitialAd.isLoaded()){
+//                        Log.d("LuanDT", "show popub");
+//                        mInterstitialAd.show();
+//                        remind = true;
+//                    } else {
                         createDialogRemind();
-                    }
+//                    }
                 } else if (i == 4) {
                     Question question = new Question(HomeActivity.this);
                     if(question.checkData()>=2) {
@@ -345,22 +345,22 @@ public class HomeActivity extends Activity {
                 adapterView = parent;
                 positionItem = position;
 
-                if(clickItemTopic == 2) {
-                    clickItemTopic = 1;
-                    if (mInterstitialAd.isLoaded()) {
-                        mInterstitialAd.show();
-                        startedVocabulary = true;
-                        Log.d("LuanDT", "show popub");
-                    } else {
-                        Log.d("LuanDT", "chua load xong ---> goi load lai");
+//                if(clickItemTopic == 2) {
+//                    clickItemTopic = 1;
+//                    if (mInterstitialAd.isLoaded()) {
+//                        mInterstitialAd.show();
+//                        startedVocabulary = true;
+//                        Log.d("LuanDT", "show popub");
+//                    } else {
+//                        Log.d("LuanDT", "chua load xong ---> goi load lai");
                         startVocabulary(parent, position);
-                    }
-
-                } else {
-                    Log.d("LuanDT", "chua duoc show popub");
-                    clickItemTopic = clickItemTopic + 1;
-                    startVocabulary(parent, position);
-                }
+//                    }
+//
+//                } else {
+//                    Log.d("LuanDT", "chua duoc show popub");
+//                    clickItemTopic = clickItemTopic + 1;
+//                    startVocabulary(parent, position);
+//                }
             }
         });
         //Button Add
