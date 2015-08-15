@@ -19,7 +19,7 @@ public class SplashActivity extends Activity{
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
 
-        countDownTimer = new CountDownTimer(2000,1000) {
+        countDownTimer = new CountDownTimer(3000,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 Log.d("NgaDV","onTick");

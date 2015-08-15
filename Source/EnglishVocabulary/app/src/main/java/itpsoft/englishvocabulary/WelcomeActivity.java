@@ -23,7 +23,7 @@ import itpsoft.englishvocabulary.view.ColorAnimationView;
 public class WelcomeActivity
         extends FragmentActivity {
     private static final int[] resource = new int[]{R.drawable.welcome1, R.drawable.welcome4,
-            R.drawable.welcome3, R.drawable.welcome4};
+            R.drawable.welcome2, R.drawable.welcome3};
     private static final String TAG = WelcomeActivity.class.getSimpleName();
     private ViewPager viewPager;
     private boolean agreeRun;
@@ -43,7 +43,7 @@ public class WelcomeActivity
         viewPager.setAdapter(adpter);
 
 //        colorAnimationView.setmViewPager(viewPager, resource.length);
-        colorAnimationView.setmViewPager(viewPager,resource.length,0xffFF8080,0xff8080FF,0xffffffff,0xff8080FF);
+        colorAnimationView.setmViewPager(viewPager,resource.length,0xff8080FF,0xffd500f9,0xff673ab7,0xffe91e63);
         colorAnimationView.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

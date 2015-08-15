@@ -421,6 +421,7 @@
     </string-array>
 
     <string name="content_donate">Cảm ơn bạn đã sử dụng ứng dụng của chúng tôi! Nếu bạn có bất cứ thắc mắc hay ý kiến xây dựng nào, hãy chia sẻ nó với chúng tôi. Chúng tôi sẽ biến mọi ý kiến đó thành sự thật. :D\n\nNếu bạn thấy ứng dụng hay, hữu ích hãy chia sẻ nó vì nó miễn phí.\nỨng dụng là miễn phí nên chúng tôi rất cảm ơn nếu thi thoảng bạn click quảng cáo, đó là động lực để chúng tôi phát triển những ứng dụng hay hơn nữa trong tương lai.\n\nXin cảm ơn!</string>
-    <string name="banner_ad_unit_id">ca-app-pub-3644982245518707/2080143477</string>
+    <string name="banner_ad_unit_id">ca-app-pub-8772406902354164/4885607139</string>
     <string name="popub_ad_unit_id">ca-app-pub-3644982245518707/3556876679</string>
+    <string name="banner_ad_unit_id1">ca-app-pub-3644982245518707/2080143477</string>
 </resources>
