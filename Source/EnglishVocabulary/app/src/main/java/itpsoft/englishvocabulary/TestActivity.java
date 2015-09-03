@@ -23,12 +23,13 @@ import itpsoft.englishvocabulary.adapter.TestPagerAdapter;
 import itpsoft.englishvocabulary.fragments.ListenFragment;
 import itpsoft.englishvocabulary.fragments.RememberFragment;
 import itpsoft.englishvocabulary.models.Vocabulary;
+import itpsoft.englishvocabulary.ultils.BackAwareEditText;
 
 /**
  * Created by Do on 05/06/2015.
  */
 public class TestActivity extends FragmentActivity implements ActionBar.TabListener
-        ,ViewPager.OnPageChangeListener,TabHost.OnTabChangeListener {
+        ,ViewPager.OnPageChangeListener,TabHost.OnTabChangeListener,BackAwareEditText.BackPressedListener{
 
     TestPagerAdapter testPagerAdapter;
     ViewPager testViewPager;
@@ -44,6 +45,7 @@ public class TestActivity extends FragmentActivity implements ActionBar.TabListe
 
     ArrayList<Vocabulary> listVocabularies = new ArrayList<Vocabulary>();
 
+    private boolean isKeyboardOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,14 @@ public class TestActivity extends FragmentActivity implements ActionBar.TabListe
 
         fragments = new Vector<Fragment>();
         tabHost = (TabHost) findViewById(R.id.tabhost);
+//        View fm_listen = LayoutInflater.from(this).inflate(R.layout.fm_test_listen,tabHost);
+//        BackAwareEditText fm_listen_answer = (BackAwareEditText) fm_listen.findViewById(R.id.edtAnswers);
+//        fm_listen_answer.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(TestActivity.this, "open",Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         addTab(this, getResources().getString(R.string.txt_tab_test_listen), R.drawable.ic_tab_listen_selector, ListenFragment.class);
         addTab(this, getResources().getString(R.string.txt_tab_test_remember), R.drawable.ic_tab_remember_selector, RememberFragment.class);
@@ -115,12 +125,18 @@ public class TestActivity extends FragmentActivity implements ActionBar.TabListe
         for (int i = 0;i < tabWidget.getChildCount();i++){
             View view = tabWidget.getChildAt(i);
             view.setBackgroundResource(R.drawable.bg_tab_host);
+//            tabHost.getTabWidget().getChildTabViewAt(i).setVisibility(View.GONE);
+//            tabHost.setVisibility();
 
         }
 //        tabHost.getTabWidget().setDividerDrawable(R.drawable.ic_sound);
-
         fragments.add(Fragment.instantiate(this,c.getName()));
 
+
+    }
+
+    @Override
+    public void onImeBack(BackAwareEditText editText) {
 
     }
 
