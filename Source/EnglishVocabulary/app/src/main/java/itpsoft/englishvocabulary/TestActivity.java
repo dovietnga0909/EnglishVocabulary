@@ -23,13 +23,12 @@ import itpsoft.englishvocabulary.adapter.TestPagerAdapter;
 import itpsoft.englishvocabulary.fragments.ListenFragment;
 import itpsoft.englishvocabulary.fragments.RememberFragment;
 import itpsoft.englishvocabulary.models.Vocabulary;
-import itpsoft.englishvocabulary.ultils.BackAwareEditText;
 
 /**
  * Created by Do on 05/06/2015.
  */
 public class TestActivity extends FragmentActivity implements ActionBar.TabListener
-        ,ViewPager.OnPageChangeListener,TabHost.OnTabChangeListener,BackAwareEditText.BackPressedListener{
+        ,ViewPager.OnPageChangeListener,TabHost.OnTabChangeListener {
 
     TestPagerAdapter testPagerAdapter;
     ViewPager testViewPager;
@@ -132,11 +131,6 @@ public class TestActivity extends FragmentActivity implements ActionBar.TabListe
 //        tabHost.getTabWidget().setDividerDrawable(R.drawable.ic_sound);
         fragments.add(Fragment.instantiate(this,c.getName()));
 
-
-    }
-
-    @Override
-    public void onImeBack(BackAwareEditText editText) {
 
     }
 

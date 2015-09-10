@@ -135,9 +135,9 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
         username        = edtUsername.getText().toString().trim();
         password        = edtPassword.getText().toString().trim();
         confirmPassword = edtConfirmPassword.getText().toString().trim();
-        params.add("username",username);
-        params.add("fullname",fullname);
-        params.add("password",password);
+        params.add("username", username);
+        params.add("fullname", "N'" + fullname + "'");
+        params.add("password", password);
 
         Log.d("NgaDV", "fullname: " + fullname);
         Log.d("NgaDV", "username " + username);

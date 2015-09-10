@@ -260,7 +260,7 @@ public class Vocabulary{
                     voca.put("table", "vocabularies");
                     voca.put("id_clien", id);
                     //voca_id, id_clien, cate_id, english, vietnamese, user_id
-                    voca.put("sql", "null,'" + id + "','" + cateId  + "','" + english  + "','" + vietnamese  + "','" + SPUtil.instance(context).get(SPUtil.KEY_USER_ID, "-1") + "'" );
+                    voca.put("sql", "null,'" + id + "','" + cateId  + "',N'" + english  + "',N'" + vietnamese  + "','" + SPUtil.instance(context).get(SPUtil.KEY_USER_ID, "-1") + "'" );
 
 
                     array.put(voca);
@@ -286,7 +286,7 @@ public class Vocabulary{
                     voca.put("table", "categories");
                     voca.put("id_clien", id);
                     //cate_id, id_clien, name, user_id
-                    voca.put("sql", "null,'" + id + "','" + name  + "','" + SPUtil.instance(context).get(SPUtil.KEY_USER_ID, "-1") + "'" );
+                    voca.put("sql", "null,'" + id + "',N'" + name  + "','" + SPUtil.instance(context).get(SPUtil.KEY_USER_ID, "-1") + "'" );
 
 
                     array.put(voca);
@@ -360,7 +360,7 @@ public class Vocabulary{
 
                     voca.put("table", "vocabularies");
                     voca.put("voca_id", idServer);
-                    voca.put("sql", "english='" + english  + "', vietnamese='" + vietnamese  + "'" );
+                    voca.put("sql", "english=N'" + english  + "', vietnamese=N'" + vietnamese  + "'" );
 
 
                     array.put(voca);
@@ -387,7 +387,7 @@ public class Vocabulary{
 
                     voca.put("table", "categories");
                     voca.put("cate_id", cate_id);
-                    voca.put("sql", "name='" + name + "'" );
+                    voca.put("sql", "name=N'" + name + "'" );
 
 
                     array.put(voca);
