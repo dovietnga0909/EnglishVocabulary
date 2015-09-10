@@ -77,6 +77,26 @@
     <string name="send">Góp ý</string>
     <string name="fail">Thất bại</string>
     <string name="test">Luyện tập</string>
+
+    <string name="popub_random_voca">Hiển thị từ ngẫu nhiên</string>
+    <string name="choose_topic">Chọn chủ đề hiển thị</string>
+    <string name="choose_notifications">Chọn cách thông báo</string>
+    <string name="choose_number_voca">Chọn số từ hiển thị</string>
+    <string name="done">Xong</string>
+
+    <string name="after_lock_on">Sau khi mở khoá màn hình</string>
+    <string name="after_2_h">Sau mỗi 2 giờ</string>
+    <string name="after_4_h">Sau mỗi 4 giờ</string>
+    <string name="after_6_h">Sau mỗi 6 giờ</string>
+    <string name="after_8_h">Sau mỗi 8 giờ</string>
+
+    <string name="one_voca">Một từ</string>
+    <string name="two_voca">Hai từ</string>
+    <string name="three_voca">Ba từ</string>
+    <string name="four_voca">Bốn từ</string>
+    <string name="five_voca">Năm từ</string>
+
+    <string name="must_choose_one">Bạn phải chọn ít nhất một chủ đề!</string>
     <!-- TuNT-->
     <string name="ev">Từ vựng tiếng Anh</string>
     <string name="list_topic">Danh sách chủ đề</string>
