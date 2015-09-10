@@ -35,6 +35,12 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SENDTO" />
+                <action android:name="android.intent.action.CHOOSER" />
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <!--Include the AdActivity configChanges and theme. -->
         <activity android:name="com.google.android.gms.ads.AdActivity"
@@ -75,6 +81,9 @@
         <activity
             android:name=".QuestionGameActivity"
             android:screenOrientation="portrait" />
+        <activity
+        android:name=".PopubOptionsActivity"
+        android:screenOrientation="portrait" />
 
 
         <activity

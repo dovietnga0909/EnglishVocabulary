@@ -36,10 +36,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.google.android.gcm.GCMRegistrar;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -127,7 +124,7 @@ public class HomeActivity extends Activity {
         vocabulary = new Vocabulary();
 
         //register gcm
-        registryGCM();
+//        registryGCM();
 
         //Admod popub
 //        mInterstitialAd = new InterstitialAd(this);
@@ -291,7 +288,12 @@ public class HomeActivity extends Activity {
                     }else{
                         Toast.makeText(HomeActivity.this, getResources().getString(R.string.null_data), Toast.LENGTH_SHORT).show();
                     }
-                } else if (i == 6) {
+
+                } else if(i == 5){
+                    Intent intent = new Intent(HomeActivity.this,PopubOptionsActivity.class);
+                    startActivity(intent);
+                }
+                else if (i == 7) {
                     boolean isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, false);
                     if (isLogin) {
                         logout = true;
@@ -308,13 +310,13 @@ public class HomeActivity extends Activity {
                         startActivity(intent);
                         finish();
                     }
-                } else if (i == 8){
+                } else if (i == 9){
                     Intent intent = new Intent(HomeActivity.this,AboutActivity.class);
                     startActivity(intent);
-                } else if (i == 9){
+                } else if (i == 10){
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com"));
                     startActivity(browserIntent);
-                } else if (i == 10){
+                } else if (i == 11){
                     final String nameAccCompany = "ITPlus+Academy"; // getPackageName() from Context or Activity object
                     try {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://developer?id="+ nameAccCompany)));
@@ -399,6 +401,7 @@ public class HomeActivity extends Activity {
         }
         arrMenu.add(new MenuItem("#ff6f00", R.drawable.ic_clock, resources.getString(R.string.reminds_study_time), resources.getString(R.string.off)));
         arrMenu.add(new MenuItem("#f50057", R.drawable.game, resources.getString(R.string.game), ""));
+        arrMenu.add(new MenuItem("#f50057", R.drawable.game, "popup", ""));
         arrMenu.add("");
         if (isLogin) {
             arrMenu.add(new MenuItem("#9c27b0", R.drawable.ic_logout, resources.getString(R.string.logout), ""));

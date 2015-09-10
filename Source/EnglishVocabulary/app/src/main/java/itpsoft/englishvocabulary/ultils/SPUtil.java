@@ -20,6 +20,15 @@ public class SPUtil {
     public static final String KEY_TIME_LAST_SYNC = "time_last_sync";
     public static final String KEY_SYNC = "sync";
     public static final String KEY_LOGIN = "login";
+
+    public static final String KEY_CHOOSED_ID_POPUB_TOPIC = "choosed_id_popub_topic";
+    public static final String KEY_CHOOSED_NAME_PUPUB_TOPIC = "choosed_name_popub_topic";
+
+    public static final String KEY_CHOOSED_KEY_POPUB_NOTIFI = "choosed_key_popub_notifi";
+    public static final String KEY_CHOOSED_NAME_POPUB_NOTIFI = "choosed_name_popub_notifi";
+
+    public static final String KEY_CHOOSED_KEY_POPUB_NUMBER_VOCA = "choosed_key_popub_number_voca";
+    public static final String KEY_CHOOSED_NAME_POPUB_NUMBER_VOCA = "choosed_name_popub_number_voca";
     private SharedPreferences pref;
 
     private SPUtil(Context context) {

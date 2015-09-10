@@ -15,6 +15,9 @@ import itpsoft.englishvocabulary.ultils.SPUtil;
  * Created by Thanh Tu on 6/8/2015.
  */
 public class Topic {
+    boolean isChecked;
+
+
     public static int INSERT_FALSE = 0;
     public static int INSERT_SUCCESS = 1;
     public static int INSERT_EXITS = 2;
@@ -40,6 +43,20 @@ public class Topic {
         this.number = number;
     }
 
+    public boolean equal(Topic topic){
+        boolean ret = false;
+        if(this.name.equals(topic.name)){
+            ret = true;
+        }
+        return ret;
+    }
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setIsChecked(boolean isChecked) {
+        this.isChecked = isChecked;
+    }
     public void setId(int id) {
         this.id = id;
     }
@@ -98,7 +115,7 @@ public class Topic {
                     String nameconvert = "";
                     String kytudau = name.substring(0, 1);
                     String kytuconlai = name.substring(1);
-                    nameconvert += kytudau.toUpperCase() + kytuconlai + " ";
+                    nameconvert += kytudau.toUpperCase() + kytuconlai + "";
 
                     data.add(new Topic(color.getColor(name), id, nameconvert, number));
                 } while (cursor.moveToNext());
@@ -284,5 +301,69 @@ public class Topic {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public Topic(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    //get topic By Id ()
+    public Topic getTopicById(int Id){
+        Topic topic = null;
+        try {
+            String sql = "SELECT * " +
+                    "FROM " +DbController.TABLE_CATEGORIES +
+                    " WHERE " + DbController.ID_CATE +
+                    " = " + Id;
+
+            Cursor  cursor = dbController.rawQuery(sql,null);
+            if (cursor.moveToFirst()){
+
+                do{
+                    int id = cursor.getInt(cursor.getColumnIndex(DbController.ID_CATE));
+                    String name = cursor.getString(cursor.getColumnIndex(DbController.CATEGORIES_NAME));
+                    name = name.replace("\"", "'");
+                    String nameconvert = "";
+                    String kytudau = name.substring(0, 1);
+                    String kytuconlai = name.substring(1);
+                    nameconvert += kytudau.toUpperCase() + kytuconlai + " ";
+
+                    topic = new  Topic(id, nameconvert);
+                }while (cursor.moveToNext());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return topic;
+    }
+    //get topic WHERE IN ()
+    public ArrayList<Topic> getTopicByStrId(String strId) {
+        ArrayList<Topic> data = new ArrayList<Topic>();
+        try {
+            String sql = "SELECT * " +
+                    "FROM " + DbController.TABLE_CATEGORIES +
+                    " WHERE " + DbController.ID_CATE +
+                    " IN " + "(" + strId + ")";
+
+            Cursor cursor = dbController.rawQuery(sql, null);
+            if (cursor.moveToFirst()) {
+
+                do {
+                    int id = cursor.getInt(cursor.getColumnIndex(DbController.ID_CATE));
+                    String name = cursor.getString(cursor.getColumnIndex(DbController.CATEGORIES_NAME));
+                    name = name.replace("\"", "'");
+                    String nameconvert = "";
+                    String kytudau = name.substring(0, 1);
+                    String kytuconlai = name.substring(1);
+                    nameconvert += kytudau.toUpperCase() + kytuconlai + "";
+
+                    data.add(new Topic(id, nameconvert));
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return data;
     }
 }
