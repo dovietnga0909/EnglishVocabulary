@@ -195,4 +195,11 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
                 }
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
+    }
 }

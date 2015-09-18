@@ -10,8 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -173,6 +171,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             case R.id.btnRegister:
                 Intent  intent = new Intent(LoginActivity.this,RegisterActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
         }
     }
 
@@ -188,6 +187,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             public void onSuccess() {
                 progressDialog.dismiss();
                 finish();
+                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
             }
 
             @Override
@@ -203,6 +203,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     public void onBackPressed() {
         Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
         super.onBackPressed();
     }
 }

@@ -49,7 +49,7 @@ import java.util.Calendar;
 
 import itpsoft.englishvocabulary.adapter.MenuAdapter;
 import itpsoft.englishvocabulary.adapter.TopicGridAdapter;
-import itpsoft.englishvocabulary.alarm.AlarmReceiver;
+import itpsoft.englishvocabulary.receiver.AlarmReceiver;
 import itpsoft.englishvocabulary.databases.DbController;
 import itpsoft.englishvocabulary.google.gcm.ServerUtilities;
 import itpsoft.englishvocabulary.google.utils.CommonUtilities;
@@ -122,6 +122,14 @@ public class HomeActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_home);
         vocabulary = new Vocabulary();
+
+        //service popub
+        Intent serviceScreenOn = new Intent();
+        serviceScreenOn.setAction("itpsoft.englishvocabulary.service.ScreenOnService");
+        String checkStatePopub = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_POPUB_STATE, HomeActivity.this.getResources().getString(R.string.off));
+        if(checkStatePopub.equals(HomeActivity.this.getResources().getString(R.string.on))){
+            stopService(serviceScreenOn);
+        }
 
         //register gcm
 //        registryGCM();
@@ -269,6 +277,7 @@ public class HomeActivity extends Activity {
                         intent.setClass(HomeActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
+                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
                     }
 
                 } else if (i == 3) {
@@ -280,18 +289,26 @@ public class HomeActivity extends Activity {
                         createDialogRemind();
 //                    }
                 } else if (i == 4) {
-                    Question question = new Question(HomeActivity.this);
-                    if(question.checkData()>=2) {
+//                    Question question = new Question(HomeActivity.this);
+                    if(vocabulary.getCountVoca()>=2) {
                         Intent intent = new Intent();
                         intent.setClass(HomeActivity.this, QuestionGameActivity.class);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
                     }else{
                         Toast.makeText(HomeActivity.this, getResources().getString(R.string.null_data), Toast.LENGTH_SHORT).show();
                     }
 
                 } else if(i == 5){
-                    Intent intent = new Intent(HomeActivity.this,PopubOptionsActivity.class);
-                    startActivity(intent);
+                    if(vocabulary.getCountVoca()>0) {
+                        Intent intent = new Intent(HomeActivity.this,PopubOptionsActivity.class);
+                        startActivity(intent);
+                        finish();
+                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
+                    }else{
+                        Toast.makeText(HomeActivity.this, getResources().getString(R.string.null_data), Toast.LENGTH_SHORT).show();
+                    }
+
                 }
                 else if (i == 7) {
                     boolean isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, false);
@@ -309,13 +326,16 @@ public class HomeActivity extends Activity {
                         intent.setClass(HomeActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
+                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
                     }
                 } else if (i == 9){
                     Intent intent = new Intent(HomeActivity.this,AboutActivity.class);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
                 } else if (i == 10){
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com"));
                     startActivity(browserIntent);
+                    overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
                 } else if (i == 11){
                     final String nameAccCompany = "ITPlus+Academy"; // getPackageName() from Context or Activity object
                     try {
@@ -401,7 +421,7 @@ public class HomeActivity extends Activity {
         }
         arrMenu.add(new MenuItem("#ff6f00", R.drawable.ic_clock, resources.getString(R.string.reminds_study_time), resources.getString(R.string.off)));
         arrMenu.add(new MenuItem("#f50057", R.drawable.game, resources.getString(R.string.game), ""));
-        arrMenu.add(new MenuItem("#f50057", R.drawable.game, "popup", ""));
+        arrMenu.add(new MenuItem("#ff6f00", R.drawable.game, resources.getString(R.string.popub_random_voca), SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_POPUB_STATE,resources.getString(R.string.off))));
         arrMenu.add("");
         if (isLogin) {
             arrMenu.add(new MenuItem("#9c27b0", R.drawable.ic_logout, resources.getString(R.string.logout), ""));

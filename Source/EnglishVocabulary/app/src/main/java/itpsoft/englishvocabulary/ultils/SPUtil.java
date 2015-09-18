@@ -21,6 +21,8 @@ public class SPUtil {
     public static final String KEY_SYNC = "sync";
     public static final String KEY_LOGIN = "login";
 
+    public static final String KEY_POPUB_STATE = "popub_state";
+
     public static final String KEY_CHOOSED_ID_POPUB_TOPIC = "choosed_id_popub_topic";
     public static final String KEY_CHOOSED_NAME_PUPUB_TOPIC = "choosed_name_popub_topic";
 
@@ -29,6 +31,9 @@ public class SPUtil {
 
     public static final String KEY_CHOOSED_KEY_POPUB_NUMBER_VOCA = "choosed_key_popub_number_voca";
     public static final String KEY_CHOOSED_NAME_POPUB_NUMBER_VOCA = "choosed_name_popub_number_voca";
+
+    public static final String KEY_FIRST_RUN_POPUB_ACTIVITY = "first_run_popub_activity";
+    public static final String KEY_NUM_SCREEN_ON = "num_screen_on";
     private SharedPreferences pref;
 
     private SPUtil(Context context) {

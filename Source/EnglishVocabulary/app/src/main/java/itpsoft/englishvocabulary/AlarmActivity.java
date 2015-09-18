@@ -1,4 +1,4 @@
-package itpsoft.englishvocabulary.alarm;
+package itpsoft.englishvocabulary;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -11,22 +11,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import itpsoft.englishvocabulary.R;
-import itpsoft.englishvocabulary.WelcomeActivity;
+import itpsoft.englishvocabulary.receiver.AlarmReceiver;
 import itpsoft.englishvocabulary.ultils.Log;
 import itpsoft.englishvocabulary.ultils.SPUtil;
 

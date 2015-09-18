@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -82,39 +84,39 @@
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"/>
 
-    <LinearLayout
-        android:id="@+id/lnChooseNotifications"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp"
-        android:background="@drawable/item_popup_options_selector">
+    <!--<LinearLayout-->
+        <!--android:id="@+id/lnChooseNotifications"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical"-->
+        <!--android:padding="10dp"-->
+        <!--android:background="@drawable/item_popup_options_selector">-->
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/choose_notifications"
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/choose_notifications"-->
 
-            android:textColor="@color/cl_black"
-            android:textSize="18dp" />
+            <!--android:textColor="@color/cl_black"-->
+            <!--android:textSize="18dp" />-->
 
-        <TextView
-            android:id="@+id/tvChoosedNotifications"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Default"
-            android:layout_marginTop="7dp"
-            android:textColor="@color/gameover"
-            android:textSize="16dp"/>
+        <!--<TextView-->
+            <!--android:id="@+id/tvChoosedNotifications"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Default"-->
+            <!--android:layout_marginTop="7dp"-->
+            <!--android:textColor="@color/gameover"-->
+            <!--android:textSize="16dp"/>-->
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="#333"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"/>
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1px"-->
+        <!--android:background="#333"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:layout_marginLeft="10dp"/>-->
     <LinearLayout
         android:id="@+id/lnChooseNumberVocabulary"
         android:layout_width="match_parent"
@@ -147,5 +149,18 @@
         android:layout_height="1px"
         android:background="#333"
         android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"/>
+        android:layout_marginLeft="10dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id">
+    </com.google.android.gms.ads.AdView>
 </LinearLayout>

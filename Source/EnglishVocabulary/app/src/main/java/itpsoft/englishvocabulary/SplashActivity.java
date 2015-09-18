@@ -33,6 +33,7 @@ public class SplashActivity extends Activity{
                 startActivity(intent);
 
                 SplashActivity.this.finish();
+                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
             }
         };
 
@@ -42,7 +43,6 @@ public class SplashActivity extends Activity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         countDownTimer.cancel();
     }
 }

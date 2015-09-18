@@ -4,13 +4,10 @@ import android.content.Context;
 import android.database.Cursor;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
 import itpsoft.englishvocabulary.databases.DbController;
-import itpsoft.englishvocabulary.ultils.Log;
-import itpsoft.englishvocabulary.ultils.SPUtil;
 
 /**
  * Created by Thanh Tu on 7/23/2015.
@@ -90,13 +87,13 @@ public class Question implements Serializable {
             return false;
     }
 
-    public int checkData(){
-        int count = 0;
-        String sql = "SELECT count(*) as 'count' FROM " + DbController.TABLE_VOCABULARY;
-        Cursor cursor = db.rawQuery(sql, null);
-        if(cursor.moveToFirst()){
-            count = cursor.getInt(cursor.getColumnIndex("count"));
-        }
-        return count;
-    }
+//    public int checkData(){
+//        int count = 0;
+//        String sql = "SELECT count(*) as 'count' FROM " + DbController.TABLE_VOCABULARY;
+//        Cursor cursor = db.rawQuery(sql, null);
+//        if(cursor.moveToFirst()){
+//            count = cursor.getInt(cursor.getColumnIndex("count"));
+//        }
+//        return count;
+//    }
 }

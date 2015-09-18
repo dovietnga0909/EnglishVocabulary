@@ -11,7 +11,6 @@ import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -122,6 +121,36 @@ public class Vocabulary{
 
         try {
             String sql = "Select * from " + DbController.TABLE_VOCABULARY + " Where " + DbController.ID_CATE + " = " + cate_id;
+            Cursor cursor = dbController.rawQuery(sql, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    long id = cursor.getInt(cursor.getColumnIndex(DbController.ID_VOCA));
+                    int cateId = cursor.getInt(cursor.getColumnIndex(DbController.ID_CATE));
+                    String english = cursor.getString(cursor.getColumnIndex(DbController.ENGLISH));
+                    String vietnamese = cursor.getString(cursor.getColumnIndex(DbController.VIETNAMESE));
+                    String status_sync = cursor.getString(cursor.getColumnIndex(DbController.VOCABULARY_STATUS));
+
+                    english = english.replace("\"", "'");
+                    vietnamese = vietnamese.replace("\"", "'");
+
+                    listVocabulary.add(new Vocabulary(id, cateId, english, vietnamese, status_sync));
+                } while (cursor.moveToNext());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return listVocabulary;
+    }
+
+    //get vocabulary strId
+    public ArrayList<Vocabulary> getVocaByStrId(String strId){
+        ArrayList<Vocabulary> listVocabulary = new ArrayList<Vocabulary>();
+        DbController dbController = DbController.getInstance(context);
+
+        try {
+            String sql = "Select * from " + DbController.TABLE_VOCABULARY + " Where " + DbController.ID_CATE + " IN " + " ("+ strId +"); ";
+            Log.d("NgaDV","sql: "+sql);
             Cursor cursor = dbController.rawQuery(sql, null);
             if (cursor.moveToFirst()) {
                 do {
@@ -678,6 +707,18 @@ public class Vocabulary{
             e.printStackTrace();
         }
         return name;
+    }
+
+
+    public int getCountVoca(){
+        DbController dbController = DbController.getInstance(context);
+        int count = 0;
+        String sql = "SELECT count(*) as 'count' FROM " + DbController.TABLE_VOCABULARY;
+        Cursor cursor = dbController.rawQuery(sql, null);
+        if(cursor.moveToFirst()){
+            count = cursor.getInt(cursor.getColumnIndex("count"));
+        }
+        return count;
     }
 
     private OnLoadListener onLoadListener;

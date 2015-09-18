@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import itpsoft.englishvocabulary.ultils.AdmodBanner;
@@ -36,7 +35,12 @@ public class AboutActivity extends Activity implements View.OnClickListener {
 
         btnFeedBack.setOnClickListener(this);
         txtWebsite.setOnClickListener(this);
+
+
     }
+
+
+
 
     @Override
     public void onClick(View view) {
@@ -52,5 +56,12 @@ public class AboutActivity extends Activity implements View.OnClickListener {
                 startActivity(intent);
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
     }
 }
