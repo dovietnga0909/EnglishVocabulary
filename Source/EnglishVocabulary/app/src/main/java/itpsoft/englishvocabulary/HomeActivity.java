@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Editable;
@@ -33,11 +34,15 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +50,8 @@ import java.util.Calendar;
 
 import itpsoft.englishvocabulary.adapter.MenuAdapter;
 import itpsoft.englishvocabulary.adapter.TopicGridAdapter;
+import itpsoft.englishvocabulary.gcm.CommonUtilities;
+import itpsoft.englishvocabulary.gcm.SPGcmUtils;
 import itpsoft.englishvocabulary.receiver.AlarmReceiver;
 import itpsoft.englishvocabulary.databases.DbController;
 import itpsoft.englishvocabulary.models.MenuItem;
@@ -123,6 +130,9 @@ public class HomeActivity extends Activity {
         if(checkStatePopub.equals(HomeActivity.this.getResources().getString(R.string.on))){
             stopService(serviceScreenOn);
         }
+
+        //GCM
+        checkPlayServices();
 
         //Admod popub
 //        mInterstitialAd = new InterstitialAd(this);
@@ -296,7 +306,7 @@ public class HomeActivity extends Activity {
                         finish();
                         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
                     }else{
-                        Toast.makeText(HomeActivity.this, getResources().getString(R.string.null_data), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeActivity.this, getResources().getString(R.string.null_data_popup), Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -928,6 +938,42 @@ public class HomeActivity extends Activity {
     protected void onDestroy() {
 
         super.onDestroy();
+    }
+
+    //kiem tra neu may cai google service thi dang ky GCM
+    private void checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(HomeActivity.this);
+        if (resultCode == ConnectionResult.SUCCESS) {
+            registerGCM();
+        }
+    }
+
+    //dang ky GCM
+    private void registerGCM() {
+        //kiem tra xem da dang ky gcm chua
+        String regId = SPGcmUtils.instance(HomeActivity.this).get(SPGcmUtils.PROPERTY_REG_ID, "");
+        if (regId.equals("")) {
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... params) {
+                    GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(HomeActivity.this);
+                    try {
+                        String regId = gcm.register(CommonUtilities.SENDER_ID);
+                        SPGcmUtils.instance(HomeActivity.this).set(SPGcmUtils.PROPERTY_REG_ID, regId);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+            }.execute(null, null, null);
+        } else {
+            //neu chua add vao server
+            if (!SPGcmUtils.instance(HomeActivity.this).get(SPGcmUtils.PROPERTY_ON_SERVER, false)) {
+                CommonUtilities.register(HomeActivity.this, regId);
+            }
+        }
+
     }
 
 }

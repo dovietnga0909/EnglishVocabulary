@@ -152,7 +152,9 @@
     <!-- End - TuNT -->
 
     <!--LuanDT-->
+    <string name="click">Click để xem chi tiết</string>
     <string name="null_data">Không đủ từ để chơi trò chơi</string>
+    <string name="null_data_popup">Không có từ để sử dụng chức năng này</string>
     <string name="exits_vocabulary">Từ này đã tồn tại ở chủ đề: "</string>
     <string name="warning">(Nếu bạn xóa thì toàn bộ từ trong chủ đề này cũng bị xóa)</string>
     <string name="add_vocabulary">Thêm</string>
