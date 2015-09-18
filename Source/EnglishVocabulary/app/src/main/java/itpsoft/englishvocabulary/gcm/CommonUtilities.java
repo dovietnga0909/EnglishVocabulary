@@ -1,8 +1,6 @@
 package itpsoft.englishvocabulary.gcm;
 
 import android.content.Context;
-import android.util.Log;
-
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -10,12 +8,14 @@ import com.loopj.android.http.RequestParams;
 import org.apache.http.Header;
 import org.json.JSONObject;
 
+import itpsoft.englishvocabulary.ultils.Log;
+
 /**
  * Created by LuanDT on 17/09/2015.
  */
 public class CommonUtilities {
     //url server add RegId
-    public static final String SERVER_URL = "http://192.168.1.154:8080/ServicesEnglishVocabulary/rest/gcm/add";
+    public static final String SERVER_URL = "http://192.168.1.49:8080/ServicesEnglishVocabulary/rest/gcm/add";
     //sender Id (google project number)
     public static final String SENDER_ID = "46449090875";
     //action receiver

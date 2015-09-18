@@ -76,11 +76,11 @@ public class CircularImageView extends ImageView {
         init(context, attrs, defStyleAttr);
     }
 
-        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-        public CircularImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-            super(context,attrs,defStyleAttr,defStyleRes);
-            init(context, attrs, defStyleAttr);
-        }
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public CircularImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        init(context, attrs, defStyleAttr);
+    }
 
     /**
      * Initializes paint objects and sets desired attributes.

@@ -12,7 +12,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.google.android.gms.gcm.GcmListenerService;
@@ -23,6 +22,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 
 import itpsoft.englishvocabulary.R;
+import itpsoft.englishvocabulary.ultils.Log;
 
 /**
  * Created by LuanDT on 17/09/2015.

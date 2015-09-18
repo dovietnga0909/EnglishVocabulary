@@ -2,7 +2,6 @@ package itpsoft.englishvocabulary;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
@@ -12,13 +11,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.sql.Time;
 import java.util.ArrayList;
 
 import itpsoft.englishvocabulary.models.Question;
-import itpsoft.englishvocabulary.ultils.Log;
 import itpsoft.englishvocabulary.ultils.SPUtil;
 
 /**
@@ -181,5 +176,11 @@ public class QuestionGameActivity extends Activity implements View.OnClickListen
                 playGame();
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
     }
 }

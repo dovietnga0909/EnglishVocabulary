@@ -127,7 +127,7 @@
     <string name="really_delete">Bạn có thật sự muốn xóa:</string>
     <string name="topic_empty">Không có từ vựng trong chủ đề này</string>
     <string name="dont_save">Thay đổi chưa được lưu lại</string>
-    <string name="change_success">Thay đổi thành công</string>
+    <string name="change_success">Bật hiển thị từ ngẫu nhiên</string>
     <string name="stop">Dừng</string>
     <string name="start_app">Mở ứng dụng</string>
     <string name="note">Đã đến giờ học nhấn vào "Mở ứng dụng" để bắt đầu.</string>
@@ -175,21 +175,21 @@
     <string name="internet_false">Không kết nối được tới server do server đang bảo trì hoặc điện thoại của bạn không bật kết nối gprs/3g/wifi.</string>
     
     <!--link api-->
-    <string name="api_push_insert">http://itplus-academy.edu.vn/service/insert.php</string>
-    <string name="api_push_update">http://itplus-academy.edu.vn/service/update.php</string>
-    <string name="api_push_delete">http://itplus-academy.edu.vn/service/delete.php</string>
-    <string name="api_get_all_data">http://itplus-academy.edu.vn/service/alldata.php</string>
-    <string name="api_register">http://itplus-academy.edu.vn/service/register.php</string>
-    <string name="api_login">http://itplus-academy.edu.vn/service/login.php</string>
-    <string name="api_feedback">http://itplus-academy.edu.vn/service/feedback.php</string>
+    <!--<string name="api_push_insert">http://itplus-academy.edu.vn/service/insert.php</string>-->
+    <!--<string name="api_push_update">http://itplus-academy.edu.vn/service/update.php</string>-->
+    <!--<string name="api_push_delete">http://itplus-academy.edu.vn/service/delete.php</string>-->
+    <!--<string name="api_get_all_data">http://itplus-academy.edu.vn/service/alldata.php</string>-->
+    <!--<string name="api_register">http://itplus-academy.edu.vn/service/register.php</string>-->
+    <!--<string name="api_login">http://itplus-academy.edu.vn/service/login.php</string>-->
+    <!--<string name="api_feedback">http://itplus-academy.edu.vn/service/feedback.php</string>-->
 
-    <!--<string name="api_push_insert">http://192.168.2.105:8080/ServicesEnglishVocabulary/rest/vocabulary/insert</string>-->
-    <!--<string name="api_push_update">http://192.168.2.105:8080/ServicesEnglishVocabulary/rest/vocabulary/update</string>-->
-    <!--<string name="api_push_delete">http://192.168.2.105:8080/ServicesEnglishVocabulary/rest/vocabulary/delete</string>-->
-    <!--<string name="api_get_all_data">http://192.168.2.105:8080/ServicesEnglishVocabulary/rest/vocabulary/alldata</string>-->
-    <!--<string name="api_register">http://192.168.2.105:8080/ServicesEnglishVocabulary/rest/user/add</string>-->
-    <!--<string name="api_login">http://192.168.2.105:8080/ServicesEnglishVocabulary/rest/user/login</string>-->
-    <!--<string name="api_feedback">http://192.168.2.105:8080/ServicesEnglishVocabulary/rest/feedback/add</string>-->
+    <string name="api_push_insert">http://192.168.1.49:8080/ServicesEnglishVocabulary/rest/vocabulary/insert</string>
+    <string name="api_push_update">http://192.168.1.49:8080/ServicesEnglishVocabulary/rest/vocabulary/update</string>
+    <string name="api_push_delete">http://192.168.1.49:8080/ServicesEnglishVocabulary/rest/vocabulary/delete</string>
+    <string name="api_get_all_data">http://192.168.1.49:8080/ServicesEnglishVocabulary/rest/vocabulary/alldata</string>
+    <string name="api_register">http://192.168.1.49:8080/ServicesEnglishVocabulary/rest/user/add</string>
+    <string name="api_login">http://192.168.1.49:8080/ServicesEnglishVocabulary/rest/user/login</string>
+    <string name="api_feedback">http://192.168.1.49:8080/ServicesEnglishVocabulary/rest/feedback/add</string>
 
     <string name="number_vocabulary">Số từ vựng: "</string>
 

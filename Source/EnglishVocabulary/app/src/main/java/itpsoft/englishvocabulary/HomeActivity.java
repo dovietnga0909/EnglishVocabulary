@@ -50,14 +50,13 @@ import java.util.Calendar;
 
 import itpsoft.englishvocabulary.adapter.MenuAdapter;
 import itpsoft.englishvocabulary.adapter.TopicGridAdapter;
+import itpsoft.englishvocabulary.databases.DbController;
 import itpsoft.englishvocabulary.gcm.CommonUtilities;
 import itpsoft.englishvocabulary.gcm.SPGcmUtils;
-import itpsoft.englishvocabulary.receiver.AlarmReceiver;
-import itpsoft.englishvocabulary.databases.DbController;
 import itpsoft.englishvocabulary.models.MenuItem;
-import itpsoft.englishvocabulary.models.Question;
 import itpsoft.englishvocabulary.models.Topic;
 import itpsoft.englishvocabulary.models.Vocabulary;
+import itpsoft.englishvocabulary.receiver.AlarmReceiver;
 import itpsoft.englishvocabulary.ultils.AdmodBanner;
 import itpsoft.englishvocabulary.ultils.Keyboard;
 import itpsoft.englishvocabulary.ultils.Log;
@@ -277,7 +276,7 @@ public class HomeActivity extends Activity {
                         intent.setClass(HomeActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
-                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
+                        overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                     }
 
                 } else if (i == 3) {
@@ -294,17 +293,17 @@ public class HomeActivity extends Activity {
                         Intent intent = new Intent();
                         intent.setClass(HomeActivity.this, QuestionGameActivity.class);
                         startActivity(intent);
-                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
+                        overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                     }else{
                         Toast.makeText(HomeActivity.this, getResources().getString(R.string.null_data), Toast.LENGTH_SHORT).show();
                     }
 
                 } else if(i == 5){
                     if(vocabulary.getCountVoca()>0) {
-                        Intent intent = new Intent(HomeActivity.this,PopubOptionsActivity.class);
+                        Intent intent = new Intent(HomeActivity.this, PopubOptionsActivity.class);
                         startActivity(intent);
                         finish();
-                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
+                        overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                     }else{
                         Toast.makeText(HomeActivity.this, getResources().getString(R.string.null_data_popup), Toast.LENGTH_SHORT).show();
                     }
@@ -326,16 +325,16 @@ public class HomeActivity extends Activity {
                         intent.setClass(HomeActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
-                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
+                        overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                     }
                 } else if (i == 9){
                     Intent intent = new Intent(HomeActivity.this,AboutActivity.class);
                     startActivity(intent);
-                    overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
+                    overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                 } else if (i == 10){
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com"));
                     startActivity(browserIntent);
-                    overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
+                    overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                 } else if (i == 11){
                     final String nameAccCompany = "ITPlus+Academy"; // getPackageName() from Context or Activity object
                     try {
@@ -929,8 +928,8 @@ public class HomeActivity extends Activity {
 
         ((MenuItem) arrMenu.get(1)).setValue(resources.getString(R.string.off));
         ((MenuItem) arrMenu.get(2)).setValue(resources.getString(R.string.off));
-        ((MenuItem) arrMenu.get(5)).setTitle(resources.getString(R.string.login));
-        ((MenuItem) arrMenu.get(5)).setIcon(R.drawable.ic_login);
+        ((MenuItem) arrMenu.get(6)).setTitle(resources.getString(R.string.login));
+        ((MenuItem) arrMenu.get(6)).setIcon(R.drawable.ic_login);
         menuAdapter.notifyDataSetChanged();
     }
 

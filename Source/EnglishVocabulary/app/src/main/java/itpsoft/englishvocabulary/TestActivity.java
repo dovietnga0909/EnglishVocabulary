@@ -205,8 +205,7 @@ public class TestActivity extends FragmentActivity implements ActionBar.TabListe
     @Override
     public void onBackPressed() {
         finish();
-        overridePendingTransition(R.anim.anim_slide_in_right,
-                R.anim.anim_slide_out_right);
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
         // super.onBackPressed();
     }
 

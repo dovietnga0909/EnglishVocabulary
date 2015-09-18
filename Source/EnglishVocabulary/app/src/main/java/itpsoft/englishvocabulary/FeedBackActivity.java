@@ -60,7 +60,8 @@ public class FeedBackActivity extends Activity implements View.OnClickListener {
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        params.add("content", "N'" + content + "'");
+//        params.add("content", "N'" + content + "'");
+        params.add("content", content);
 
         client.post(this,getResources().getString(R.string.api_feedback),params,new JsonHttpResponseHandler(){
             @Override
