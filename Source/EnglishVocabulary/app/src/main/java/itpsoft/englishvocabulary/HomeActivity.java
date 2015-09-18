@@ -115,6 +115,14 @@ public class HomeActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_home);
         vocabulary = new Vocabulary();
+		
+		//service popub
+        Intent serviceScreenOn = new Intent();
+        serviceScreenOn.setAction("itpsoft.englishvocabulary.service.ScreenOnService");
+        String checkStatePopub = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_POPUB_STATE, HomeActivity.this.getResources().getString(R.string.off));
+        if(checkStatePopub.equals(HomeActivity.this.getResources().getString(R.string.on))){
+            stopService(serviceScreenOn);
+        }
 
         //Admod popub
 //        mInterstitialAd = new InterstitialAd(this);
