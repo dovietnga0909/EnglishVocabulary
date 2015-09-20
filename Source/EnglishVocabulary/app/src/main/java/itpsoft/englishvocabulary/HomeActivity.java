@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -33,6 +35,9 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -43,6 +48,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,6 +90,7 @@ public class HomeActivity extends Activity {
     private Intent alarmIntent;
     private PendingIntent pendingIntent;
     private TextView fullName;
+    private ImageView imgUser;
     private int intervalTime = 1000 * 60 * 60 * 24;
     private long reminTime = -1;
     private boolean modify = false;
@@ -121,12 +129,14 @@ public class HomeActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_home);
         vocabulary = new Vocabulary();
-		
-		//service popub
+
+        FacebookSdk.sdkInitialize(HomeActivity.this);
+
+        //service popub
         Intent serviceScreenOn = new Intent();
         serviceScreenOn.setAction("itpsoft.englishvocabulary.service.ScreenOnService");
         String checkStatePopub = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_POPUB_STATE, HomeActivity.this.getResources().getString(R.string.off));
-        if(checkStatePopub.equals(HomeActivity.this.getResources().getString(R.string.on))){
+        if (checkStatePopub.equals(HomeActivity.this.getResources().getString(R.string.on))) {
             stopService(serviceScreenOn);
         }
 
@@ -236,6 +246,11 @@ public class HomeActivity extends Activity {
         createDataMenu();
         View menuHeader = LayoutInflater.from(HomeActivity.this).inflate(R.layout.menu_header, null);
         listMenu.addHeaderView(menuHeader);
+        imgUser = (ImageView) menuHeader.findViewById(R.id.avatar);
+        Profile profile = Profile.getCurrentProfile();
+        if(profile != null) {
+            new DownloadImageTask(imgUser).execute("" + profile.getProfilePictureUri(250, 250));
+        }
         fullName = (TextView) menuHeader.findViewById(R.id.name);
         fullName.setText(SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_FULLNAME, ""));
         menuAdapter = new MenuAdapter(HomeActivity.this, arrMenu);
@@ -285,31 +300,30 @@ public class HomeActivity extends Activity {
 //                        mInterstitialAd.show();
 //                        remind = true;
 //                    } else {
-                        createDialogRemind();
+                    createDialogRemind();
 //                    }
                 } else if (i == 4) {
 //                    Question question = new Question(HomeActivity.this);
-                    if(vocabulary.getCountVoca()>=2) {
+                    if (vocabulary.getCountVoca() >= 2) {
                         Intent intent = new Intent();
                         intent.setClass(HomeActivity.this, QuestionGameActivity.class);
                         startActivity(intent);
                         overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
-                    }else{
+                    } else {
                         Toast.makeText(HomeActivity.this, getResources().getString(R.string.null_data), Toast.LENGTH_SHORT).show();
                     }
 
-                } else if(i == 5){
-                    if(vocabulary.getCountVoca()>0) {
+                } else if (i == 5) {
+                    if (vocabulary.getCountVoca() > 0) {
                         Intent intent = new Intent(HomeActivity.this, PopubOptionsActivity.class);
                         startActivity(intent);
                         finish();
                         overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
-                    }else{
+                    } else {
                         Toast.makeText(HomeActivity.this, getResources().getString(R.string.null_data_popup), Toast.LENGTH_SHORT).show();
                     }
 
-                }
-                else if (i == 7) {
+                } else if (i == 7) {
                     boolean isLogin = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN, false);
                     if (isLogin) {
                         logout = true;
@@ -327,18 +341,18 @@ public class HomeActivity extends Activity {
                         finish();
                         overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
                     }
-                } else if (i == 9){
-                    Intent intent = new Intent(HomeActivity.this,AboutActivity.class);
+                } else if (i == 9) {
+                    Intent intent = new Intent(HomeActivity.this, AboutActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
-                } else if (i == 10){
+                } else if (i == 10) {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com"));
                     startActivity(browserIntent);
                     overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
-                } else if (i == 11){
+                } else if (i == 11) {
                     final String nameAccCompany = "ITPlus+Academy"; // getPackageName() from Context or Activity object
                     try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://developer?id="+ nameAccCompany)));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://developer?id=" + nameAccCompany)));
                     } catch (android.content.ActivityNotFoundException anfe) {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/developer?id=" + nameAccCompany)));
                     }
@@ -350,8 +364,8 @@ public class HomeActivity extends Activity {
         DisplayMetrics metrics = getResources().getDisplayMetrics();
 
         //GridTopic
-        topicGridAdapter = new TopicGridAdapter(HomeActivity.this,topic);
-        itemTopic = (GridView)findViewById(R.id.gvTopic);
+        topicGridAdapter = new TopicGridAdapter(HomeActivity.this, topic);
+        itemTopic = (GridView) findViewById(R.id.gvTopic);
         if ((metrics.widthPixels / metrics.scaledDensity) < 400) {
             itemTopic.setNumColumns(2);
         } else if ((metrics.widthPixels / metrics.scaledDensity) > 600) {
@@ -374,7 +388,7 @@ public class HomeActivity extends Activity {
 //                        Log.d("LuanDT", "show popub");
 //                    } else {
 //                        Log.d("LuanDT", "chua load xong ---> goi load lai");
-                        startVocabulary(parent, position);
+                startVocabulary(parent, position);
 //                    }
 //
 //                } else {
@@ -397,7 +411,7 @@ public class HomeActivity extends Activity {
         });
     }
 
-    private void startVocabulary(AdapterView adapterView, int position){
+    private void startVocabulary(AdapterView adapterView, int position) {
         startedVocabulary = false;
         Topic topic = (Topic) adapterView.getAdapter().getItem(position);
         Intent intent = new Intent();
@@ -420,7 +434,7 @@ public class HomeActivity extends Activity {
         }
         arrMenu.add(new MenuItem("#ff6f00", R.drawable.ic_clock, resources.getString(R.string.reminds_study_time), resources.getString(R.string.off)));
         arrMenu.add(new MenuItem("#f50057", R.drawable.game, resources.getString(R.string.game), ""));
-        arrMenu.add(new MenuItem("#ff6f00", R.drawable.game, resources.getString(R.string.popub_random_voca), SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_POPUB_STATE,resources.getString(R.string.off))));
+        arrMenu.add(new MenuItem("#ff6f00", R.drawable.game, resources.getString(R.string.popub_random_voca), SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_POPUB_STATE, resources.getString(R.string.off))));
         arrMenu.add("");
         if (isLogin) {
             arrMenu.add(new MenuItem("#9c27b0", R.drawable.ic_logout, resources.getString(R.string.logout), ""));
@@ -755,6 +769,9 @@ public class HomeActivity extends Activity {
 
                 //check logout
                 if (logout) {
+                    if(SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_LOGIN_FACEBOOK, false)){
+                        LoginManager.getInstance().logOut();
+                    }
                     logout();
                     Toast.makeText(HomeActivity.this, resources.getString(R.string.logout_success), Toast.LENGTH_SHORT).show();
                 } else {
@@ -925,6 +942,7 @@ public class HomeActivity extends Activity {
         SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_AGREE_RUN, true);
 
         fullName.setText("");
+        imgUser.setImageResource(R.drawable.user);
 
         ((MenuItem) arrMenu.get(1)).setValue(resources.getString(R.string.off));
         ((MenuItem) arrMenu.get(2)).setValue(resources.getString(R.string.off));
@@ -973,6 +991,31 @@ public class HomeActivity extends Activity {
             }
         }
 
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String url = urls[0];
+            Bitmap mIcon = null;
+            try {
+                InputStream in = new URL(url).openStream();
+                mIcon = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.d("LuanDT", "DownloadImageTask error: " + e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 
 }

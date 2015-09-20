@@ -71,7 +71,6 @@
             android:text="@string/login"
             android:textColor="@color/actionBar"
             android:textSize="16sp"
-
             android:typeface="serif" />
 
         <Button
@@ -86,6 +85,13 @@
             android:textColor="@color/logo"
             android:textSize="16sp"
             android:typeface="serif" />
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/btnLoginFacebook"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp" />
+
     </LinearLayout>
 
     <!--<com.google.android.gms.ads.AdView-->

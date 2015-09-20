@@ -1,4 +1,5 @@
 <resources>
+    <string name="facebook_app_id">1036797793020930</string>
     <string name="app_name">English Vocabulary</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -190,6 +191,7 @@
     <string name="api_register">http://192.168.1.49:8080/ServicesEnglishVocabulary/rest/user/add</string>
     <string name="api_login">http://192.168.1.49:8080/ServicesEnglishVocabulary/rest/user/login</string>
     <string name="api_feedback">http://192.168.1.49:8080/ServicesEnglishVocabulary/rest/feedback/add</string>
+    <string name="api_login_facebook">http://192.168.1.49:8080/ServicesEnglishVocabulary/rest/user/facebook</string>
 
     <string name="number_vocabulary">Số từ vựng: "</string>
 
