@@ -24,6 +24,7 @@ import com.loopj.android.http.RequestParams;
 import org.apache.http.Header;
 import org.json.JSONObject;
 
+import itpsoft.englishvocabulary.databases.DbController;
 import itpsoft.englishvocabulary.models.Vocabulary;
 import itpsoft.englishvocabulary.ultils.Log;
 import itpsoft.englishvocabulary.ultils.SPUtil;
@@ -227,6 +228,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     private void syncAddDataToDatabase() {
+        DbController dbController = DbController.getInstance(LoginActivity.this);
+        dbController.deleteAllDataTable();
         vocabulary = new Vocabulary();
         vocabulary.excuteAddDataToDatabase(LoginActivity.this, new Vocabulary.OnLoadListener() {
             @Override

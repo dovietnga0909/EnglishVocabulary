@@ -39,8 +39,8 @@ public class FeedBackActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_feed_back);
 
         //Admod
-        adView = (AdView) findViewById(R.id.adView);
-        admodBanner = new AdmodBanner(adView);
+        /*adView = (AdView) findViewById(R.id.adView);
+        admodBanner = new AdmodBanner(adView);*/
         init();
     }
 

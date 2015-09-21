@@ -170,8 +170,8 @@ public class HomeActivity extends Activity {
         //End Admod popub
 
         //Admod
-        adView = (AdView) findViewById(R.id.adView);
-        admodBanner = new AdmodBanner(adView);
+        /*adView = (AdView) findViewById(R.id.adView);
+        admodBanner = new AdmodBanner(adView);*/
 
         ///start up
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);

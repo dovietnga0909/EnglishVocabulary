@@ -64,8 +64,8 @@ public class VocabularyActivity extends ActionBarActivity implements TextToSpeec
         setContentView(R.layout.activity_vocabulary);
 
         //Admod
-        adView = (AdView) findViewById(R.id.adView);
-        admodBanner = new AdmodBanner(adView);
+        /*adView = (AdView) findViewById(R.id.adView);
+        admodBanner = new AdmodBanner(adView);*/
 
         textToSpeech = new TextToSpeech(VocabularyActivity.this, this);
         speakEnglish = new SpeakEnglish(VocabularyActivity.this, textToSpeech);

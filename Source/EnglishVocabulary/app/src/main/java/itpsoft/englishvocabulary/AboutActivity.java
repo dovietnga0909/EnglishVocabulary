@@ -27,8 +27,8 @@ public class AboutActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        adView = (AdView) findViewById(R.id.adView);
-        admodBanner = new AdmodBanner(adView);
+        /*adView = (AdView) findViewById(R.id.adView);
+        admodBanner = new AdmodBanner(adView);*/
 
         btnFeedBack = (Button) findViewById(R.id.btnFeedBack);
         txtWebsite = (TextView) findViewById(R.id.tvWebsite);
