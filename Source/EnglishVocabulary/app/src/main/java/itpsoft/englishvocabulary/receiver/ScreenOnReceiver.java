@@ -9,7 +9,7 @@ import android.content.pm.ResolveInfo;
 
 import java.util.List;
 
-import itpsoft.englishvocabulary.PopubVocaActivity;
+import itpsoft.englishvocabulary.service.ScreenOnService;
 
 /**
  * Created by Do on 10/09/2015.
@@ -27,19 +27,19 @@ public class ScreenOnReceiver extends BroadcastReceiver {
         } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
 
             screenOff = false;
-            Intent intent1 = new Intent(context, PopubVocaActivity.class);
-            intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent1);
+//            Intent intent1 = new Intent(context, PopubVocaActivity.class);
+//            intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            context.startActivity(intent1);
 
         }
 
         //Toast.makeText(context, "BroadcastReceiver :"+screenOff, Toast.LENGTH_SHORT).show();
 
         // Send Current screen ON/OFF value to service
-//        Intent i = new Intent(context, ScreenOnService.class);
-//        i.putExtra("screen_state", screenOff);
-//        Intent i1 = createExplicitFromImplicitIntent(context,i);
-//        context.startService(i1);
+        Intent i = new Intent(context, ScreenOnService.class);
+        i.putExtra("screen_state", screenOff);
+        Intent i1 = createExplicitFromImplicitIntent(context,i);
+        context.startService(i1);
     }
 
     public static Intent createExplicitFromImplicitIntent(Context context, Intent implicitIntent) {

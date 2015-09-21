@@ -265,6 +265,8 @@ public class TopicGridAdapter extends BaseAdapter {
                             notifyDataSetChanged();
                             homeActivity.testSyncCate();
                             homeActivity.testSyncVoca();
+//                            String strIdPopubCurrent = SPUtil.instance(context).get(SPUtil.KEY_CHOOSED_ID_POPUB_TOPIC,context.getString(R.string.choose_topic));
+//
                             Toast.makeText(context, context.getString(R.string.deleted), Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(context, context.getString(R.string.error), Toast.LENGTH_SHORT).show();

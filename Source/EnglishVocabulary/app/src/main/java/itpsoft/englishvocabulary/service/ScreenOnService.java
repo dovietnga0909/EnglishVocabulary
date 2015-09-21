@@ -66,15 +66,27 @@ public class ScreenOnService extends Service {
         //Toast.LENGTH_SHORT).show();
 
         if (screenOn) {
-//            int num_screen_on = SPUtil.instance(ScreenOnService.this).get(SPUtil.KEY_NUM_SCREEN_ON, 1);
-            int first_run_popub_activity = SPUtil.instance(ScreenOnService.this).get(SPUtil.KEY_FIRST_RUN_POPUB_ACTIVITY, 1);
-            // Some time required to start any service
-            if (first_run_popub_activity == 1){
-                Log.d("NgaDV", "KEY_FIRST_RUN_POPUB_ACTIVITY: in if " + SPUtil.instance(ScreenOnService.this).get(SPUtil.KEY_FIRST_RUN_POPUB_ACTIVITY, 1) + "");
-                Intent intent1 = new Intent(ScreenOnService.this, PopubVocaActivity.class);
-                intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent1);
-                Toast.makeText(getBaseContext(), "Screen on, ", Toast.LENGTH_LONG).show();
+//            SPUtil.instance(ScreenOnService.this).set(SPUtil.KEY_NUM_SCREEN_ON, 1);
+            int num_screen_on = SPUtil.instance(ScreenOnService.this).get(SPUtil.KEY_NUM_SCREEN_ON, 1);
+            if (num_screen_on == 1){
+                Toast.makeText(ScreenOnService.this,"num_screen_on: " + num_screen_on,Toast.LENGTH_SHORT).show();
+//                num_screen_on++;
+
+                SPUtil.instance(ScreenOnService.this).set(SPUtil.KEY_NUM_SCREEN_ON, 2);
+            }
+            if (num_screen_on == 2){
+                Toast.makeText(ScreenOnService.this, "num_screen_on: " + num_screen_on, Toast.LENGTH_SHORT).show();
+                int first_run_popub_activity = SPUtil.instance(ScreenOnService.this).get(SPUtil.KEY_FIRST_RUN_POPUB_ACTIVITY, 1);
+                // Some time required to start any service
+                if (first_run_popub_activity == 1){
+                    Log.d("NgaDV", "KEY_FIRST_RUN_POPUB_ACTIVITY: in if " + SPUtil.instance(ScreenOnService.this).get(SPUtil.KEY_FIRST_RUN_POPUB_ACTIVITY, 1) + "");
+                    Intent intent1 = new Intent(ScreenOnService.this, PopubVocaActivity.class);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent1);
+//                    Toast.makeText(getBaseContext(), "Screen on, ", Toast.LENGTH_LONG).show();
+                    SPUtil.instance(ScreenOnService.this).set(SPUtil.KEY_NUM_SCREEN_ON, 1);
+                }
+
             }
         } else {
 //           getBaseContext(), "Screen off,", Toast.LENGTH_LONG).show();
