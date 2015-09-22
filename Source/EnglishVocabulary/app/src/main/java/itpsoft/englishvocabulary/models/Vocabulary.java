@@ -42,6 +42,9 @@ public class Vocabulary{
     public static int DELETE_FALSE = 0;
     public static int DELETE_SUCCESS = 1;
 
+    public Vocabulary(Context context) {
+        this.context = context;
+    }
     public Vocabulary() {
     }
 

@@ -57,7 +57,7 @@ public class PopubVocaActivity extends AboutActivity implements TextToSpeech.OnI
 
         //listview
         listView = (ListView) findViewById(R.id.lvVoca);
-        vocabulary = new Vocabulary();
+        vocabulary = new Vocabulary(context);
         listVocabulary = vocabulary.getVocaByStrId(strIdTopic);
         listVocaDisplay = new ArrayList<>();
         adapter = new VocabularyAdapter(context, listVocaDisplay);

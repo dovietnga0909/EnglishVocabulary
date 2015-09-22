@@ -31,6 +31,7 @@ import itpsoft.englishvocabulary.adapter.DialogTempAdapter;
 import itpsoft.englishvocabulary.models.Temp;
 import itpsoft.englishvocabulary.models.Topic;
 import itpsoft.englishvocabulary.receiver.PopubAlarmReceiver;
+import itpsoft.englishvocabulary.service.ScreenOnService;
 import itpsoft.englishvocabulary.ultils.AdmodBanner;
 import itpsoft.englishvocabulary.ultils.Log;
 import itpsoft.englishvocabulary.ultils.SPUtil;
@@ -352,10 +353,12 @@ public class PopubOptionsActivity extends Activity implements View.OnClickListen
      */
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        Intent serviceScreenOn = new Intent();
-        serviceScreenOn.setAction("itpsoft.englishvocabulary.service.ScreenOnService");
 
         if (isChecked) {
+
+            Intent serviceScreenOn = new Intent(context,ScreenOnService.class);
+            serviceScreenOn.setAction("itpsoft.englishvocabulary.service.ScreenOnService");
+            Log.d("NgaDV", "tbg_true");
             if (validateFormPopub()){
                 startService(serviceScreenOn);
                 Toast.makeText(context, context.getString(R.string.change_success), Toast.LENGTH_SHORT).show();
@@ -399,9 +402,13 @@ public class PopubOptionsActivity extends Activity implements View.OnClickListen
 //                Toast.makeText(context,"KEY_CHOOSED_KEY_POPUB_NOTIFI = 5",Toast.LENGTH_SHORT).show();
 //            }
         } else {
+            Intent serviceScreenOn = new Intent(context,ScreenOnService.class);
+            serviceScreenOn.setAction("itpsoft.englishvocabulary.service.ScreenOnService");
+
             SPUtil.instance(context).set(SPUtil.KEY_POPUB_STATE, context.getResources().getString(R.string.off));
             stopService(serviceScreenOn);
             Toast.makeText(context, context.getString(R.string.turn_off_popub), Toast.LENGTH_SHORT).show();
+            Log.d("NgaDV", "tbg_false");
         }
     }
     private void startAlarm(long time) {
@@ -450,6 +457,68 @@ public class PopubOptionsActivity extends Activity implements View.OnClickListen
         super.onResume();
         Log.d("NgaDV", "Onresume");
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d("NgaDV", "on destroy activity");
+        if (tbStatus.isChecked()) {
+
+            Intent serviceScreenOn = new Intent(context,ScreenOnService.class);
+            serviceScreenOn.setAction("itpsoft.englishvocabulary.service.ScreenOnService");
+            Log.d("NgaDV", "tbg_true");
+            if (validateFormPopub()){
+                startService(serviceScreenOn);
+                Toast.makeText(context, context.getString(R.string.change_success), Toast.LENGTH_SHORT).show();
+            }else {
+                tbStatus.setChecked(false);
+                stopService(serviceScreenOn);
+            }
+//            startService(serviceScreenOn);
+//            if(SPUtil.instance(context).get(SPUtil.KEY_CHOOSED_KEY_POPUB_NOTIFI,"").equals("1")){
+//
+//                startService(serviceScreenOn);
+//                Toast.makeText(context,"KEY_CHOOSED_KEY_POPUB_NOTIFI = 1",Toast.LENGTH_SHORT).show();
+//            }else if(SPUtil.instance(context).get(SPUtil.KEY_CHOOSED_KEY_POPUB_NOTIFI,"").equals("2")){
+//                stopService(serviceScreenOn);
+//                Calendar now = Calendar.getInstance();
+//                Calendar calendar = Calendar.getInstance();
+//                if (calendar.before(now)) {
+//                    calendar.add(Calendar.DATE, 1);
+//                }
+////                long time = calendar.getTimeInMillis();
+//                long time = now.getTimeInMillis();
+////                Log.d("NgaDV","phut = " + calendar.get(Ca));
+//                startAlarm(time+500);
+//                Toast.makeText(context,"KEY_CHOOSED_KEY_POPUB_NOTIFI = 2",Toast.LENGTH_SHORT).show();
+//            }else if(SPUtil.instance(context).get(SPUtil.KEY_CHOOSED_KEY_POPUB_NOTIFI,"").equals("3")){
+//                stopService(serviceScreenOn);
+//                /*
+//                * đoạn code này để hiển thị text trên màn hình khoá. cũng không cần quan tâm đến nó đâu :D
+//                *
+//                * */
+//                //String message = "This is a test";
+//                //Settings.System.putString(context.getContentResolver(),
+//                //        Settings.System.NAME, message);
+//
+//                Toast.makeText(context,"KEY_CHOOSED_KEY_POPUB_NOTIFI = 3",Toast.LENGTH_SHORT).show();
+//            }else if(SPUtil.instance(context).get(SPUtil.KEY_CHOOSED_KEY_POPUB_NOTIFI,"").equals("4")){
+//                stopService(serviceScreenOn);
+//                Toast.makeText(context,"KEY_CHOOSED_KEY_POPUB_NOTIFI = 4",Toast.LENGTH_SHORT).show();
+//            }else if(SPUtil.instance(context).get(SPUtil.KEY_CHOOSED_KEY_POPUB_NOTIFI,"").equals("5")){
+//                stopService(serviceScreenOn);
+//                Toast.makeText(context,"KEY_CHOOSED_KEY_POPUB_NOTIFI = 5",Toast.LENGTH_SHORT).show();
+//            }
+        } else {
+            Intent serviceScreenOn = new Intent(context,ScreenOnService.class);
+            serviceScreenOn.setAction("itpsoft.englishvocabulary.service.ScreenOnService");
+
+            SPUtil.instance(context).set(SPUtil.KEY_POPUB_STATE, context.getResources().getString(R.string.off));
+            stopService(serviceScreenOn);
+            Toast.makeText(context, context.getString(R.string.turn_off_popub), Toast.LENGTH_SHORT).show();
+            Log.d("NgaDV", "tbg_false");
+        }
+        super.onDestroy();
     }
 }
 

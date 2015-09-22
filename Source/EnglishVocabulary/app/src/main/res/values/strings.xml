@@ -184,14 +184,14 @@
     <!--<string name="api_login">http://itplus-academy.edu.vn/service/login.php</string>-->
     <!--<string name="api_feedback">http://itplus-academy.edu.vn/service/feedback.php</string>-->
 
-    <string name="api_push_insert">http://192.168.1.49:8080/ServicesEnglishVocabulary/rest/vocabulary/insert</string>
-    <string name="api_push_update">http://192.168.1.49:8080/ServicesEnglishVocabulary/rest/vocabulary/update</string>
-    <string name="api_push_delete">http://192.168.1.49:8080/ServicesEnglishVocabulary/rest/vocabulary/delete</string>
-    <string name="api_get_all_data">http://192.168.1.49:8080/ServicesEnglishVocabulary/rest/vocabulary/alldata</string>
-    <string name="api_register">http://192.168.1.49:8080/ServicesEnglishVocabulary/rest/user/add</string>
-    <string name="api_login">http://192.168.1.49:8080/ServicesEnglishVocabulary/rest/user/login</string>
-    <string name="api_feedback">http://192.168.1.49:8080/ServicesEnglishVocabulary/rest/feedback/add</string>
-    <string name="api_login_facebook">http://192.168.1.49:8080/ServicesEnglishVocabulary/rest/user/facebook</string>
+    <string name="api_push_insert">http://192.168.137.6:8080/ServicesEnglishVocabulary/rest/vocabulary/insert</string>
+    <string name="api_push_update">http://192.168.137.6:8080/ServicesEnglishVocabulary/rest/vocabulary/update</string>
+    <string name="api_push_delete">http://192.168.137.6:8080/ServicesEnglishVocabulary/rest/vocabulary/delete</string>
+    <string name="api_get_all_data">http://192.168.137.6:8080/ServicesEnglishVocabulary/rest/vocabulary/alldata</string>
+    <string name="api_register">http://192.168.137.6:8080/ServicesEnglishVocabulary/rest/user/add</string>
+    <string name="api_login">http://192.168.137.6:8080/ServicesEnglishVocabulary/rest/user/login</string>
+    <string name="api_feedback">http://192.168.137.6:8080/ServicesEnglishVocabulary/rest/feedback/add</string>
+    <string name="api_login_facebook">http://192.168.137.6:8080/ServicesEnglishVocabulary/rest/user/facebook</string>
 
     <string name="number_vocabulary">Số từ vựng: "</string>
 

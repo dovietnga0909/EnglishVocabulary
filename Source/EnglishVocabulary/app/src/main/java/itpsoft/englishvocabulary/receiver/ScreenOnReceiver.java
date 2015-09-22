@@ -10,36 +10,31 @@ import android.content.pm.ResolveInfo;
 import java.util.List;
 
 import itpsoft.englishvocabulary.service.ScreenOnService;
+import itpsoft.englishvocabulary.ultils.Log;
 
 /**
  * Created by Do on 10/09/2015.
  */
 public class ScreenOnReceiver extends BroadcastReceiver {
-    private boolean screenOff;
+    private boolean screenState;
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
         if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
 
-            screenOff = true;
-
+            screenState = false;
         } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
 
-            screenOff = false;
-//            Intent intent1 = new Intent(context, PopubVocaActivity.class);
-//            intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            context.startActivity(intent1);
+            screenState = true;
 
         }
-
-        //Toast.makeText(context, "BroadcastReceiver :"+screenOff, Toast.LENGTH_SHORT).show();
-
+        Log.d("NgaDV", "screenState: " + screenState);
         // Send Current screen ON/OFF value to service
-        Intent i = new Intent(context, ScreenOnService.class);
-        i.putExtra("screen_state", screenOff);
-        Intent i1 = createExplicitFromImplicitIntent(context,i);
-        context.startService(i1);
+            Intent i = new Intent(context, ScreenOnService.class);
+            i.putExtra("screen_state", screenState);
+//            Intent i1 = createExplicitFromImplicitIntent(context,i);
+            context.startService(i);
     }
 
     public static Intent createExplicitFromImplicitIntent(Context context, Intent implicitIntent) {

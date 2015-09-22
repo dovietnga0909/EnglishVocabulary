@@ -434,7 +434,7 @@ public class HomeActivity extends Activity {
         }
         arrMenu.add(new MenuItem("#ff6f00", R.drawable.ic_clock, resources.getString(R.string.reminds_study_time), resources.getString(R.string.off)));
         arrMenu.add(new MenuItem("#f50057", R.drawable.game, resources.getString(R.string.game), ""));
-        arrMenu.add(new MenuItem("#ff6f00", R.drawable.game, resources.getString(R.string.popub_random_voca), SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_POPUB_STATE, resources.getString(R.string.off))));
+        arrMenu.add(new MenuItem("#00E676", R.drawable.ic_shuffle, resources.getString(R.string.popub_random_voca), SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_POPUB_STATE, resources.getString(R.string.off))));
         arrMenu.add("");
         if (isLogin) {
             arrMenu.add(new MenuItem("#9c27b0", R.drawable.ic_logout, resources.getString(R.string.logout), ""));

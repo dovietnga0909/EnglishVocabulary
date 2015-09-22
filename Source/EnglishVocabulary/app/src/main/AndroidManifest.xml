@@ -104,6 +104,11 @@
         <activity
             android:name=".PopubOptionsActivity"
             android:screenOrientation="portrait" />
+        <service android:name="itpsoft.englishvocabulary.service.ScreenOnService" >
+            <intent-filter>
+                <action android:name="itpsoft.englishvocabulary.service.ScreenOnService" />
+            </intent-filter>
+        </service>
         <activity
             android:name=".PopubVocaActivity"
             android:screenOrientation="portrait" />
@@ -117,11 +122,6 @@
             </intent-filter>
         </receiver>
         -->
-        <service android:name=".service.ScreenOnService" >
-            <intent-filter>
-                <action android:name="itpsoft.englishvocabulary.service.ScreenOnService" />
-            </intent-filter>
-        </service>
 
         <!-- receiver GCM -->
         <receiver
