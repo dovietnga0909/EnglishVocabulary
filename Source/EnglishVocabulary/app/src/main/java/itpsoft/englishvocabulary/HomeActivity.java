@@ -940,12 +940,14 @@ public class HomeActivity extends Activity {
         dateSetChange();
         SPUtil.instance(HomeActivity.this).logout();
         SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_AGREE_RUN, true);
+        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_POPUB_STATE, HomeActivity.this.getResources().getString(R.string.off));
 
         fullName.setText("");
         imgUser.setImageResource(R.drawable.user);
 
         ((MenuItem) arrMenu.get(1)).setValue(resources.getString(R.string.off));
         ((MenuItem) arrMenu.get(2)).setValue(resources.getString(R.string.off));
+        ((MenuItem) arrMenu.get(5)).setValue(resources.getString(R.string.off));
         ((MenuItem) arrMenu.get(6)).setTitle(resources.getString(R.string.login));
         ((MenuItem) arrMenu.get(6)).setIcon(R.drawable.ic_login);
         menuAdapter.notifyDataSetChanged();
