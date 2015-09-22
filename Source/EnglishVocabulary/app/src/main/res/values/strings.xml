@@ -99,6 +99,7 @@
 
     <string name="must_choose_one">Bạn phải chọn ít nhất một chủ đề!</string>
     <string name="turn_off_popub">Tắt hiển thị từ ngẫu nhiên</string>
+    <string name="close">Đóng</string>
     <!-- TuNT-->
     <string name="ev">Từ vựng tiếng Anh</string>
     <string name="list_topic">Danh sách chủ đề</string>

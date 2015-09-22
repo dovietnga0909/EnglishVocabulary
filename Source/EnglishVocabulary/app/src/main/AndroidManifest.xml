@@ -111,7 +111,8 @@
         </service>
         <activity
             android:name=".PopubVocaActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light.Dialog"/>
         <!--
         <receiver android:name=".receiver.ScreenOnReceiver"
             android:enabled="true"

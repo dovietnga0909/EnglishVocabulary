@@ -469,7 +469,6 @@ public class PopubOptionsActivity extends Activity implements View.OnClickListen
             Log.d("NgaDV", "tbg_true");
             if (validateFormPopub()){
                 startService(serviceScreenOn);
-                Toast.makeText(context, context.getString(R.string.change_success), Toast.LENGTH_SHORT).show();
             }else {
                 tbStatus.setChecked(false);
                 stopService(serviceScreenOn);
@@ -515,7 +514,6 @@ public class PopubOptionsActivity extends Activity implements View.OnClickListen
 
             SPUtil.instance(context).set(SPUtil.KEY_POPUB_STATE, context.getResources().getString(R.string.off));
             stopService(serviceScreenOn);
-            Toast.makeText(context, context.getString(R.string.turn_off_popub), Toast.LENGTH_SHORT).show();
             Log.d("NgaDV", "tbg_false");
         }
         super.onDestroy();

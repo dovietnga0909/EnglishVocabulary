@@ -137,7 +137,7 @@ public class HomeActivity extends Activity {
         serviceScreenOn.setAction("itpsoft.englishvocabulary.service.ScreenOnService");
         String checkStatePopub = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_POPUB_STATE, HomeActivity.this.getResources().getString(R.string.off));
         if (checkStatePopub.equals(HomeActivity.this.getResources().getString(R.string.on))) {
-            stopService(serviceScreenOn);
+            startService(serviceScreenOn);
         }
 
         //GCM

@@ -1,5 +1,6 @@
 package itpsoft.englishvocabulary;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ public class PopubVocaActivity extends AboutActivity implements TextToSpeech.OnI
     private Button btnFinish,btnStartApp;
 
     private Context context;
+    private ActionBar actionBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,11 +78,11 @@ public class PopubVocaActivity extends AboutActivity implements TextToSpeech.OnI
                 finish();
                 break;
             case R.id.btnStartApp:
-                Intent launchIntent = getPackageManager().getLaunchIntentForPackage("itpsoft.englishvocabulary");
-                startActivity(launchIntent);
                 SPUtil.instance(PopubVocaActivity.this).set(SPUtil.KEY_FIRST_RUN_POPUB_ACTIVITY, 1);
                 Log.d("NgaDV", "KEY_FIRST_RUN_POPUB_ACTIVITY: " + SPUtil.instance(PopubVocaActivity.this).get(SPUtil.KEY_FIRST_RUN_POPUB_ACTIVITY, 1) + "");
                 finish();
+                Intent launchIntent = getPackageManager().getLaunchIntentForPackage("itpsoft.englishvocabulary");
+                startActivity(launchIntent);
                 break;
         }
     }
@@ -112,9 +114,9 @@ public class PopubVocaActivity extends AboutActivity implements TextToSpeech.OnI
     }
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         SPUtil.instance(PopubVocaActivity.this).set(SPUtil.KEY_FIRST_RUN_POPUB_ACTIVITY, 1);
         Log.d("NgaDV", "KEY_FIRST_RUN_POPUB_ACTIVITY: " + SPUtil.instance(PopubVocaActivity.this).get(SPUtil.KEY_FIRST_RUN_POPUB_ACTIVITY, 1) + "");
+        super.onBackPressed();
     }
 
     @Override
