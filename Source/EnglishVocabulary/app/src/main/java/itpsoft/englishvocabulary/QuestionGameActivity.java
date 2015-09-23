@@ -1,6 +1,7 @@
 package itpsoft.englishvocabulary;
 
 import android.app.Activity;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -30,6 +31,7 @@ public class QuestionGameActivity extends Activity implements View.OnClickListen
     private Runnable runnable;
     private Question question;
     private ArrayList<Question> questions;
+    private MediaPlayer mediaPlayer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +148,7 @@ public class QuestionGameActivity extends Activity implements View.OnClickListen
 
     private void answer(boolean answer) {
         if (question.answer(pQuestion, answer)) {
+            startSoundTrue();
             pScore = pScore + 1;
             playScore.setText(Integer.toString(pScore));
             newQuestion();
@@ -155,6 +158,7 @@ public class QuestionGameActivity extends Activity implements View.OnClickListen
                 vietnamese.setText(questions.get(pQuestion).getVietnamese());
             }
         } else {
+            startSoundFalse();
             gameOver();
         }
     }
@@ -182,5 +186,15 @@ public class QuestionGameActivity extends Activity implements View.OnClickListen
     public void onBackPressed() {
         finish();
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
+    }
+
+    public void startSoundTrue() {
+        mediaPlayer = MediaPlayer.create(QuestionGameActivity.this, R.raw.dock);
+        mediaPlayer.start();
+    }
+
+    public void startSoundFalse() {
+        mediaPlayer = MediaPlayer.create(QuestionGameActivity.this, R.raw.error);
+        mediaPlayer.start();
     }
 }
