@@ -947,7 +947,7 @@ public class HomeActivity extends Activity {
 
         ((MenuItem) arrMenu.get(1)).setValue(resources.getString(R.string.off));
         ((MenuItem) arrMenu.get(2)).setValue(resources.getString(R.string.off));
-        ((MenuItem) arrMenu.get(5)).setValue(resources.getString(R.string.off));
+        ((MenuItem) arrMenu.get(4)).setValue(resources.getString(R.string.off));
         ((MenuItem) arrMenu.get(6)).setTitle(resources.getString(R.string.login));
         ((MenuItem) arrMenu.get(6)).setIcon(R.drawable.ic_login);
         menuAdapter.notifyDataSetChanged();
