@@ -276,7 +276,7 @@ public class PopubOptionsActivity extends Activity implements View.OnClickListen
         TextView    tvTitle = (TextView)layoutCheckbox.findViewById(R.id.title);
         ImageView imgDialogBack = (ImageView)layoutCheckbox.findViewById(R.id.back);
 
-        tvTitle.setText(getResources().getString(R.string.choose_topic));
+        tvTitle.setText(getResources().getString(R.string.choose_number_voca));
         imgDialogBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
