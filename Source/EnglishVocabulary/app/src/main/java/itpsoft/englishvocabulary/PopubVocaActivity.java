@@ -15,6 +15,7 @@ import java.util.Collections;
 
 import itpsoft.englishvocabulary.adapter.VocabularyAdapter;
 import itpsoft.englishvocabulary.models.Vocabulary;
+import itpsoft.englishvocabulary.service.ScreenOnService;
 import itpsoft.englishvocabulary.ultils.Log;
 import itpsoft.englishvocabulary.ultils.SPUtil;
 import itpsoft.englishvocabulary.ultils.SpeakEnglish;
@@ -73,13 +74,13 @@ public class PopubVocaActivity extends AboutActivity implements TextToSpeech.OnI
         super.onClick(view);
         switch (view.getId()){
             case R.id.btnFinish:
-                SPUtil.instance(PopubVocaActivity.this).set(SPUtil.KEY_FIRST_RUN_POPUB_ACTIVITY, 1);
-                Log.d("NgaDV", "KEY_FIRST_RUN_POPUB_ACTIVITY: " + SPUtil.instance(PopubVocaActivity.this).get(SPUtil.KEY_FIRST_RUN_POPUB_ACTIVITY, 1) + "");
+//                SPUtil.instance(PopubVocaActivity.this).set(SPUtil.KEY_FIRST_RUN_POPUB_ACTIVITY, 1);
+//                Log.d("NgaDV", "KEY_FIRST_RUN_POPUB_ACTIVITY: " + SPUtil.instance(PopubVocaActivity.this).get(SPUtil.KEY_FIRST_RUN_POPUB_ACTIVITY, 1) + "");
                 finish();
                 break;
             case R.id.btnStartApp:
-                SPUtil.instance(PopubVocaActivity.this).set(SPUtil.KEY_FIRST_RUN_POPUB_ACTIVITY, 1);
-                Log.d("NgaDV", "KEY_FIRST_RUN_POPUB_ACTIVITY: " + SPUtil.instance(PopubVocaActivity.this).get(SPUtil.KEY_FIRST_RUN_POPUB_ACTIVITY, 1) + "");
+//                SPUtil.instance(PopubVocaActivity.this).set(SPUtil.KEY_FIRST_RUN_POPUB_ACTIVITY, 1);
+//                Log.d("NgaDV", "KEY_FIRST_RUN_POPUB_ACTIVITY: " + SPUtil.instance(PopubVocaActivity.this).get(SPUtil.KEY_FIRST_RUN_POPUB_ACTIVITY, 1) + "");
                 finish();
                 Intent launchIntent = getPackageManager().getLaunchIntentForPackage("itpsoft.englishvocabulary");
                 startActivity(launchIntent);
@@ -99,7 +100,7 @@ public class PopubVocaActivity extends AboutActivity implements TextToSpeech.OnI
             }
         }
         Log.d("NgaDV","listVocabulary.size(): " + listVocabulary.size());
-        Log.d("NgaDV","listVocaDisplay.size(): " + listVocaDisplay.size());
+        Log.d("NgaDV", "listVocaDisplay.size(): " + listVocaDisplay.size());
 
 
         listView.setAdapter(adapter);
@@ -113,23 +114,21 @@ public class PopubVocaActivity extends AboutActivity implements TextToSpeech.OnI
         });
     }
     @Override
-    public void onBackPressed() {
-        SPUtil.instance(PopubVocaActivity.this).set(SPUtil.KEY_FIRST_RUN_POPUB_ACTIVITY, 1);
-        Log.d("NgaDV", "KEY_FIRST_RUN_POPUB_ACTIVITY: " + SPUtil.instance(PopubVocaActivity.this).get(SPUtil.KEY_FIRST_RUN_POPUB_ACTIVITY, 1) + "");
-        super.onBackPressed();
-    }
-
-    @Override
     public void onInit(int i) {
 
     }
+
     @Override
-    protected void onDestroy() {
+    protected void onStop() {
         if(textToSpeech != null){
             textToSpeech.stop();
             textToSpeech.shutdown();
         }
         SPUtil.instance(PopubVocaActivity.this).set(SPUtil.KEY_FIRST_RUN_POPUB_ACTIVITY, 1);
-        super.onDestroy();
+        Intent serviceScreenOn = new Intent(context,ScreenOnService.class);
+        serviceScreenOn.setAction("itpsoft.englishvocabulary.service.ScreenOnService");
+        startService(serviceScreenOn);
+        Log.d("NgaDV","OnStop");
+        super.onStop();
     }
 }

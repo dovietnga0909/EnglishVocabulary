@@ -460,7 +460,7 @@ public class PopubOptionsActivity extends Activity implements View.OnClickListen
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onStop() {
         Log.d("NgaDV", "on destroy activity");
         if (tbStatus.isChecked()) {
 
@@ -473,41 +473,6 @@ public class PopubOptionsActivity extends Activity implements View.OnClickListen
                 tbStatus.setChecked(false);
                 stopService(serviceScreenOn);
             }
-//            startService(serviceScreenOn);
-//            if(SPUtil.instance(context).get(SPUtil.KEY_CHOOSED_KEY_POPUB_NOTIFI,"").equals("1")){
-//
-//                startService(serviceScreenOn);
-//                Toast.makeText(context,"KEY_CHOOSED_KEY_POPUB_NOTIFI = 1",Toast.LENGTH_SHORT).show();
-//            }else if(SPUtil.instance(context).get(SPUtil.KEY_CHOOSED_KEY_POPUB_NOTIFI,"").equals("2")){
-//                stopService(serviceScreenOn);
-//                Calendar now = Calendar.getInstance();
-//                Calendar calendar = Calendar.getInstance();
-//                if (calendar.before(now)) {
-//                    calendar.add(Calendar.DATE, 1);
-//                }
-////                long time = calendar.getTimeInMillis();
-//                long time = now.getTimeInMillis();
-////                Log.d("NgaDV","phut = " + calendar.get(Ca));
-//                startAlarm(time+500);
-//                Toast.makeText(context,"KEY_CHOOSED_KEY_POPUB_NOTIFI = 2",Toast.LENGTH_SHORT).show();
-//            }else if(SPUtil.instance(context).get(SPUtil.KEY_CHOOSED_KEY_POPUB_NOTIFI,"").equals("3")){
-//                stopService(serviceScreenOn);
-//                /*
-//                * đoạn code này để hiển thị text trên màn hình khoá. cũng không cần quan tâm đến nó đâu :D
-//                *
-//                * */
-//                //String message = "This is a test";
-//                //Settings.System.putString(context.getContentResolver(),
-//                //        Settings.System.NAME, message);
-//
-//                Toast.makeText(context,"KEY_CHOOSED_KEY_POPUB_NOTIFI = 3",Toast.LENGTH_SHORT).show();
-//            }else if(SPUtil.instance(context).get(SPUtil.KEY_CHOOSED_KEY_POPUB_NOTIFI,"").equals("4")){
-//                stopService(serviceScreenOn);
-//                Toast.makeText(context,"KEY_CHOOSED_KEY_POPUB_NOTIFI = 4",Toast.LENGTH_SHORT).show();
-//            }else if(SPUtil.instance(context).get(SPUtil.KEY_CHOOSED_KEY_POPUB_NOTIFI,"").equals("5")){
-//                stopService(serviceScreenOn);
-//                Toast.makeText(context,"KEY_CHOOSED_KEY_POPUB_NOTIFI = 5",Toast.LENGTH_SHORT).show();
-//            }
         } else {
             Intent serviceScreenOn = new Intent(context,ScreenOnService.class);
             serviceScreenOn.setAction("itpsoft.englishvocabulary.service.ScreenOnService");
@@ -516,7 +481,7 @@ public class PopubOptionsActivity extends Activity implements View.OnClickListen
             stopService(serviceScreenOn);
             Log.d("NgaDV", "tbg_false");
         }
-        super.onDestroy();
+        super.onStop();
     }
 }
 
