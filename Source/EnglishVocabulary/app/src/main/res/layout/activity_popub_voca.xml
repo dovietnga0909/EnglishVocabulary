@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     android:background="@color/white">
     <ListView
         android:id="@+id/lvVoca"
@@ -12,26 +13,32 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingTop="5dp"
         android:gravity="center"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/btnFinish"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:textSize="13sp"
             android:layout_weight="1"
             android:background="@drawable/bg_btn_skip_selector"
             android:text="@string/close"
+            android:textAllCaps="true"
             android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btnStartApp"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:textSize="13sp"
+            android:textAllCaps="true"
             android:layout_weight="1"
             android:background="@drawable/bg_btn_skip_selector"
             android:text="@string/start_app"
