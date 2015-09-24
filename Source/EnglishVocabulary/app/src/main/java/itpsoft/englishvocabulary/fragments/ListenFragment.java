@@ -268,7 +268,6 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
                             });
                             mDialog.setCancelable(false);
                             mDialog.show();
-                            Toast.makeText(getActivity(),"Ban da hoan thanh",Toast.LENGTH_SHORT).show();
                             LISTEN_POS_VOCABULARY   = 0;
                             LISTEN_NUM_QUESTION     = 1;
                             LISTEN_NUM_TRUE         = 0;
@@ -292,7 +291,7 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
     }
 
     @Override
-    public void onDestroy() {
+    public void onStop() {
         if(textToSpeech != null){
             textToSpeech.stop();
             textToSpeech.shutdown();
@@ -302,7 +301,7 @@ public class ListenFragment extends Fragment implements TextToSpeech.OnInitListe
         LISTEN_NUM_QUESTION = 0;
         LISTEN_POS_VOCABULARY = 0;
         LISTEN_NUM_SKIP = 0;
-        super.onDestroy();
+        super.onStop();
     }
 
     /**

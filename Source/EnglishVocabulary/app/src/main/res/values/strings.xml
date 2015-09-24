@@ -99,6 +99,7 @@
 
     <string name="must_choose_one">Bạn phải chọn ít nhất một chủ đề!</string>
     <string name="turn_off_popub">Tắt hiển thị từ ngẫu nhiên</string>
+    <string name="turn_on_popub">Bật hiển thị từ ngẫu nhiên</string>
     <string name="close">Đóng</string>
     <!-- TuNT-->
     <string name="ev">Từ vựng tiếng Anh</string>
@@ -129,7 +130,7 @@
     <string name="really_delete">Bạn có thật sự muốn xóa:</string>
     <string name="topic_empty">Không có từ vựng trong chủ đề này</string>
     <string name="dont_save">Thay đổi chưa được lưu lại</string>
-    <string name="change_success">Bật hiển thị từ ngẫu nhiên</string>
+    <string name="change_success">Thay đổi thành công</string>
     <string name="stop">Dừng</string>
     <string name="start_app">Mở ứng dụng</string>
     <string name="note">Đã đến giờ học nhấn vào "Mở ứng dụng" để bắt đầu.</string>

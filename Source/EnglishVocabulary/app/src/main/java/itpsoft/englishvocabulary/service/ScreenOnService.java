@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import itpsoft.englishvocabulary.PopubVocaActivity;
 import itpsoft.englishvocabulary.receiver.ScreenOnReceiver;
@@ -25,14 +24,10 @@ public class ScreenOnService extends Service {
         super.onCreate();
         // Register receiver that handles screen on and screen off logic
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
-//        filter.addAction(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         mReceiver = new ScreenOnReceiver();
         registerReceiver(mReceiver, filter);
     }
-
-
-
 
     /**
      * @param intent
@@ -49,31 +44,22 @@ public class ScreenOnService extends Service {
 
         }catch(Exception e){}
 
-        //  Toast.makeText(getBaseContext(), "Service on start :"+screenOn,
-        //Toast.LENGTH_SHORT).show();
-
         if (screenState) {
             Log.d("NgaDV", "Screen On");
-//            SPUtil.instance(ScreenOnService.this).set(SPUtil.KEY_NUM_SCREEN_ON, 1);
             int num_screen_on = SPUtil.instance(ScreenOnService.this).get(SPUtil.KEY_NUM_SCREEN_ON, 1);
             int num_screen_on_temp = num_screen_on;
-            Toast.makeText(ScreenOnService.this, "num_screen_on: " + num_screen_on, Toast.LENGTH_SHORT).show();
             if (num_screen_on_temp == 1){
-//                Toast.makeText(ScreenOnService.this, "num_screen_on: " + num_screen_on, Toast.LENGTH_SHORT).show();
                 num_screen_on += 1;
 
                 SPUtil.instance(ScreenOnService.this).set(SPUtil.KEY_NUM_SCREEN_ON, num_screen_on);
             }
             if (num_screen_on_temp == 2){
-//                Toast.makeText(ScreenOnService.this, "num_screen_on: " + num_screen_on, Toast.LENGTH_SHORT).show();
                 int first_run_popub_activity = SPUtil.instance(ScreenOnService.this).get(SPUtil.KEY_FIRST_RUN_POPUB_ACTIVITY, 1);
                 // Some time required to start any service
                 if (first_run_popub_activity == 1){
-                    Log.d("NgaDV", "KEY_FIRST_RUN_POPUB_ACTIVITY: in if " + SPUtil.instance(ScreenOnService.this).get(SPUtil.KEY_FIRST_RUN_POPUB_ACTIVITY, 1) + "");
                     Intent intent1 = new Intent(ScreenOnService.this, PopubVocaActivity.class);
                     intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent1);
-//                    Toast.makeText(getBaseContext(), "Screen on, ", Toast.LENGTH_LONG).show();
                     SPUtil.instance(ScreenOnService.this).set(SPUtil.KEY_NUM_SCREEN_ON, 1);
                 }
 

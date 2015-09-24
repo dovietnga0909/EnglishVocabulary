@@ -91,11 +91,9 @@ public class PopubOptionsActivity extends Activity implements View.OnClickListen
         window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
         //initial
         lnChooseTopic = (LinearLayout) findViewById(R.id.lnChooseToppic);
-//        lnChooseNotifications = (LinearLayout) findViewById(R.id.lnChooseNotifications);
         lnChooseNumberVoca = (LinearLayout) findViewById(R.id.lnChooseNumberVocabulary);
 
         tvChoosedTopic = (TextView) findViewById(R.id.tvChoosedTopic);
-//        tvChoosedNotifications = (TextView) findViewById(R.id.tvChoosedNotifications);
         tvChoosedNumberVoca = (TextView) findViewById(R.id.tvChoosedNumberVocabulary);
 
         tbStatus = (ToggleButton) findViewById(R.id.tgStatus);
@@ -104,14 +102,12 @@ public class PopubOptionsActivity extends Activity implements View.OnClickListen
 
         //action
         tvChoosedTopic.setText(SPUtil.instance(context).get(SPUtil.KEY_CHOOSED_NAME_PUPUB_TOPIC, context.getString(R.string.choose_topic)));
-//        tvChoosedNotifications.setText(SPUtil.instance(context).get(SPUtil.KEY_CHOOSED_NAME_POPUB_NOTIFI, context.getString(R.string.choose_notifications)));
         tvChoosedNumberVoca.setText(SPUtil.instance(context).get(SPUtil.KEY_CHOOSED_NAME_POPUB_NUMBER_VOCA, context.getString(R.string.choose_number_voca)));
 
         ///start up
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmIntent = new Intent(context, PopubAlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
-//        reminTime = SPUtil.instance(HomeActivity.this).get(SPUtil.KEY_REMIN_TIME, (long) -1);
 
         checkStatePopub = SPUtil.instance(context).get(SPUtil.KEY_POPUB_STATE, context.getResources().getString(R.string.off));
         if(checkStatePopub.equals(context.getResources().getString(R.string.off))){
@@ -122,7 +118,6 @@ public class PopubOptionsActivity extends Activity implements View.OnClickListen
         imgBack.setOnClickListener(this);
 
         lnChooseTopic.setOnClickListener(this);
-//        lnChooseNotifications.setOnClickListener(this);
         lnChooseNumberVoca.setOnClickListener(this);
 
 //        String
@@ -249,7 +244,6 @@ public class PopubOptionsActivity extends Activity implements View.OnClickListen
                     SPUtil.instance(context).set(SPUtil.KEY_CHOOSED_NAME_POPUB_NOTIFI,temp.getText());
                     SPUtil.instance(context).set(SPUtil.KEY_CHOOSED_KEY_POPUB_NOTIFI,temp.getValue());
                 }
-//                tvChoosedNotifications.setText(SPUtil.instance(context).get(SPUtil.KEY_CHOOSED_NAME_POPUB_NOTIFI, temp.getText()));
                 clickItem = false;
                 alertDialog.dismiss();
             }
@@ -336,9 +330,6 @@ public class PopubOptionsActivity extends Activity implements View.OnClickListen
             case R.id.lnChooseToppic:
                 DialogChooseTopic();
                 break;
-//            case R.id.lnChooseNotifications:
-//                DialogChooseNotificatons();
-//                break;
             case R.id.lnChooseNumberVocabulary:
                 DialogChooseNumberVoca();
                 break;
@@ -358,49 +349,13 @@ public class PopubOptionsActivity extends Activity implements View.OnClickListen
 
             Intent serviceScreenOn = new Intent(context,ScreenOnService.class);
             serviceScreenOn.setAction("itpsoft.englishvocabulary.service.ScreenOnService");
-            Log.d("NgaDV", "tbg_true");
             if (validateFormPopub()){
                 startService(serviceScreenOn);
-                Toast.makeText(context, context.getString(R.string.change_success), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.turn_on_popub), Toast.LENGTH_SHORT).show();
             }else {
                 tbStatus.setChecked(false);
                 stopService(serviceScreenOn);
             }
-//            startService(serviceScreenOn);
-//            if(SPUtil.instance(context).get(SPUtil.KEY_CHOOSED_KEY_POPUB_NOTIFI,"").equals("1")){
-//
-//                startService(serviceScreenOn);
-//                Toast.makeText(context,"KEY_CHOOSED_KEY_POPUB_NOTIFI = 1",Toast.LENGTH_SHORT).show();
-//            }else if(SPUtil.instance(context).get(SPUtil.KEY_CHOOSED_KEY_POPUB_NOTIFI,"").equals("2")){
-//                stopService(serviceScreenOn);
-//                Calendar now = Calendar.getInstance();
-//                Calendar calendar = Calendar.getInstance();
-//                if (calendar.before(now)) {
-//                    calendar.add(Calendar.DATE, 1);
-//                }
-////                long time = calendar.getTimeInMillis();
-//                long time = now.getTimeInMillis();
-////                Log.d("NgaDV","phut = " + calendar.get(Ca));
-//                startAlarm(time+500);
-//                Toast.makeText(context,"KEY_CHOOSED_KEY_POPUB_NOTIFI = 2",Toast.LENGTH_SHORT).show();
-//            }else if(SPUtil.instance(context).get(SPUtil.KEY_CHOOSED_KEY_POPUB_NOTIFI,"").equals("3")){
-//                stopService(serviceScreenOn);
-//                /*
-//                * đoạn code này để hiển thị text trên màn hình khoá. cũng không cần quan tâm đến nó đâu :D
-//                *
-//                * */
-//                //String message = "This is a test";
-//                //Settings.System.putString(context.getContentResolver(),
-//                //        Settings.System.NAME, message);
-//
-//                Toast.makeText(context,"KEY_CHOOSED_KEY_POPUB_NOTIFI = 3",Toast.LENGTH_SHORT).show();
-//            }else if(SPUtil.instance(context).get(SPUtil.KEY_CHOOSED_KEY_POPUB_NOTIFI,"").equals("4")){
-//                stopService(serviceScreenOn);
-//                Toast.makeText(context,"KEY_CHOOSED_KEY_POPUB_NOTIFI = 4",Toast.LENGTH_SHORT).show();
-//            }else if(SPUtil.instance(context).get(SPUtil.KEY_CHOOSED_KEY_POPUB_NOTIFI,"").equals("5")){
-//                stopService(serviceScreenOn);
-//                Toast.makeText(context,"KEY_CHOOSED_KEY_POPUB_NOTIFI = 5",Toast.LENGTH_SHORT).show();
-//            }
         } else {
             Intent serviceScreenOn = new Intent(context,ScreenOnService.class);
             serviceScreenOn.setAction("itpsoft.englishvocabulary.service.ScreenOnService");
@@ -408,11 +363,9 @@ public class PopubOptionsActivity extends Activity implements View.OnClickListen
             SPUtil.instance(context).set(SPUtil.KEY_POPUB_STATE, context.getResources().getString(R.string.off));
             stopService(serviceScreenOn);
             Toast.makeText(context, context.getString(R.string.turn_off_popub), Toast.LENGTH_SHORT).show();
-            Log.d("NgaDV", "tbg_false");
         }
     }
     private void startAlarm(long time) {
-//        SPUtil.instance(HomeActivity.this).set(SPUtil.KEY_REMIN_TIME, time);
         //cancel alarm
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
@@ -453,20 +406,11 @@ public class PopubOptionsActivity extends Activity implements View.OnClickListen
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d("NgaDV", "Onresume");
-
-    }
-
-    @Override
     protected void onStop() {
-        Log.d("NgaDV", "on destroy activity");
         if (tbStatus.isChecked()) {
 
             Intent serviceScreenOn = new Intent(context,ScreenOnService.class);
             serviceScreenOn.setAction("itpsoft.englishvocabulary.service.ScreenOnService");
-            Log.d("NgaDV", "tbg_true");
             if (validateFormPopub()){
                 startService(serviceScreenOn);
             }else {
@@ -479,7 +423,6 @@ public class PopubOptionsActivity extends Activity implements View.OnClickListen
 
             SPUtil.instance(context).set(SPUtil.KEY_POPUB_STATE, context.getResources().getString(R.string.off));
             stopService(serviceScreenOn);
-            Log.d("NgaDV", "tbg_false");
         }
         super.onStop();
     }

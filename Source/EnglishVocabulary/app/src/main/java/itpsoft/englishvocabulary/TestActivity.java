@@ -77,14 +77,6 @@ public class TestActivity extends FragmentActivity implements ActionBar.TabListe
 
         fragments = new Vector<Fragment>();
         tabHost = (TabHost) findViewById(R.id.tabhost);
-//        View fm_listen = LayoutInflater.from(this).inflate(R.layout.fm_test_listen,tabHost);
-//        BackAwareEditText fm_listen_answer = (BackAwareEditText) fm_listen.findViewById(R.id.edtAnswers);
-//        fm_listen_answer.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(TestActivity.this, "open",Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
         addTab(this, getResources().getString(R.string.txt_tab_test_listen), R.drawable.ic_tab_listen_selector, ListenFragment.class);
         addTab(this, getResources().getString(R.string.txt_tab_test_remember), R.drawable.ic_tab_remember_selector, RememberFragment.class);

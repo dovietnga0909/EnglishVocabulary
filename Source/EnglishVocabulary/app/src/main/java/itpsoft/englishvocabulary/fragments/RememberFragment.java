@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -22,7 +21,6 @@ import itpsoft.englishvocabulary.R;
 import itpsoft.englishvocabulary.TestActivity;
 import itpsoft.englishvocabulary.models.Vocabulary;
 import itpsoft.englishvocabulary.ultils.Keyboard;
-import itpsoft.englishvocabulary.ultils.Log;
 
 /**
  * Created by Do on 05/06/2015.
@@ -47,14 +45,6 @@ public class RememberFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fm_test_remember,container,false);
 
-//        imgIcBack = (ImageView) rootView.findViewById(R.id.drawer_indicator);
-//        imgIcBack.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getActivity().finish();
-//                getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
-//            }
-//        });
         //TextView
         txtEnglish      = (TextView)rootView.findViewById(R.id.txtEnglish);
         //hide txtVietnamese
@@ -74,13 +64,10 @@ public class RememberFragment extends Fragment {
 
         //Vocabulary
         listVocabularys = new TestActivity().getListVocabularies();
-        Log.d("NgaDV", "list vocabulary size() RememberFragment : " + listVocabularys.size());
 
 
 
         txtTotal.setText(Integer.toString(listVocabularys.size()));
-        //set imgIcDeleteTxt Gone When edtAnswers = ""
-//        imgIcDeleteTxt.setVisibility(View.GONE);
 
         edtAnswers.addTextChangedListener(new TextWatcher() {
 
@@ -171,8 +158,6 @@ public class RememberFragment extends Fragment {
                                 REMEMBER_NUM_SKIP = 0;
                                 REMEMBER_NUM_QUESTION = 1;
                                 REMEMBER_NUM_TRUE = 0;
-
-                                Toast.makeText(getActivity(), "Ban da hoan thanh", Toast.LENGTH_SHORT).show();
                                 txtQuestion.setText(Integer.toString(REMEMBER_NUM_QUESTION));
                                 txtNumTrue.setText(Integer.toString(REMEMBER_NUM_TRUE));
                                 txtEnglish.setText(listVocabularys.get(REMEMBER_POS_VOCABULARY).getEnglish());
@@ -236,7 +221,6 @@ public class RememberFragment extends Fragment {
                             REMEMBER_NUM_QUESTION   = 1;
                             REMEMBER_NUM_TRUE       = 0;
 
-                            Toast.makeText(getActivity(),"Ban da hoan thanh",Toast.LENGTH_SHORT).show();
                             txtQuestion.setText(Integer.toString(REMEMBER_NUM_QUESTION));
                             txtNumTrue.setText(Integer.toString(REMEMBER_NUM_TRUE));
                             txtEnglish.setText(listVocabularys.get(REMEMBER_POS_VOCABULARY).getEnglish());
@@ -254,13 +238,13 @@ public class RememberFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        Log.d("NgaDV", "onDestroy");
+    public void onStop() {
         REMEMBER_NUM_TRUE       = 0;
         REMEMBER_NUM_QUESTION   = 0;
         REMEMBER_POS_VOCABULARY = 0;
         REMEMBER_NUM_SKIP       = 0;
         REMEMBER_NUM_TOTAL      = 0;
-        super.onDestroy();
+
+        super.onStop();
     }
 }
