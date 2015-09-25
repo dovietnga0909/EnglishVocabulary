@@ -111,6 +111,7 @@
         </service>
         <activity
             android:name=".PopubVocaActivity"
+            android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.Dialog"/>
         <!--
